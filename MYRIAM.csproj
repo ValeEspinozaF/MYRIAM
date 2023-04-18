@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <!--Skip .pdb file in publish
+<PropertyGroup>
+  <DebugType>None</DebugType>
+  <DebugSymbols>False</DebugSymbols>
+</PropertyGroup>-->
+
+
+  <!--Skip compiling of non-cs files-->
+  <ItemGroup>
+    <Compile Remove="PythonFunctions\**" />
+    <Compile Remove="SAMPLE_FILES\**" />
+    <Compile Remove="EXECUTABLES\**" />
+    <Compile Remove="Shapefiles\**" />
+  </ItemGroup>
+  
+  
+  <!--Core Text Files-->
+  <ItemGroup>
+    <None Remove="SAMPLE_FILES\**" />
+    <Content Include="SAMPLE_FILES\**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="TextFiles\**" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  
+  <!--Supplementary code (Python)-->
+  <ItemGroup>
+    <None Remove="PythonFunctions\**" />
+    <None Remove="Shapefiles\**" />
+    <Content Include="PythonFunctions\**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Shapefiles\**" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  
+  <!--Packages-->
+  <ItemGroup>
+    <PackageReference Include="GeographicLib.NET" Version="2.0.0" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\nbt571\Documents\VS_repos\MYRIAM\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\nbt571\Documents\VS_repos\MYRIAM\.editorconfig" />
+  </ItemGroup>
+
+</Project>
