@@ -17,7 +17,7 @@ from cartopy.mpl.ticker import (LongitudeFormatter, LatitudeFormatter)
 
 
 # Main project workspace
-projFolder = Path(__file__).parents[1]
+projFolder = Path(__file__).parents[2]
 
 
 
@@ -121,7 +121,7 @@ def globalFeatures(ax, contourPath='', plotGridLines=True):
 def plateBoundaries_feature(edgecolor = '0.25', facecolor='none', lw=0.6):
     
     # Input shapefile
-    folderPath = 'Shapefiles'
+    folderPath = 'assets\Shapefiles'
     inputShp_plates = 'PlateBoundaries_PolyLine' 
     inputShp_plates = os.path.join(projFolder, folderPath, inputShp_plates)
 
@@ -137,7 +137,7 @@ def plateBoundaries_feature(edgecolor = '0.25', facecolor='none', lw=0.6):
 def coastlines_feature(edgecolor = '#AAAAAA', facecolor='none', lw=0.4):
     
     # Input shapefile
-    folderPath = 'Shapefiles'
+    folderPath = 'assets\Shapefiles'
     inputShp_coastlines = 'Coastlines_Polygon' 
     inputShp_coastlines = os.path.join(projFolder, folderPath, inputShp_coastlines)
     

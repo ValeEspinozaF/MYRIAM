@@ -26,6 +26,7 @@ namespace MYRIAM
 
             string inputFilePath;
 
+            // Check if input file path was given in the prompt
             try
             {
                 inputFilePath = args[0];
@@ -37,12 +38,10 @@ namespace MYRIAM
                     "The software call must be followed by the path to the inputs textfile.");
             }
 
-            // Check an upload given Parameters
+            // Set parameters
             Dictionary<string, object> inputParams = new();
             inputParams = Manage_InputParams.Set_InputParams(inputFilePath);
 
-
-            // Set parameters as individual variables
             string plateLabel = (string)inputParams["PLT_LABEL"];
             string outputDir = (string)inputParams["OUTPUTS_DIR"];
             string outputLabel = (string)inputParams["OUTPUT_LABEL"];
@@ -50,12 +49,10 @@ namespace MYRIAM
             string EVo_Path = (string)inputParams["EVo_PATH"];
             string interpMethod = (string)inputParams["INTERP_MTD"];
             string contourPath = (string)inputParams["CTR_PATH"];
-            
 
             int[] STG_IDXs = (int[])inputParams["STG_IDXs"];
             int stageIndex_Old = STG_IDXs[0];
             int stageIndex_Young = STG_IDXs[1];
-
 
             double gridRes = (double)inputParams["GRID_RES"];
             double muM = (double)inputParams["muM"];
@@ -63,7 +60,6 @@ namespace MYRIAM
             double HL = (double)inputParams["HL"];
             double fHA = (double)inputParams["FRACTION_HA"];
             double defLength = (double)inputParams["DEF_DISTANCE"];
-
 
             CoordsLimits REGION_muA_LV = (CoordsLimits)inputParams["REGION_muA_LV"];
             bool saveEnsemble = (bool)inputParams["SAVE_ENS"];

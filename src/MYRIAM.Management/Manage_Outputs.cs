@@ -203,16 +203,20 @@ namespace MYRIAM
             File.WriteAllLines(filePath, linesList);
         }
 
+        public static string Get_pyScriptPath(string pyScriptName)
+        {
+            string pyScriptsDir = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                @"..\..\..\src\MYRIAM.PythonFunctions");
+
+            return Path.Combine(pyScriptsDir, pyScriptName);
+        }
+
 
         public static void Generate_gridFigures(string pythonPath, string dir_MTXwM, string modelLabel, string boundaryLabel)
         {
-            string pyScriptName = "GridMaps.py";
-            string dirName = "PythonFunctions";
-
-            string dirPath = FileReader.Get_ItemPath(dirName);
-            string pyScriptPath = Path.Combine(dirPath, pyScriptName);
-
             string args = string.Format("{0} {1} {2}", modelLabel, boundaryLabel, dir_MTXwM);
+            string pyScriptPath = Get_pyScriptPath("GridMaps.py");
 
             PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
         }
@@ -220,13 +224,8 @@ namespace MYRIAM
 
         public static void Generate_histogramFigure(string pythonPath, string dir_dM_PDD, string histLabel)
         {
-            string pyScriptName = "MagnitudeHistogram.py";
-            string dirName = "PythonFunctions";
-
-            string dirPath = FileReader.Get_ItemPath(dirName);
-            string pyScriptPath = Path.Combine(dirPath, pyScriptName);
-
             string args = string.Format("{0} {1}", histLabel, dir_dM_PDD);
+            string pyScriptPath = Get_pyScriptPath("MagnitudeHistogram.py");
 
             PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
         }
@@ -234,13 +233,8 @@ namespace MYRIAM
 
         public static void Generate_contourFigure(string pythonPath, string dir_MTXwM, string dir_dM_PDD, string contourLabel, string plateLabel)
         {
-            string pyScriptName = "ContourMap.py";
-            string dirName = "PythonFunctions";
-
-            string dirPath = FileReader.Get_ItemPath(dirName);
-            string pyScriptPath = Path.Combine(dirPath, pyScriptName);
-
             string args = string.Format("{0} {1} {2} {3}", contourLabel, plateLabel, dir_MTXwM, dir_dM_PDD);
+            string pyScriptPath = Get_pyScriptPath("ContourMap.py");
 
             PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
         }
@@ -248,13 +242,8 @@ namespace MYRIAM
 
         public static void Generate_rotatedCntr_Figure(string pythonPath, string plateLabel, string dir_TMP, string dir_MTXwM, string dir_dM_PDD)
         {
-            string pyScriptName = "RotatedEnsembleMap.py";
-            string dirName = "PythonFunctions";
-
-            string dirPath = FileReader.Get_ItemPath(dirName);
-            string pyScriptPath = Path.Combine(dirPath, pyScriptName);
-
             string args = string.Format("{0} {1} {2} {3}", plateLabel, dir_TMP , dir_MTXwM, dir_dM_PDD);
+            string pyScriptPath = Get_pyScriptPath("RotatedEnsembleMap.py");
 
             PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
         }
@@ -263,8 +252,10 @@ namespace MYRIAM
         public static void Save_InputParamsReport(Dictionary<string, object> inputParams)
         {
             // Upload Template file
-            string dirReport = FileReader.Get_ItemPath("TextFiles");
-            string pathReport = Path.Combine(dirReport, "InputFileReport_Template.txt");
+            string pathReport = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                @"..\..\..\assets\TextFiles\InputFileReport_Template.txt");
+
             string[] lines = File.ReadAllLines(pathReport);
             
 

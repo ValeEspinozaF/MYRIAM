@@ -319,8 +319,9 @@ namespace MYRIAM
             // "Preliminary reference Earth model." Phys.Earth Plan. Int. 25:297 - 356.
 
             // Read Prem_MantleModel file as lines (skip first)
-            string dirPrem = Get_ItemPath("TextFiles");
-            string pathPrem = Path.Combine(dirPrem, "Prem_MantleModel.txt");
+            string pathPrem = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, 
+                @"..\..\..\assets\TextFiles\Prem_MantleModel.txt");
 
             string[] lines = File.ReadAllLines(pathPrem);
             lines = lines.Skip(1).ToArray();
@@ -369,7 +370,10 @@ namespace MYRIAM
 
 
             // Read Prem_MantleModel file as lines
-            string premDir = Path.Combine(Get_ItemPath("TextFiles"), "PriestleyMcKenzey2013_T_model");
+            string premDir = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                @"..\..\..\assets\TextFiles\PriestleyMcKenzey2013_T_model");
+
             string filePath = Path.Combine(premDir, "GRD_PM13_DEPTH" + DPT + "km_T.txt");
             string[] lines = File.ReadAllLines(filePath);
 

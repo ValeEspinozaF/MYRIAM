@@ -1,14 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StructOperations;
+﻿using StructOperations;
 using DataStructures;
 using static MYRIAM.FileReader;
-using System.ComponentModel;
+
 
 namespace MYRIAM
 {
@@ -63,11 +56,11 @@ namespace MYRIAM
 
         public static Dictionary<string, string> Load_defaultParams()
         {
-            string dirDefault = Get_ItemPath("TextFiles");
-            string pathDefault = Path.Combine(dirDefault, "DefaultParameters.txt");
-            var defaultParams = File_toInputStrings(pathDefault);
+            string pathDefault = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                @"..\..\..\assets\TextFiles\DefaultParameters.txt");
 
-            return defaultParams;
+            return File_toInputStrings(pathDefault);
         }
 
 
