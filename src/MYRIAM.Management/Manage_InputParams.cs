@@ -302,7 +302,11 @@ namespace MYRIAM
                                 double[] double1DArray = (from val in values select GetValue(val)).ToArray();
 
                                 if (double1DArray.Length == 0)
-                                    double1DArray = ArrayManagement.Zeros1D(4, 0.0);
+                                {
+                                    //double1DArray = ArrayManagement.Zeros1D(4, 0.0);
+                                    inputVars.Add(entry.Key, new CoordsLimits());
+                                }
+                                    
 
                                 else if (double1DArray.Length == 4)
                                 {
@@ -323,6 +327,17 @@ namespace MYRIAM
                                             $"Error in {entry.Key} syntax. " +
                                             $"Coordinates out of global bounds [-180, 180,-90, 90]."
                                             );
+
+                                    else
+                                    {
+                                        inputVars.Add(entry.Key, new CoordsLimits
+                                        {
+                                            LonMin = double1DArray[0],
+                                            LonMax = double1DArray[1],
+                                            LatMin = double1DArray[2],
+                                            LatMax = double1DArray[3]
+                                        });
+                                    }
                                 }
 
                                 else 
@@ -332,14 +347,6 @@ namespace MYRIAM
                                         $"Unsupported amount of values, must supply either 4 or none."
                                         );
                                 }
-
-                                inputVars.Add(entry.Key, new CoordsLimits
-                                {
-                                    LonMin = double1DArray[0],
-                                    LonMax = double1DArray[1],
-                                    LatMin = double1DArray[2],
-                                    LatMax = double1DArray[3]
-                                });
                             }
 
                             catch (FormatException)
@@ -364,13 +371,13 @@ namespace MYRIAM
                                     if (double1DArray[0] < -180 || double1DArray[0] > 180)
                                         throw new InputErrorException(
                                             $"Error in {entry.Key} syntax. " +
-                                            $"Rotation angle for Z-axis is out of longitude bounds [-180, 180]."
+                                            $"Rotation angle for Val-axis is out of longitude bounds [-180, 180]."
                                             );
 
                                     if (double1DArray[1] < -90 || double1DArray[1] > 90)
                                         throw new InputErrorException(
                                             $"Error in {entry.Key} syntax. " +
-                                            $"Rotation angle for Y-axis is out of latitude bounds [-90, 90]."
+                                            $"Rotation angle for Lat-axis is out of latitude bounds [-90, 90]."
                                             );
 
                                     inputVars.Add(entry.Key, double1DArray);
@@ -594,10 +601,10 @@ namespace MYRIAM
 
 
         public static void Load_EV_Ensembles(string EVo_Path, string EVy_Path,
-                                             out vectorCart[] EVo, out vectorCart[] EVy)
+                                             out VectorCart[] EVo, out VectorCart[] EVy)
         {
-            EVo = new vectorCart[0];
-            EVy = new vectorCart[0];
+            EVo = new VectorCart[0];
+            EVy = new VectorCart[0];
 
             // ========== Young Euler vectors ===================
 
@@ -616,7 +623,7 @@ namespace MYRIAM
             else if (EVy_array.GetLength(0) == 1)
             {
                 double[] evArray = ArrayManagement.ArrayFlatten(EVy_array, 0);
-                EVy = Generate_EV_Ensemble.Generate_EuVectorEnsemble(evArray);
+                EVy = Generate_Ensemble.Generate_EuVectorEnsemble(evArray);
             }
 
             int length = EVy.GetLength(0);
@@ -649,7 +656,7 @@ namespace MYRIAM
                 else if (EVo_array.GetLength(0) == 1)
                 {
                     double[] evArray = ArrayManagement.ArrayFlatten(EVo_array, 0);
-                    EVo = Generate_EV_Ensemble.Generate_EuVectorEnsemble(evArray);
+                    EVo = Generate_Ensemble.Generate_EuVectorEnsemble(evArray);
                 }
             }
         }

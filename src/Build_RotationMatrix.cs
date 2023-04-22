@@ -20,16 +20,16 @@ namespace MYRIAM
         /// this function construct the three elemental rotations along 
         /// each axis, and multiplies them to return a general rotation matrix.
         /// </summary>
-        /// <param name="z_angle">Displacement along the Z-axis (0E, 90N).</param>
-        /// <param name="y_angle">Displacement along the Y-axis (90E, 0N).</param>
-        /// <param name="x_angle">Displacement along the X-axis (0E, 0N).</param>
+        /// <param name="z_angle">Displacement along the Val-axis (0E, 90N).</param>
+        /// <param name="y_angle">Displacement along the Lat-axis (90E, 0N).</param>
+        /// <param name="x_angle">Displacement along the Lon-axis (0E, 0N).</param>
         /// <returns>Genereal rotation matrix.</returns>
         public static double[,] Set_RotationMatrix(double z_angle, double y_angle, double x_angle = 0)
         {
             // Turn vector to matrices
-            double[,] RVCT_Z = VectorDeg_toMatrix(new vectorSph(0, 90, z_angle));
-            double[,] RVCT_Y = VectorDeg_toMatrix(new vectorSph(90, 0, y_angle));
-            double[,] RVCT_X = VectorDeg_toMatrix(new vectorSph(0,  0, x_angle));
+            double[,] RVCT_Z = VectorDeg_toMatrix(new VectorSph(0, 90, z_angle));
+            double[,] RVCT_Y = VectorDeg_toMatrix(new VectorSph(90, 0, y_angle));
+            double[,] RVCT_X = VectorDeg_toMatrix(new VectorSph(0,  0, x_angle));
 
             // Multiply rotation matrices
             return MatrixDotProduct( RVCT_X, MatrixDotProduct(RVCT_Y, RVCT_Z) );
@@ -41,7 +41,7 @@ namespace MYRIAM
         /// </summary>
         /// <param name="rotVector">Rotation vector in spherical coordinates.</param>
         /// <returns>Rotation matrix.</returns>
-        public static double[,] VectorDeg_toMatrix(vectorSph rotVector)
+        public static double[,] VectorDeg_toMatrix(VectorSph rotVector)
         {
             // Convert angle from degrees to radians
             double lon = ToRadians(rotVector.Longitude);

@@ -11,7 +11,7 @@ namespace MYRIAM
 {
     class Operator_dEVdM
     {
-        public static double[,] Build_MTX_w2M(double[] muAfHA, double[] dA, Coord[] cartArray)
+        public static double[,] Build_MTX_w2M(double[] muAfHA, double[] dA, Coordinate[] cartArray)
         {
             // --- Matrix MTX_w2M (for MTX_w2M * w = M) ---
 
@@ -24,21 +24,21 @@ namespace MYRIAM
 
 
             // Calculate squared coordinates beforehand
-            double[] Xsqrd = ( from vector in cartArray select Math.Pow(vector.X, 2) ).ToArray();
-            double[] Ysqrd = ( from vector in cartArray select Math.Pow(vector.Y, 2)).ToArray();
-            double[] Zsqrd = ( from vector in cartArray select Math.Pow(vector.Z, 2)).ToArray();
+            double[] Xsqrd = ( from vector in cartArray select Math.Pow(vector.Lon, 2) ).ToArray();
+            double[] Ysqrd = ( from vector in cartArray select Math.Pow(vector.Lat, 2)).ToArray();
+            double[] Zsqrd = ( from vector in cartArray select Math.Pow(vector.Val, 2)).ToArray();
 
 
             for (int j = 0; j < muAfHA.Length; j++)
             {
                 Matrix[0, 0] += muAfHA[j] * dA[j] * (Ysqrd[j] + Zsqrd[j]);
-                Matrix[0, 1] += muAfHA[j] * dA[j] * (cartArray[j].X * cartArray[j].Y);
-                Matrix[0, 2] += muAfHA[j] * dA[j] * (cartArray[j].X * cartArray[j].Z);
-                Matrix[1, 0] += muAfHA[j] * dA[j] * (cartArray[j].X * cartArray[j].Y);
+                Matrix[0, 1] += muAfHA[j] * dA[j] * (cartArray[j].Lon * cartArray[j].Lat);
+                Matrix[0, 2] += muAfHA[j] * dA[j] * (cartArray[j].Lon * cartArray[j].Val);
+                Matrix[1, 0] += muAfHA[j] * dA[j] * (cartArray[j].Lon * cartArray[j].Lat);
                 Matrix[1, 1] += muAfHA[j] * dA[j] * (Xsqrd[j] + Zsqrd[j]);
-                Matrix[1, 2] += muAfHA[j] * dA[j] * (cartArray[j].Y * cartArray[j].Z);
-                Matrix[2, 0] += muAfHA[j] * dA[j] * (cartArray[j].X * cartArray[j].Z);
-                Matrix[2, 1] += muAfHA[j] * dA[j] * (cartArray[j].Y * cartArray[j].Z);
+                Matrix[1, 2] += muAfHA[j] * dA[j] * (cartArray[j].Lat * cartArray[j].Val);
+                Matrix[2, 0] += muAfHA[j] * dA[j] * (cartArray[j].Lon * cartArray[j].Val);
+                Matrix[2, 1] += muAfHA[j] * dA[j] * (cartArray[j].Lat * cartArray[j].Val);
                 Matrix[2, 2] += muAfHA[j] * dA[j] * (Xsqrd[j] + Ysqrd[j]);
             }
 

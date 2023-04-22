@@ -4,6 +4,7 @@ using MYRIAM;
 using Histograms;
 using System;
 using Utilities;
+using static ContourBuilder.Contour;
 
 
 namespace EnsembleAnalysis
@@ -20,10 +21,10 @@ namespace EnsembleAnalysis
         /// This function takes 2 arrays of xy coordinates and turns
         /// them into a 2D histogram (MakeHistogram2D) with bins that 
         /// record the spatial recurrence of coordinates. This 
-        /// recurrence is now the Z value, whereas the 2D-bin center 
-        /// is the X an Y coordinates. The CreateContour method then
+        /// recurrence is now the Val value, whereas the 2D-bin center 
+        /// is the Lon an Lat coordinates. The CreateContour method then
         /// finds the level for each given confidence interval
-        /// percentage, i.e. the Z-value that encloses where a given
+        /// percentage, i.e. the Val-value that encloses where a given
         /// percentage of most-recurrent samples fall and inner
         /// function CreateIsobar returns the coordinates for that 
         /// z-value isobar.
@@ -150,7 +151,7 @@ namespace EnsembleAnalysis
 
 
             // --- Extract Contour Boundaries --
-            Contour[] contourArray = hist2D.CreateContour(confPercentArray);
+            Contour[] contourArray = CreateContour(hist2D, confPercentArray);
 
 
             // --- DM_BINS_OUT parameters used report ---

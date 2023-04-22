@@ -77,7 +77,7 @@ namespace MYRIAM
 
         public static void OutputSummaryBanner(VectorDegCov dMvector)
         {
-            vectorCart cartCoords = DegToCart(dMvector.ToVectorSph());
+            VectorCart cartCoords = DegToCart(dMvector.ToVectorSph());
 
             ClearCurrentConsoleLine();
             ReplacePreviousConsoleLine("Output Torque Variation (dM) Summary");

@@ -58,9 +58,9 @@ namespace CartographicCoordinates
 
 
         // Radians to Cartesian
-        public static vectorCart RadToCart(double lon, double lat, double angle = 1)
+        public static VectorCart RadToCart(double lon, double lat, double angle = 1)
         {
-            return new vectorCart
+            return new VectorCart
             {
                 X = angle * Math.Cos(lon) * Math.Cos(lat),
                 Y = angle * Math.Cos(lat) * Math.Sin(lon),
@@ -68,7 +68,7 @@ namespace CartographicCoordinates
             };
         }
 
-        public static vectorCart RadToCart(vectorSph vectorSph)
+        public static VectorCart RadToCart(VectorSph vectorSph)
         {
             double lon = vectorSph.Longitude;
             double lat = vectorSph.Latitude;
@@ -77,9 +77,9 @@ namespace CartographicCoordinates
             return RadToCart(lon, lat, ang);
         }
 
-        public static vectorCart[] RadToCart(vectorSph[] vectorsSph)
+        public static VectorCart[] RadToCart(VectorSph[] vectorsSph)
         {
-            vectorCart[] vectorsCart = new vectorCart[vectorsSph.Length];
+            VectorCart[] vectorsCart = new VectorCart[vectorsSph.Length];
 
             for (int i = 0; i < vectorsSph.Length; i++)
                 vectorsCart[i] = RadToCart(vectorsSph[i]);
@@ -110,7 +110,7 @@ namespace CartographicCoordinates
 
 
         // Degrees to Cartesian
-        public static vectorCart DegToCart(vectorSph vectorSph)
+        public static VectorCart DegToCart(VectorSph vectorSph)
         {
             double lon = ToRadians(vectorSph.Longitude);
             double lat = ToRadians(vectorSph.Latitude);
@@ -119,9 +119,9 @@ namespace CartographicCoordinates
             return RadToCart(lon, lat, ang);
         }
 
-        public static vectorCart[] DegToCart(vectorSph[] vectorsSph)
+        public static VectorCart[] DegToCart(VectorSph[] vectorsSph)
         {
-            vectorCart[] vectorsCart = new vectorCart[vectorsSph.Length];
+            VectorCart[] vectorsCart = new VectorCart[vectorsSph.Length];
 
             for (int i = 0; i < vectorsSph.Length; i++)
                 vectorsCart[i] = DegToCart(vectorsSph[i]);
@@ -129,7 +129,7 @@ namespace CartographicCoordinates
             return vectorsCart;
         }
 
-        public static vectorCart DegToCart(Coord coord, double z = 1)
+        public static VectorCart DegToCart(Coord coord, double z = 1)
         {
             double lon = ToRadians(coord.X);
             double lat = ToRadians(coord.Y);
@@ -137,9 +137,9 @@ namespace CartographicCoordinates
             return RadToCart(lon, lat, z);
         }
 
-        public static vectorCart[] DegToCart(Coord[] coordsArray, double z = 1)
+        public static VectorCart[] DegToCart(Coord[] coordsArray, double z = 1)
         {
-            vectorCart[] vectorsCart = new vectorCart[coordsArray.Length];
+            VectorCart[] vectorsCart = new VectorCart[coordsArray.Length];
 
             for (int i = 0; i < coordsArray.Length; i++)
                 vectorsCart[i] = DegToCart(coordsArray[i], z);
@@ -150,11 +150,11 @@ namespace CartographicCoordinates
 
 
         // Cartesian to Radians
-        public static vectorSph CartToRad(double x, double y, double z)
+        public static VectorSph CartToRad(double x, double y, double z)
         {
             if (x == 0) x = double.Epsilon;
 
-            return new vectorSph
+            return new VectorSph
             {
                 Longitude = Math.Atan2(y, x),
                 Latitude = Math.Atan2(z, Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2))),
@@ -162,7 +162,7 @@ namespace CartographicCoordinates
             };
         }
 
-        public static vectorSph CartToRad(vectorCart vectorCart)
+        public static VectorSph CartToRad(VectorCart vectorCart)
         {
             var x = vectorCart.X;
             var y = vectorCart.Y;
@@ -171,9 +171,9 @@ namespace CartographicCoordinates
             return CartToRad(x, y, z);
         }
 
-        public static vectorSph[] CartToRad(vectorCart[] vectorsCart)
+        public static VectorSph[] CartToRad(VectorCart[] vectorsCart)
         {
-            vectorSph[] vectorsSph = new vectorSph[vectorsCart.Length];
+            VectorSph[] vectorsSph = new VectorSph[vectorsCart.Length];
 
             for (int i = 0; i < vectorsCart.Length; i++)
                 vectorsSph[i] = CartToRad(vectorsCart[i]);
@@ -184,9 +184,9 @@ namespace CartographicCoordinates
 
 
         // Cartesian to Degrees
-        public static vectorSph CartToDeg(vectorCart vectorCart)
+        public static VectorSph CartToDeg(VectorCart vectorCart)
         {
-            vectorSph outSph = CartToRad(vectorCart);
+            VectorSph outSph = CartToRad(vectorCart);
 
             outSph.Longitude = ToDegrees(outSph.Longitude);
             outSph.Latitude = ToDegrees(outSph.Latitude);
@@ -194,9 +194,9 @@ namespace CartographicCoordinates
             return outSph;
         }
 
-        public static vectorSph[] CartToDeg(vectorCart[] vectorsCart)
+        public static VectorSph[] CartToDeg(VectorCart[] vectorsCart)
         {
-            vectorSph[] vectorsSph = new vectorSph[vectorsCart.Length];
+            VectorSph[] vectorsSph = new VectorSph[vectorsCart.Length];
 
             for (int i = 0; i < vectorsCart.Length; i++)
                 vectorsSph[i] = CartToDeg(vectorsCart[i]);
@@ -204,13 +204,13 @@ namespace CartographicCoordinates
             return vectorsSph;
         }
 
-        public static void CartToDeg(vectorCart[] vectorsCart, out Coord[] coords)
+        public static void CartToDeg(VectorCart[] vectorsCart, out Coord[] coords)
         {
             coords = new Coord[vectorsCart.Length];
 
             for (int i = 0; i < vectorsCart.Length; i++)
             {
-                vectorSph vectorSph = CartToDeg(vectorsCart[i]);
+                VectorSph vectorSph = CartToDeg(vectorsCart[i]);
                 coords[i] = new Coord()
                 {
                     X = vectorSph.Longitude,

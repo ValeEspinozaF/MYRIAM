@@ -1,5 +1,5 @@
 ﻿using CartographicCoordinates;
-using DataStructures;
+//using DataStructures;
 using MathNet.Numerics.Distributions;
 using StructOperations;
 using System;
@@ -9,72 +9,10 @@ using static StructOperations.ArrayManagement;
 using static StructOperations.ArrayOperations;
 
 
-
 namespace EnsembleAnalysis
 {
-    class Ensemble_Statistics
-    {
-        public static vectorCart EnsembleMean(vectorCart[] ens)
-        {
-            //Ensemble components
-            VectorOperations.GetVectorColumns(ens, out double[] colX, out double[] colY, out double[] colZ);
-
-
-            // # Mean xyz values
-            double meanX = colX.Average();
-            double meanY = colY.Average();
-            double meanZ = colZ.Average();
-
-            return new vectorCart { X = meanX, Y = meanY, Z = meanZ };
-        }
-
-
-        public static vectorCart EnsembleMean(double[] colX, double[] colY, double[] colZ)
-        {
-            // Mean xyz values
-            double meanX = colX.Average();
-            double meanY = colY.Average();
-            double meanZ = colZ.Average();
-
-            return new vectorCart(meanX, meanY, meanZ);
-        }
-
-
-        public static VectorDegCov Ensemble_ToVectorCov(vectorCart[] ens)
-        {
-            // Ensemble length
-            int N = ens.Length;
-
-
-            //Ensemble components
-            VectorOperations.GetVectorColumns(ens, out double[] colX, out double[] colY, out double[] colZ);
-
-
-            // Mean xyz values [units]
-            vectorCart vectorCart = EnsembleMean(colX, colY, colZ);
-
-
-            // Set covariance values [units^2]
-            Covariance covArray = new()
-            {
-                C11 = Sum(ArrayProduct(colX, colX)) / N - Sum(colX) / N * Sum(colX) / N,
-                C12 = Sum(ArrayProduct(colX, colY)) / N - Sum(colX) / N * Sum(colY) / N,
-                C13 = Sum(ArrayProduct(colX, colZ)) / N - Sum(colX) / N * Sum(colZ) / N,
-                C22 = Sum(ArrayProduct(colY, colY)) / N - Sum(colY) / N * Sum(colY) / N,
-                C23 = Sum(ArrayProduct(colY, colZ)) / N - Sum(colY) / N * Sum(colZ) / N,
-                C33 = Sum(ArrayProduct(colZ, colZ)) / N - Sum(colZ) / N * Sum(colZ) / N,
-            };
-
-
-            // Set mean vector in spherical coordinates [deg]
-            vectorSph vectorSph = TransformSystem.CartToDeg(vectorCart);
-
-
-            // Return structure with mean spherical vector and covariance
-            return new VectorDegCov(vectorSph, covArray);
-        }
-
-
+    public class Ensemble_Statistics
+    { 
         public static double[] Extract_ConfidenceLevels1D(double[] H, double[] percentageLevel, double delta = 0.01)
         {
             double meanH = H.Average();

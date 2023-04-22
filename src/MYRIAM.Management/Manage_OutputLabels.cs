@@ -3,9 +3,9 @@
 
 namespace MYRIAM
 {
-    class Set_OutputLabels
+    partial class ManageOutputs
     {
-        public static string Set_Model_Label(double fHA, double muM, double muA, double HL, CoordsLimits REGION_muA_LV, double defLength)
+        public static string Set_Model_Label(double fHA, double muM, double muA, double HL, CartoLimits REGION_muA_LV, double defLength)
         {
             string SV_MODEL_NAME = "";
 
@@ -43,7 +43,7 @@ namespace MYRIAM
         }
 
 
-        public static string Set_MapExtension_Label(CoordsLimits avExt)
+        public static string Set_MapExtension_Label(CartoLimits avExt)
         {
             string SQUARE_lbl = "";
 

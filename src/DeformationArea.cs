@@ -14,12 +14,12 @@ namespace MYRIAM
 {
     public static class DeformationArea
     {
-        public static double[] DeformationGridScore(Coord[] coordArray, Coord[] contour, double buffer)
+        public static double[] DeformationGridScore(Coordinate[] coordArray, Coordinate[] contour, double buffer)
         {
             double[] bufferScore = new double[coordArray.Length];
 
             int i = 0;
-            foreach (Coord coord in coordArray)
+            foreach (Coordinate coord in coordArray)
             {
                 bufferScore[i] = DeformationPointScore(coord, contour, buffer);
                 i++;
@@ -28,7 +28,7 @@ namespace MYRIAM
             return bufferScore;
         }
 
-        private static double DeformationPointScore(Coord coord, Coord[] contour, double buffer)
+        private static double DeformationPointScore(Coordinate coord, Coordinate[] contour, double buffer)
         {
             double score = Point_vsPointArray(coord, contour).Min(double.NaN) / buffer;
             return score >= 1 ? 1 : score;

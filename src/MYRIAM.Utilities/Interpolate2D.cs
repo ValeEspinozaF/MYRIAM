@@ -20,12 +20,12 @@ namespace ComputationalGeometry
         /// <summary>
         /// Interpolates using the nearest point whithin a recatangular grid of points.
         /// </summary>
-        /// <param name="x">Array of X-coordinate values.</param>
-        /// <param name="y">Array of Y-coordinate values.</param>
-        /// <param name="z">Grid of Z-values for each XY coordinate.</param>
-        /// <param name="xval">X-coordinate of the query point.</param>
-        /// <param name="yval">Y-coordinate of the query point.</param>
-        /// <returns>The Z-value of the queried point.</returns>
+        /// <param name="x">Array of Lon-coordinate values.</param>
+        /// <param name="y">Array of Lat-coordinate values.</param>
+        /// <param name="z">Grid of Val-values for each XY coordinate.</param>
+        /// <param name="xval">Lon-coordinate of the query point.</param>
+        /// <param name="yval">Lat-coordinate of the query point.</param>
+        /// <returns>The Val-value of the queried point.</returns>
         public static double NearestInterpolation(double[] x, double[] y, double[,] z, double xval, double yval)
         {
             double closest_x = x.Aggregate((x1, x2) => Math.Abs(x1 - xval) < Math.Abs(x2 - xval) ? x1 : x2);
@@ -40,12 +40,12 @@ namespace ComputationalGeometry
         /// <summary>
         /// Interpolates linearly whithin a rectangular grid of points. 
         /// </summary>
-        /// <param name="x">Array of X-coordinate values.</param>
-        /// <param name="y">Array of Y-coordinate values.</param>
-        /// <param name="z">Grid of Z-values for each XY coordinate.</param>
-        /// <param name="xval">X-coordinate of the query point.</param>
-        /// <param name="yval">Y-coordinate of the query point.</param>
-        /// <returns>The Z-value of the queried point.</returns>
+        /// <param name="x">Array of Lon-coordinate values.</param>
+        /// <param name="y">Array of Lat-coordinate values.</param>
+        /// <param name="z">Grid of Val-values for each XY coordinate.</param>
+        /// <param name="xval">Lon-coordinate of the query point.</param>
+        /// <param name="yval">Lat-coordinate of the query point.</param>
+        /// <returns>The Val-value of the queried point.</returns>
         public static double BilinearInterpolation(double[] x, double[] y, double[,] z, double xval, double yval)
         {
             int i = Array.BinarySearch(x, xval);
@@ -67,12 +67,12 @@ namespace ComputationalGeometry
         /// <summary>
         /// Interpolate over a 2-D grid.
         /// </summary>
-        /// <param name="X">Grid of X-coordinate values.</param>
-        /// <param name="Y">Grid of Y-coordinate values.</param>
-        /// <param name="V">Grid of Z-values for each xy coordinate.</param>
+        /// <param name="X">Grid of Lon-coordinate values.</param>
+        /// <param name="Y">Grid of Lat-coordinate values.</param>
+        /// <param name="V">Grid of Val-values for each xy coordinate.</param>
         /// <param name="XYqs">Coordinate array with points to intepolate.</param>
         /// <param name="method">Interpolation method. Only "linear" and "nearest" are supported.</param>
-        /// <returns>Array of Z-values for the queried points.</returns>
+        /// <returns>Array of Val-values for the queried points.</returns>
         public static double[] Interpolation2D(double[,] X, double[,] Y, double[,] V, Coord[] XYqs, string method="linear")
         {
             double[,] Vt = MatrixOperations.MatrixTranspose(V);

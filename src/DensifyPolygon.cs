@@ -11,9 +11,9 @@ namespace MYRIAM
 {
     class DensifyPolygon
     {
-        public static Coord[] DensifyPolygon_toDistance(Coord[] polygon, double step)
+        public static Coordinate[] DensifyPolygon_toDistance(Coordinate[] polygon, double step)
         {
-            Coord[] dense_polygon = (Coord[])polygon.Clone();
+            Coordinate[] dense_polygon = (Coordinate[])polygon.Clone();
 
             //Ellipsoid
             Geodesic ell = Geodesic.WGS84;
@@ -22,11 +22,11 @@ namespace MYRIAM
             int k = 0;
             for (int i = 1; i < polygon.Length; i++)
             {
-                Coord v1 = polygon[i - 1];
-                Coord v2 = polygon[i];
+                Coordinate v1 = polygon[i - 1];
+                Coordinate v2 = polygon[i];
 
                 // Line info
-                var v1v2 = ell.Inverse(v1.Y, v1.X, v2.Y, v2.X);
+                var v1v2 = ell.Inverse(v1.Lat, v1.Lon, v2.Lat, v2.Lon);
 
                 if (step < v1v2.Distance)
                 {
@@ -36,8 +36,8 @@ namespace MYRIAM
                     for (int j = 1; j <= times; j++)
                     {                    
                         // New point along line
-                        var ph = ell.Direct(v1.Y, v1.X, v1v2.Azimuth1, step * j);
-                        Coord vr = new() { X = ph.Longitude, Y = ph.Latitude };
+                        var ph = ell.Direct(v1.Lat, v1.Lon, v1v2.Azimuth1, step * j);
+                        Coordinate vr = new() { Lon = ph.Longitude, Lat = ph.Latitude };
 
                         // Update array with inserted element
                         dense_polygon = ArrayManagement.InsertbyIndex(dense_polygon, vr, index + j);

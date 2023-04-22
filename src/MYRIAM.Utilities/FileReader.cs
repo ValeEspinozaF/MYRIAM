@@ -3,8 +3,8 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using DataStructures;
 using System.Linq.Expressions;
+using Cartography;
 
 namespace MYRIAM
 {
@@ -106,15 +106,15 @@ namespace MYRIAM
         }
 
 
-        public static List<Coord[]> File_CoordinatesArray(string args)
+        public static List<Coordinate[]> File_CoordinatesArray(string args)
         {
             // Read file as lines
             string[] lines = System.IO.File.ReadAllLines(args);
 
 
             // Set up empty List
-            List<Coord[]> polygonList = new();
-            List<Coord> polygonCoords = new();
+            List<Coordinate[]> polygonList = new();
+            List<Coordinate> polygonCoords = new();
 
             foreach (var line in lines)
             {
@@ -129,10 +129,10 @@ namespace MYRIAM
                     if (double.IsNaN(lon))
                     {
                         polygonList.Add(polygonCoords.ToArray());
-                        polygonCoords = new List<Coord>();
+                        polygonCoords = new List<Coordinate>();
                     }
                     else
-                        polygonCoords.Add(new Coord() { X = lon, Y = lat});
+                        polygonCoords.Add(new Coordinate() { Lon = lon, Lat = lat});
                 }
             }
 

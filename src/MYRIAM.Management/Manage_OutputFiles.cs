@@ -11,7 +11,7 @@ using static StructOperations.ArrayManagement;
 
 namespace MYRIAM
 {
-    class ManageOutputs
+    partial class ManageOutputs
     {
         public static void Create_OutputDirs(
             string outputDir, string pltLabel, string outputLabel, bool overwriteOutput,
@@ -37,7 +37,7 @@ namespace MYRIAM
                     {
                         if (!overwriteOutput)
                         {
-                            Console.Write("\nRepository folder already exists, files may be overwriten. Do you want to continue [Y/n]? ");
+                            Console.Write("\nRepository folder already exists, files may be overwriten. Do you want to continue [Lat/n]? ");
 
                             char answer;
                             char[] yes = { 'Y', 'y' };
@@ -50,11 +50,11 @@ namespace MYRIAM
                                 else if (yes.Contains(answer))
                                     overwriteOutput = true;
                                 else
-                                    throw new Exception("Invalid input character, please type Y for yes, n for no.");
+                                    throw new Exception("Invalid input character, please type Lat for yes, n for no.");
                             }
                             else
                             {
-                                throw new Exception("Invalid input character, please type Y for yes, n for no.");
+                                throw new Exception("Invalid input character, please type Lat for yes, n for no.");
                             }
 
                             Console.SetCursorPosition(0, Console.CursorTop - 1);
@@ -145,15 +145,15 @@ namespace MYRIAM
         }
 
 
-        public static void Save_toTXT(Coord[] Array, string fileDir, string fileName, string format = "0.000")
+        public static void Save_toTXT(Coordinate[] Array, string fileDir, string fileName, string format = "0.000")
         {
             List<string> linesList = new();
 
             for (int i = 0; i < Array.Length; i++)
             {
                 linesList.Add(string.Join(" ", new string[] {
-                    SetString(Array[i].X, format),
-                    SetString(Array[i].Y, format)
+                    SetString(Array[i].Lon, format),
+                    SetString(Array[i].Lat, format)
                 }));
             }
 
@@ -161,7 +161,7 @@ namespace MYRIAM
         }
 
 
-        public static void Save_toTXT(vectorCart[] array, string fileDir, string fileName, string format = "0.000")
+        public static void Save_toTXT(VectorCart[] array, string fileDir, string fileName, string format = "0.000")
         {
             string filePath = Path.Combine(fileDir, fileName);
 
@@ -355,7 +355,7 @@ namespace MYRIAM
 
                             case "REGION_muA_LV":
                                 {
-                                    CoordsLimits value = (CoordsLimits)inputParams[key];
+                                    CartoLimits value = (CartoLimits)inputParams[key];
                                     lines[i] = lines[i] + $" [" +
                                         $"{SetString(value.LonMin, "F1")}, " +
                                         $"{SetString(value.LonMax, "F1")}, " +

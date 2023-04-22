@@ -11,8 +11,8 @@ using ComputationalGeometry;
 using static CartographicCoordinates.TransformSystem;
 using static CartographicCoordinates.ManageCoordinates;
 using static MYRIAM.ManageOutputs;
-using static MYRIAM.Set_OutputLabels;
 using System.Xml.Schema;
+using Cartography;
 
 namespace MYRIAM
 {
@@ -42,7 +42,7 @@ namespace MYRIAM
         public static void w2M_MTX_CorLV_muA( 
             string dir_MTXwM, string contourPath, 
             double muM, double muA, double HL, double fHA, 
-            double stepDeg, CoordsLimits REGION_muA_LV, string interpMethod, 
+            double stepDeg, CartoLimits REGION_muA_LV, string interpMethod, 
             double defLength, string plateLabel, string modelName)
         {
 
@@ -53,10 +53,11 @@ namespace MYRIAM
             Console_Banners.WriteReports(3);
 
             // Upload plate contour spherical coordinates
-            List<Coord[]> cntrArrays = FileReader.File_CoordinatesArray(contourPath);
-            Coord[] cntrArray = ConcatenateCoords(cntrArrays);
+            List<Coordinate[]> cntrArrays = FileReader.File_CoordinatesArray(contourPath);
+            Coordinate[] cntrArray = ConcatenateCoords(cntrArrays);
 
-            if (!REGION_muA_LV.IsEmpty() && !REGION_muA_LV.Enclose(cntrArray))
+
+            if (!REGION_muA_LV.IsEmpty() && !REGION_muA_LV.Encloses(cntrArray))
                 throw new InputErrorException(
                     "Error in REGION_muA_LV. " +
                     "Region does not contain the whole plate contour. " +
@@ -65,19 +66,19 @@ namespace MYRIAM
 
             // Create grid of coordinates within the plate boundary limits
             // (may be multiple), with stepDeg as spacing
-            Coord[] gridPntsDeg = cntrArrays.
+            Coordinate[] gridPntsDeg = cntrArrays.
                 SelectMany(coordArray => Grid_InPolygon(coordArray, stepDeg)).
                 ToArray();
 
 
-            // Eliminate grid duplicates (same latitude, one with X=180, the other X=-180)
+            // Eliminate grid duplicates (same latitude, one with Lon=180, the other Lon=-180)
             gridPntsDeg = gridPntsDeg.
-                Where(x => !(x.X == -180 && gridPntsDeg.Where(p => p.X == 180).Select(p => p.Y).Contains(x.Y))).
+                Where(x => !(x.Lon == -180 && gridPntsDeg.Where(p => p.Lon == 180).Select(p => p.Lat).Contains(x.Lat))).
                 ToArray();
 
 
             // Turn filtered matrix coordinates from radians to degrees
-            Coord[] gridPntsRad = DegToRad(gridPntsDeg);
+            Coordinate[] gridPntsRad = DegToRad(gridPntsDeg);
 
             
 
@@ -92,14 +93,14 @@ namespace MYRIAM
             for (int i = 0; i < gridPntsRad.Length; i++)
             {
                 dArea[i] = Math.Pow(Rt[i], 2) 
-                    * (-Math.Cos(gridPntsRad[i].Y + (stepRad / 2)) 
-                       + Math.Cos(gridPntsRad[i].Y - (stepRad / 2))) 
+                    * (-Math.Cos(gridPntsRad[i].Lat + (stepRad / 2)) 
+                       + Math.Cos(gridPntsRad[i].Lat - (stepRad / 2))) 
                     * stepRad;
             }
 
 
             // Turn inplate coordinates from radians to cartesian
-            Coord[] gridPntsCart = RadToCart(gridPntsRad, Rt);
+            Coordinate[] gridPntsCart = RadToCart(gridPntsRad, Rt);
 
 
             // Plate area

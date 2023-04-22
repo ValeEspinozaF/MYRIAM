@@ -78,30 +78,6 @@ namespace Histograms
                 }
             }
         }
-
-        public void CreateContour(double[] confPercent, out Contour[] contour)
-        {
-            contour = CreateContour(confPercent);
-        }
-
-        public Contour[] CreateContour(double[] confPercent)
-        {
-            Contour[] contours = new Contour[confPercent.Length];
-
-            // Determine level for each percentage tolerance
-            double[] levels = Ensemble_Statistics.Extract_ConfidenceLevels2D(Values, confPercent);
-
-            for (int i = 0; i < confPercent.Length; i++)
-            {
-                // Find dataset's level for given confidence invertal (in percentage)
-                var isoBars = Isobar.CreateIsobar(this, levels[i]);
-
-                // Store data as Contour structure
-                contours[i] = new Contour(isoBars, levels[i], confPercent[i]);
-            }
-
-            return contours;
-        }
     }
 
 
@@ -265,7 +241,7 @@ namespace Histograms
 
         /// <summary>
         /// Compute the bi-dimensional histogram of two data arrays, containg 
-        /// each the X and Y coordinates of a sample.
+        /// each the Lon and Lat coordinates of a sample.
         /// </summary>
         /// <remarks>
         /// If <paramref name="nBins"/> nor <paramref name="binEdges"/> paramaters 
@@ -274,8 +250,8 @@ namespace Histograms
         /// parameters are given, <paramref name="range"/> is ignored.
         /// </remarks>
         /// <typeparam name="T">Type of array; will be processed as double.</typeparam>
-        /// <param name="arrayX">Array of X-coordinates</param>
-        /// <param name="arrayY">Array of Y-coordinates</param>
+        /// <param name="arrayX">Array of Lon-coordinates</param>
+        /// <param name="arrayY">Array of Lat-coordinates</param>
         /// <param name="nBins">Number of bins for each (Length == 2) or both dimensions (Length == 1). Optional</param>
         /// <param name="binEdges">Bin edges for each (Length == 2) or both dimensions (Length == 1). Optional</param>
         /// <param name="range">Min and maximun limits for each dimension (Size = 2,2). Optional </param>
@@ -299,7 +275,7 @@ namespace Histograms
             // --- Check given inputs ---
 
             if (arrayX.Length != arrayY.Length)
-                throw new ArgumentException("X and Y arrays must have the same length.");
+                throw new ArgumentException("Lon and Lat arrays must have the same length.");
 
             if (nBins != null && binEdges != null)
                 throw new ArgumentException("Cannot supply both nBins and BinEdges.");

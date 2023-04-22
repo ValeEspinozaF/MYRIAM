@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using static MYRIAM.Set_OutputLabels;
-using static MYRIAM.ManageOutputs;
 using DataStructures;
 using StructOperations;
 using static MYRIAM.Console_Banners;
+using static MYRIAM.ManageOutputs;
 
 
 namespace MYRIAM
@@ -61,7 +60,7 @@ namespace MYRIAM
             double fHA = (double)inputParams["FRACTION_HA"];
             double defLength = (double)inputParams["DEF_DISTANCE"];
 
-            CoordsLimits REGION_muA_LV = (CoordsLimits)inputParams["REGION_muA_LV"];
+            CartoLimits REGION_muA_LV = (CartoLimits)inputParams["REGION_muA_LV"];
             bool saveEnsemble = (bool)inputParams["SAVE_ENS"];
             bool overwriteOutput = (bool)inputParams["OVERWRT_OUTPUT"];
 
@@ -103,7 +102,7 @@ namespace MYRIAM
             FNCT_EVdM.EV_to_dM(
                 stageIndex_Old, stageIndex_Young, EVo_Path, EVy_Path,
                 dir_MTXwM, dir_dM_PDD, mtxLabel, saveEnsemble,
-                out vectorCart[] dM, out VectorDegCov dMvector);
+                out VectorCart[] dM, out VectorDegCov dMvector);
 
 
             OutputSummaryBanner(dMvector);
@@ -170,7 +169,7 @@ namespace MYRIAM
 
 
             // Empty large variables
-            dM = new vectorCart[0];
+            dM = new VectorCart[0];
             GC.Collect();
             GC.WaitForPendingFinalizers();            
             

@@ -18,8 +18,8 @@ namespace GeodesicFunctions
         public static double[] Point_vsPointArray(Coord point, Coord[] coordArray)
         {
             // Turn input coordinates from spherical to radians
-            vectorCart v1 = DegToCart(point, Re);
-            vectorCart[] va2 = DegToCart(coordArray, Re);
+            VectorCart v1 = DegToCart(point, Re);
+            VectorCart[] va2 = DegToCart(coordArray, Re);
 
             double[] g_dst = new double[coordArray.Length];
 
@@ -34,15 +34,15 @@ namespace GeodesicFunctions
         public static double[] PointArray(Coord[] coordArray)
         {
             // Turn input coordinates from spherical to cartesian [radians]
-            vectorCart[] cv = DegToCart(coordArray, Re);
+            VectorCart[] cv = DegToCart(coordArray, Re);
 
             // Output geodesic distance
             double[] g_dst = new double[coordArray.Length];
 
             for (int i = 0; i < coordArray.Length -1; i++)
             {
-                vectorCart v1 = cv[i];
-                vectorCart v2 = cv[i + 1];
+                VectorCart v1 = cv[i];
+                VectorCart v2 = cv[i + 1];
 
                 double dot_p = v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
                 g_dst[i] = Re * Math.Acos(dot_p / Math.Pow(Re, 2)) * 1000; // in meters

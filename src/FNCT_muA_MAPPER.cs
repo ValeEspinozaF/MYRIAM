@@ -36,7 +36,7 @@ namespace MYRIAM
         /// <param name="glat">Output 2D grid with the latitude (in degrees) for each datapoint.</param>
         /// <param name="gmuA">Output 2D grid with the asthenosphere viscosity (in Pa*s) for each datapoint.</param>
         /// <param name="gYM">Output 2D grid with the asthenosphere Young's modulus (in Pa) for each datapoint.</param>
-        public static void muA_MAPPER(double muM, double muA, double HL, CoordsLimits REGION_muA_LV, double fHA, 
+        public static void muA_MAPPER(double muM, double muA, double HL, CartoLimits REGION_muA_LV, double fHA, 
                                       out double HA, out double[,] glon, out double[,] glat, 
                                       out double [,] gmuA, out double[,] gYM, out double[,] gMT)
         {
@@ -142,7 +142,7 @@ namespace MYRIAM
                 case true:
                     {
                         // Get data grid
-                        Upload_GRDLYR_PM13_T(z_PM13_2use[0], new CoordsLimits().SetGlobal(), 
+                        Upload_GRDLYR_PM13_T(z_PM13_2use[0], new CartoLimits().SetGlobal(), 
                             out double[,] mlon, out double[,] mlat, out _);
 
                         glon = mlon;
@@ -358,7 +358,7 @@ namespace MYRIAM
         }
 
 
-        private static void Upload_GRDLYR_PM13_T(double z_PM13_2use, CoordsLimits REGION_muA_LV,
+        private static void Upload_GRDLYR_PM13_T(double z_PM13_2use, CartoLimits REGION_muA_LV,
                                                  out double[,] mlon, out double[,] mlat, out double[,] mT )
         {
             // Set depth string
@@ -401,7 +401,7 @@ namespace MYRIAM
             Crop_GRD_PM13(GRD_PM13_mlon, GRD_PM13_mlat, GRD_PM13_mdat, REGION_muA_LV, out mlon, out mlat, out mT);
         }
 
-        private static void Crop_GRD_PM13( double[,] GRD_PM13_mlon, double[,] GRD_PM13_mlat, double[,] GRD_PM13_mdat, CoordsLimits SQUARE,
+        private static void Crop_GRD_PM13( double[,] GRD_PM13_mlon, double[,] GRD_PM13_mlat, double[,] GRD_PM13_mdat, CartoLimits SQUARE,
                                           out double[,] mlon, out double[,] mlat, out double[,] mdat )
         {
             // --- mlon filters ---
