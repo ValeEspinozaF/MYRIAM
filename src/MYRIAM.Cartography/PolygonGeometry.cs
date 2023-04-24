@@ -9,7 +9,7 @@ using DataStructures;
 
 namespace Cartography
 {
-    class PolygonGeometry
+    public partial class PolygonGeometry
     {
         public static Coordinate[] Clean_coordDuplicates(Coordinate[] cntrArray)
         {

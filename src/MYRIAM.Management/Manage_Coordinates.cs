@@ -1,8 +1,4 @@
-﻿using static CartographicCoordinates.TransformSystem;
-using ComputationalGeometry;
-using Cartography;
-using Utilities;
-
+﻿using Cartography;
 
 
 namespace CartographicCoordinates
@@ -16,7 +12,7 @@ namespace CartographicCoordinates
 
 
             // Create rectangular grid of coordinates for plate boundary, with step as spacing
-            var gridPoints = MakeGrid(cntrArray, step);
+            var gridPoints = Coordinate.MakeGrid(cntrArray, step);
 
 
             // Filter points within plate boundary

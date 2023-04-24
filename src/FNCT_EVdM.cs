@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static StructOperations.ArrayManagement;
-using static StructOperations.VectorOperations;
 using static EnsembleAnalysis.Ensemble_Statistics;
-using CartographicCoordinates;
-using StructOperations;
 using DataStructures;
-using EnsembleAnalysis;
+using Torque;
+
 
 
 
@@ -21,7 +18,7 @@ namespace MYRIAM
         public static void EV_to_dM(int stageIndex_Old, int stageIndex_Young,
                                     string EVo_Path, string EVy_Path, string dir_MTXwM, string dir_dM_PDD,
                                     string mtxLabel, bool saveEnsemble, 
-                                    out VectorCart[] dM, out VectorDegCov dMvector)
+                                    out TorqueVector[] dM, out TorqueVector dMm)
         {
 
             // =========== Calculate Torque variation ==============================
@@ -32,12 +29,12 @@ namespace MYRIAM
 
 
             // Load Euler vectors
-            VectorCart[] EVo = new VectorCart[0];
-            VectorCart[] EVy = new VectorCart[0];
+            EulerVector[] EVo = new EulerVector[0];
+            EulerVector[] EVy = new EulerVector[0];
 
             Parallel.Invoke(
                 () => Console_Banners.WriteReports(9),
-                () => Manage_InputParams.Load_EV_Ensembles(
+                () => Load_EulerVector.Load_EulerVectors(
                         EVo_Path, EVy_Path,
                         out EVo, out EVy)
                 );
@@ -53,19 +50,29 @@ namespace MYRIAM
 
             // Set Euler Vector ensemble change from deg/Myr to in rad/s
             double unitsTransformer = Math.PI / 180 / (1e6 * 365 * 24 * 60 * 60);
-            VectorCart[]? dEV = VectorMultiply( VectorSubstract(EVy, EVo), unitsTransformer );
+            EulerVector[]? dEV = EulerVector.VectorMultiply( EulerVector.VectorSubstract(EVy, EVo), unitsTransformer );
 
 
             // Dump un-used ensembles
-            EVo = new VectorCart[0];
-            EVy = new VectorCart[0];
+            EVo = new EulerVector[0];
+            EVy = new EulerVector[0];
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
 
             // Calculate torque variation (dM) by applying the product of EV-change (dEV) and MTX_w2M
             Console_Banners.WriteReports(10);
-            dM = VectorProduct(dEV, MTX_w2M);
+
+            dM = new TorqueVector[dEV.Length];
+            for (int i = 0; i < dEV.Length; i++)
+            {
+                dM[i] = new TorqueVector
+                {
+                    X = MTX_w2M[0, 0] * dEV[i].X + MTX_w2M[0, 1] * dEV[i].Y + MTX_w2M[0, 2] * dEV[i].Z,
+                    Y = MTX_w2M[1, 0] * dEV[i].X + MTX_w2M[1, 1] * dEV[i].Y + MTX_w2M[1, 2] * dEV[i].Z,
+                    Z = MTX_w2M[2, 0] * dEV[i].X + MTX_w2M[2, 1] * dEV[i].Y + MTX_w2M[2, 2] * dEV[i].Z
+                };
+            }
 
 
             // Dump un-used ensembles
@@ -74,12 +81,9 @@ namespace MYRIAM
             GC.WaitForPendingFinalizers();
 
 
-            // Calculate dM's mean pole (spherical coordinates), magnitude and covariance
-            dMvector = Ensemble_ToVectorCov(dM);
-
-
-            // Calculate dM's mean vector (cartesian coordinates)
-            VectorCart dMCart_mean = EnsembleMean(dM);
+            // Calculate dM's mean vector (cartesian coordinates) and
+            // pole (spherical coordinates), magnitude and covariance
+            dMm = EnsembleMean(dM, true);
 
 
 
@@ -98,7 +102,10 @@ namespace MYRIAM
 
 
             // Save dM mean values
-            double[] dMmeans = dMCart_mean.Values().Concat(dMvector.Values()).ToArray();
+            double[] dMmeans = new double[] {
+                dMm.X, dMm.Y, dMm.Z,
+                dMm.Longitude, dMm.Latitude, dMm.Magnitude
+            };
 
             string LBL_VECdM = $"VECdM_STGs_{stageIndex_Old}_{stageIndex_Young}_{mtxLabel}.txt";
             ManageOutputs.Save_toTXT(dMmeans, dir_dM_PDD, LBL_VECdM, format: "#.###E+0");

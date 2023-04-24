@@ -1,6 +1,6 @@
 ﻿using StructOperations;
-using DataStructures;
 using static MYRIAM.FileReader;
+using Cartography;
 
 
 namespace MYRIAM
@@ -304,7 +304,7 @@ namespace MYRIAM
                                 if (double1DArray.Length == 0)
                                 {
                                     //double1DArray = ArrayManagement.Zeros1D(4, 0.0);
-                                    inputVars.Add(entry.Key, new CoordsLimits());
+                                    inputVars.Add(entry.Key, new CartoLimits());
                                 }
                                     
 
@@ -330,7 +330,7 @@ namespace MYRIAM
 
                                     else
                                     {
-                                        inputVars.Add(entry.Key, new CoordsLimits
+                                        inputVars.Add(entry.Key, new CartoLimits
                                         {
                                             LonMin = double1DArray[0],
                                             LonMax = double1DArray[1],
@@ -597,68 +597,6 @@ namespace MYRIAM
             }
 
             return inputVars;
-        }
-
-
-        public static void Load_EV_Ensembles(string EVo_Path, string EVy_Path,
-                                             out VectorCart[] EVo, out VectorCart[] EVy)
-        {
-            EVo = new VectorCart[0];
-            EVy = new VectorCart[0];
-
-            // ========== Young Euler vectors ===================
-
-            // Load file
-            double[,] EVy_array = File_toArray(EVy_Path);
-
-
-            // If data is an ensemble, store it
-            if (EVy_array.GetLength(0) != 1)
-            {
-                EVy = VectorOperations.ArrayToCartesianVector(EVy_array);
-            }
-
-
-            // If data is an array, build ensemble
-            else if (EVy_array.GetLength(0) == 1)
-            {
-                double[] evArray = ArrayManagement.ArrayFlatten(EVy_array, 0);
-                EVy = Generate_Ensemble.Generate_EuVectorEnsemble(evArray);
-            }
-
-            int length = EVy.GetLength(0);
-            EVy_array = null;
-
-
-            // ========== Old Euler vectors ===================
-
-            // If file path is empty, build an ensemble of zeros
-            if (string.IsNullOrEmpty(EVo_Path))
-            {
-                double[,] EVo_array = ArrayManagement.Zeros2D(length, 3, (double)0);
-                EVo = VectorOperations.ArrayToCartesianVector(EVo_array);
-            }
-
-            // If file path is not empty, load data
-            else
-            {
-                double[,] EVo_array = File_toArray(EVo_Path);
-
-
-                // If data is an ensemble, store it
-                if (EVo_array.GetLength(0) != 1)
-                {
-                    EVo = VectorOperations.ArrayToCartesianVector(EVo_array);
-                }
-
-
-                // If data is an array, build ensemble
-                else if (EVo_array.GetLength(0) == 1)
-                {
-                    double[] evArray = ArrayManagement.ArrayFlatten(EVo_array, 0);
-                    EVo = Generate_Ensemble.Generate_EuVectorEnsemble(evArray);
-                }
-            }
         }
     }
 }

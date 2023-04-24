@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
-using static CartographicCoordinates.TransformSystem;
 using static StructOperations.MatrixOperations;
-using MathNet.Numerics.LinearAlgebra;
-using StructOperations;
-using DataStructures;
 
 
 namespace MYRIAM
@@ -27,9 +23,9 @@ namespace MYRIAM
         public static double[,] Set_RotationMatrix(double z_angle, double y_angle, double x_angle = 0)
         {
             // Turn vector to matrices
-            double[,] RVCT_Z = VectorDeg_toMatrix(new VectorSph(0, 90, z_angle));
-            double[,] RVCT_Y = VectorDeg_toMatrix(new VectorSph(90, 0, y_angle));
-            double[,] RVCT_X = VectorDeg_toMatrix(new VectorSph(0,  0, x_angle));
+            double[,] RVCT_Z = VectorDeg_toMatrix(0, 90, z_angle);
+            double[,] RVCT_Y = VectorDeg_toMatrix(90, 0, y_angle);
+            double[,] RVCT_X = VectorDeg_toMatrix(0,  0, x_angle);
 
             // Multiply rotation matrices
             return MatrixDotProduct( RVCT_X, MatrixDotProduct(RVCT_Y, RVCT_Z) );
@@ -41,16 +37,16 @@ namespace MYRIAM
         /// </summary>
         /// <param name="rotVector">Rotation vector in spherical coordinates.</param>
         /// <returns>Rotation matrix.</returns>
-        public static double[,] VectorDeg_toMatrix(VectorSph rotVector)
+        public static double[,] VectorDeg_toMatrix(double lon, double lat, double angle)
         {
             // Convert angle from degrees to radians
-            double lon = ToRadians(rotVector.Longitude);
-            double lat = ToRadians(rotVector.Latitude);
-            double ang = ToRadians(rotVector.Angle);
+            double lonRad = lon * (Math.PI / 180);
+            double latRad = lat * (Math.PI / 180);
+            double angRad = angle * (Math.PI / 180);
 
-            double x = Math.Cos(lon) * Math.Cos(lat);
-            double y = Math.Cos(lat) * Math.Sin(lon);
-            double z = Math.Sin(lat);
+            double x = Math.Cos(lonRad) * Math.Cos(latRad);
+            double y = Math.Cos(latRad) * Math.Sin(lonRad);
+            double z = Math.Sin(latRad);
 
 
             // Set output matrix
@@ -58,15 +54,15 @@ namespace MYRIAM
         
 
             // Convert vector to matrix
-            matrix[0, 0] = Math.Cos(ang) + Math.Pow(x,2) * ( 1 - Math.Cos(ang) );
-            matrix[0, 1] = x * y * ( 1 - Math.Cos(ang) ) - ( z * Math.Sin(ang) );
-            matrix[0, 2] = x * z * ( 1 - Math.Cos(ang) ) + ( y * Math.Sin(ang) );
-            matrix[1, 0] = y * x * ( 1 - Math.Cos(ang) ) + ( z * Math.Sin(ang) );
-            matrix[1, 1] = Math.Cos(ang) + Math.Pow(y,2) * ( 1 - Math.Cos(ang) );
-            matrix[1, 2] = y * z * ( 1 - Math.Cos(ang) ) - ( x * Math.Sin(ang) );
-            matrix[2, 0] = z * x * ( 1 - Math.Cos(ang) ) - ( y * Math.Sin(ang) );
-            matrix[2, 1] = z * y * ( 1 - Math.Cos(ang) ) + ( x * Math.Sin(ang) );
-            matrix[2, 2] = Math.Cos(ang) + Math.Pow(z,2) * ( 1 - Math.Cos(ang) );
+            matrix[0, 0] = Math.Cos(angRad) + Math.Pow(x,2) * ( 1 - Math.Cos(angRad) );
+            matrix[0, 1] = x * y * ( 1 - Math.Cos(angRad) ) - ( z * Math.Sin(angRad) );
+            matrix[0, 2] = x * z * ( 1 - Math.Cos(angRad) ) + ( y * Math.Sin(angRad) );
+            matrix[1, 0] = y * x * ( 1 - Math.Cos(angRad) ) + ( z * Math.Sin(angRad) );
+            matrix[1, 1] = Math.Cos(angRad) + Math.Pow(y,2) * ( 1 - Math.Cos(angRad) );
+            matrix[1, 2] = y * z * ( 1 - Math.Cos(angRad) ) - ( x * Math.Sin(angRad) );
+            matrix[2, 0] = z * x * ( 1 - Math.Cos(angRad) ) - ( y * Math.Sin(angRad) );
+            matrix[2, 1] = z * y * ( 1 - Math.Cos(angRad) ) + ( x * Math.Sin(angRad) );
+            matrix[2, 2] = Math.Cos(angRad) + Math.Pow(z,2) * ( 1 - Math.Cos(angRad) );
 
             return matrix;
         }

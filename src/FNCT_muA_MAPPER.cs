@@ -6,16 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using StructOperations;
 using DataStructures;
-using Utilities;
-using System.Data;
+//using System.Data;        !!! is it used?
 using System.Drawing;
 using System.Reflection.Emit;
 using System.Reflection;
 using static MYRIAM.FileReader;
 using static StructOperations.ArrayOperations;
 using static StructOperations.ArrayManagement;
-using static CartographicCoordinates.TransformSystem;
-
+using Cartography;
+using Utilities;
 
 
 namespace MYRIAM
@@ -66,9 +65,9 @@ namespace MYRIAM
 
             // ============== Parameters ===============================================
 
-            // PM13 Resolution
-            var dlon = ToRadians(2); 
-            var dlat = ToRadians(2);
+            // PM13 Resolution (in radians)
+            var dlon = 2 * (Math.PI / 180);
+            var dlat = 2 * (Math.PI / 180);
 
             var Re = 6371e3;
             var g = 9.8;
@@ -208,8 +207,8 @@ namespace MYRIAM
                                 for (int jj = 0; jj < mCols; jj++)
                                 {
                                     // Area represented by each grid point (in m^2)
-                                    dA[ji, jj] = const1 * (-Math.Cos( ToRadians(90 - mlat[ji, jj]) + (dlat / 2) ) +
-                                                            Math.Cos( ToRadians(90 - mlat[ji, jj]) - (dlat / 2) )) * dlon;
+                                    dA[ji, jj] = const1 * (-Math.Cos( (90 - mlat[ji, jj]) * (Math.PI / 180) + (dlat / 2) ) +
+                                                            Math.Cos( (90 - mlat[ji, jj]) * (Math.PI / 180) - (dlat / 2) )) * dlon;
                                 }
 
                             // Set weights based on area

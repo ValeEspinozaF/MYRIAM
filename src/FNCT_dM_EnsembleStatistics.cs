@@ -1,18 +1,18 @@
-﻿using static StructOperations.VectorOperations;
-using static MYRIAM.ManageOutputs;
-using CartographicCoordinates;
-using DataStructures;
+﻿using static MYRIAM.ManageOutputs;
 using EnsembleAnalysis;
 using StructOperations;
 using Histograms;
-
+using Torque;
+using ContourBuilder;
+using Cartography;
+using DataStructures;
 
 
 namespace MYRIAM
 {
     internal class FNCT_dM_EnsembleStatistics
     {
-        public static void dMPole_Contours(VectorCart[] dM, double[,] RMTX,
+        public static void dMPole_Contours(TorqueVector[] dM, double[,] RMTX,
                                            double[] DM_CNTR_BINS, double[] DM_CNTR_PERCENT,
                                            int stageIndex_Old, int stageIndex_Young, 
                                            string dir_dM_PDD, string dir_TMP,
@@ -39,8 +39,8 @@ namespace MYRIAM
 
 
             // Apply rotation to ensemble
-            VectorCart[] dM_rot = VectorProduct(dM, RMTX_2use);
-            dM = new VectorCart[0];
+            TorqueVector[] dM_rot = TorqueVector.VectorProduct(dM, RMTX_2use);
+            dM = new TorqueVector[0];
 
 
             // Store temporal text file with dM rotated ensemble
@@ -52,13 +52,12 @@ namespace MYRIAM
             // --- Extract dM Pole arrays ---
 
             // Transform cartesian coordinates to spherical degrees coordinates
-            VectorSph[] dMSph = TransformSystem.CartToDeg(dM_rot);
-            dM_rot = new VectorCart[0];
+            dM_rot = TorqueVector.ToSpherical(dM_rot);
 
 
             // Store coordinates columns in 1D arrays 
-            GetVectorColumns(dMSph, out double[] colLon, out double[] colLat, out _); // !!! chnage sintax
-            dMSph = new VectorSph[0];
+            TorqueVector.GetSphericalColumns(dM_rot, out double[] colLon, out double[] colLat, out _); // !!! chnage sintax?
+            dM_rot = new TorqueVector[0];
 
 
             // Dump storage
@@ -124,20 +123,19 @@ namespace MYRIAM
         }
 
 
-        public static void dMMag_Histogram(VectorCart[] dM, int nBins, 
+        public static void dMMag_Histogram(TorqueVector[] dM, int nBins, 
                                            int stageIndex_Old, int stageIndex_Young, string dir_dM_PDD,
                                            string mtxLabel, out int DM_MAGHIST_OUT)
         {
             // --- Extract dM Magnitude array ---
 
             // Transform cartesian coordinates to spherical degrees coordinates
-            VectorSph[] dMSph = TransformSystem.CartToDeg(dM);
-            dM = new VectorCart[0];
+            dM = TorqueVector.ToSpherical(dM);
 
 
             // Store coordinates columns in 1D arrays 
-            GetVectorColumns(dMSph, out _, out _, out double[] magArray);
-            dMSph = new VectorSph[0];
+            TorqueVector.GetSphericalColumns(dM, out _, out _, out double[] magArray);
+            dM = new TorqueVector[0];
 
 
             // Dump storage
@@ -185,18 +183,17 @@ namespace MYRIAM
         /// <param name="ANG_R">Array that holds the rotation angles 
         /// used for the axes Val, Lat and Lon.</param>
         /// <returns>Rotation matrix.</returns>
-        private static double[,] getOptimal_rotMatrix(VectorCart[] ens, 
+        private static double[,] getOptimal_rotMatrix(TorqueVector[] ens, 
             out double[] ANG_R)
         {
-            // Extract cartesian columns
-            GetVectorColumns(ens, out double[] colX, out double[] colY, out double[] colZ);
+            // Average vector in spherical coordinates
+            TorqueVector dEVmean = Ensemble_Statistics.EnsembleMean(ens);
 
-            // Average each column array
-            VectorSph dEVmean = TransformSystem.CartToRad(colX.Average(), colY.Average(), colZ.Average());
 
             // Convert mean pole to degrees
-            double meanLon = Math.Round(TransformSystem.ToDegrees(dEVmean.Longitude), 1);
-            double meanLat = Math.Round(TransformSystem.ToDegrees(dEVmean.Latitude), 1);
+            double meanLon = Math.Round(dEVmean.Longitude * (180 / Math.PI), 1);
+            double meanLat = Math.Round(dEVmean.Latitude * (180 / Math.PI), 1);
+
 
             // Set rotation angles (for output)
             ANG_R = new double[] { meanLon, meanLat, 0.0 }; 
@@ -217,15 +214,15 @@ namespace MYRIAM
         private static Coordinate[] rotateCoordinate(Coordinate[] coordinates, double[,] rotMatrix)
         {
             // Turn spherical coordinates to cartesian
-            VectorCart[] cntrCart = TransformSystem.DegToCart(coordinates);
+            Vector[] cntrCart = coordinates.Select(x => x.ToCartesian()).ToArray();
 
             // Rotate cartesian coordiantes
-            VectorCart[] cntrCartInv = VectorProduct(cntrCart, rotMatrix);
+            TorqueVector[] cntrCartInv = (TorqueVector[])TorqueVector.VectorProduct(cntrCart, rotMatrix);
 
             // Transform back to spherical coordinates
-            TransformSystem.CartToDeg(cntrCartInv, out Coordinate[] result);
+            Coordinate[] cntrSph = cntrCartInv.Select(x => Coordinate.ToSpherical(x)).ToArray();
 
-            return result;
+            return cntrSph;
         }
     }
 }

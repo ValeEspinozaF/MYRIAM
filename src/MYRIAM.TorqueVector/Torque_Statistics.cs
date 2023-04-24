@@ -1,23 +1,18 @@
-﻿using CartographicCoordinates;
-using DataStructures;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static StructOperations.ArrayManagement;
+using DataStructures;
 using static StructOperations.ArrayOperations;
-using static EulerVector.VectorCart;
-using static EulerVector.VectorSph;
 
-namespace EulerVector
+namespace Torque
 {
-    class Ensemble_Statistics
+    internal class TorqueStatistics
     {
-        public static VectorCart EnsembleMean(VectorCart[] ens, bool cov = false)
+        public static TorqueVector EnsembleMean(TorqueVector[] ens, bool cov = false)
         {
-            GetVectorColumns(ens, out double[] colX, out double[] colY, out double[] colZ);
-            VectorCart vectorCart = EnsembleMean(colX, colY, colZ);
+            TorqueVector.GetCartesianColumns(ens, out double[] colX, out double[] colY, out double[] colZ);
 
             if (cov == true)
             {
@@ -34,22 +29,23 @@ namespace EulerVector
                     C33 = Sum(ArrayProduct(colZ, colZ)) / N - Sum(colZ) / N * Sum(colZ) / N,
                 };
 
-                return new VectorCart(vectorCart, covArray);
+                return new TorqueVector
+                {
+                    X = colX.Average(),
+                    Y = colY.Average(),
+                    Z = colZ.Average(),
+                    Covariance = covArray
+                };
             }
             else
             {
-                return vectorCart;
+                return new TorqueVector
+                {
+                    X = colX.Average(),
+                    Y = colY.Average(),
+                    Z = colZ.Average(),
+                };
             }
-        }
-
-        public static VectorCart EnsembleMean(double[] colX, double[] colY, double[] colZ)
-        {
-            return new VectorCart
-            {
-                X = colX.Average(),
-                Y = colY.Average(),
-                Z = colZ.Average()
-            };
         }
     }
 }

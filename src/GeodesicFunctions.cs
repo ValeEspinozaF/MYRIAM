@@ -1,12 +1,13 @@
-﻿using DataStructures;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Intrinsics;
 using System.Text;
 using System.Threading.Tasks;
-using static CartographicCoordinates.TransformSystem;
+using DataStructures;
+using Cartography;
+
 
 namespace GeodesicFunctions
 {
@@ -15,11 +16,11 @@ namespace GeodesicFunctions
         // Earth's radius in km
         const double Re = 6371;
 
-        public static double[] Point_vsPointArray(Coord point, Coord[] coordArray)
+        public static double[] Point_vsPointArray(Coordinate point, Coordinate[] coordArray)
         {
             // Turn input coordinates from spherical to radians
-            VectorCart v1 = DegToCart(point, Re);
-            VectorCart[] va2 = DegToCart(coordArray, Re);
+            Vector v1 = point.ToCartesian(Re);
+            Vector[] va2 = coordArray.Select(x => x.ToCartesian(Re)).ToArray();
 
             double[] g_dst = new double[coordArray.Length];
 
@@ -31,18 +32,18 @@ namespace GeodesicFunctions
             return g_dst;
         }
 
-        public static double[] PointArray(Coord[] coordArray)
+        public static double[] PointArray(Coordinate[] coordArray)
         {
             // Turn input coordinates from spherical to cartesian [radians]
-            VectorCart[] cv = DegToCart(coordArray, Re);
+            Vector[] cv = coordArray.Select(x => x.ToCartesian(Re)).ToArray();
 
             // Output geodesic distance
             double[] g_dst = new double[coordArray.Length];
 
             for (int i = 0; i < coordArray.Length -1; i++)
             {
-                VectorCart v1 = cv[i];
-                VectorCart v2 = cv[i + 1];
+                Vector v1 = cv[i];
+                Vector v2 = cv[i + 1];
 
                 double dot_p = v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
                 g_dst[i] = Re * Math.Acos(dot_p / Math.Pow(Re, 2)) * 1000; // in meters

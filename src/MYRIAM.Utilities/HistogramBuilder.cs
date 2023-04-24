@@ -1,9 +1,8 @@
 ﻿using static StructOperations.ArrayManagement;
 using StructOperations;
-using DataStructures;
+using Cartography;
 using Utilities;
-using EnsembleAnalysis;
-using ContourBuilder;
+
 
 namespace Histograms
 {
@@ -69,9 +68,9 @@ namespace Histograms
             {
                 for (int j = 0; j < values.GetLength(1); j++)
                 {
-                    var lowerLeftBound = new Coord( edges[1][j], edges[0][i] );
-                    var upperRightBound = new Coord( edges[1][j + 1], edges[0][i + 1] );
-                    var midCoordinates = new Coord( (edges[1][j] + edges[1][j + 1])/2, (edges[0][i] + edges[0][i + 1])/2);
+                    var lowerLeftBound = new Coordinate( edges[1][j], edges[0][i] );
+                    var upperRightBound = new Coordinate( edges[1][j + 1], edges[0][i + 1] );
+                    var midCoordinates = new Coordinate( (edges[1][j] + edges[1][j + 1])/2, (edges[0][i] + edges[0][i + 1])/2);
 
                     HistogramBin2D binVars = new(lowerLeftBound, upperRightBound, midCoordinates, WidthX[j], WidthY[i]);
                     BinsAndValues[i, j] = new KeyValuePair<HistogramBin2D, int>(binVars, values[i, j]);
@@ -83,12 +82,12 @@ namespace Histograms
 
     public struct HistogramBin2D
     {
-        public Coord LowerLeftBound;
-        public Coord UpperRightBound;
-        public Coord MidCoordinates;
+        public Coordinate LowerLeftBound;
+        public Coordinate UpperRightBound;
+        public Coordinate MidCoordinates;
         public double WidthX;
         public double WidthY;
-        public HistogramBin2D(Coord lowerLeftBound, Coord upperRightBound, Coord midCoordinates, double widthX, double widthY)
+        public HistogramBin2D(Coordinate lowerLeftBound, Coordinate upperRightBound, Coordinate midCoordinates, double widthX, double widthY)
         {
             LowerLeftBound = lowerLeftBound;
             UpperRightBound = upperRightBound;

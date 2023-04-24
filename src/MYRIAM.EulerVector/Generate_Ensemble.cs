@@ -8,20 +8,18 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using static StructOperations.ArrayOperations;
 using static StructOperations.ArrayManagement;
-using CartographicCoordinates;
 using StructOperations;
-using DataStructures;
 using Utilities;
 
 
-namespace MYRIAM
+namespace DataStructures
 {
-    class Generate_Ensemble
+    public partial class EulerVector
     {
-        public static VectorCart[] Generate_EuVectorEnsemble(double[] evArray)
+        public static EulerVector[] Generate_Ensemble(double[] evArray)
         {
             // Build Euler Vector struct
-            VectorDegCov euVector = new VectorDegCov();
+            EulerVector euVector = new EulerVector();
 
 
             // Data without covariance
@@ -29,27 +27,23 @@ namespace MYRIAM
             {
                 // Covariance in rad2 / Myr2
                 double variance = Math.Pow(0.05 * evArray[2], 2);
-                double[] covArray = ArrayMultiply(new double[] {variance, 0, 0, variance, 0, variance}, Math.Pow(Math.PI / 180, 2) );
-                
-                euVector = new VectorDegCov
-                {
-                    Longitude = evArray[0],
-                    Latitude = evArray[1],
-                    Angle = evArray[2],
-                    Covariance = new Covariance(covArray)
-                };
+                double[] covArray = ArrayMultiply(new double[] { variance, 0, 0, variance, 0, variance }, Math.Pow(Math.PI / 180, 2));
+
+                euVector.Longitude = evArray[0];
+                euVector.Latitude = evArray[1];
+                euVector.Magnitude = evArray[2];
+                euVector.Covariance = new Covariance(covArray);
             }
 
 
             // Data with covariance
             else if (evArray.Length >= 9)
-                euVector = new VectorDegCov
-                {
-                    Longitude = evArray[0],
-                    Latitude = evArray[1],
-                    Angle = evArray[2],
-                    Covariance = new Covariance(SubArray(evArray, 3, 6))
-                };
+            {
+                euVector.Longitude = evArray[0];
+                euVector.Latitude = evArray[1];
+                euVector.Magnitude = evArray[2];
+                euVector.Covariance = new Covariance(SubArray(evArray, 3, 6));
+            }
 
 
             // Set ensemble size
@@ -59,21 +53,14 @@ namespace MYRIAM
 
 
             // Generate ensemble
-            return Generate_EuVectorEnsemble(euVector, nSize);
+            return Generate_Ensemble(euVector, nSize);
         }
 
 
-        public static VectorCart[] Generate_EuVectorEnsemble(VectorDegCov eulerVector, int nSize)
+        public static EulerVector[] Generate_Ensemble(EulerVector eulerVector, int nSize)
         {
             // Euler Vector from spherical deg to cartesian coordinate
-            VectorSph EuVectorDeg = new ()
-            {
-                Longitude = eulerVector.Longitude,
-                Latitude = eulerVector.Latitude,
-                Angle = eulerVector.Angle
-            };
-
-            VectorCart EuVectorCart = TransformSystem.DegToCart(EuVectorDeg);
+            eulerVector.ToCartesian();
 
 
             // Covariance elements from rad2/Myr2 to deg2/Myr2
@@ -85,11 +72,11 @@ namespace MYRIAM
 
 
             // Generate correlation ensemble
-            VectorCart[] CorrelatedEnsemble = CorrelatedEnsemble3D(covMatrix, nSize);
+            EulerVector[] CorrelatedEnsemble = CorrelatedEnsemble3D(covMatrix, nSize);
 
 
             // Add correlated ensemble to original Euler vector
-            VectorCart[] EuVector_Ensemble = VectorOperations.VectorSummate(CorrelatedEnsemble, EuVectorCart);
+            EulerVector[] EuVector_Ensemble = EulerVector.VectorSummate(CorrelatedEnsemble, eulerVector);
 
 
             return EuVector_Ensemble;
@@ -104,7 +91,7 @@ namespace MYRIAM
         /// <param name="covMatrix">Covariance matrix.</param>
         /// <param name="nSize">Length of the output ensemble.</param>
         /// <returns>Array of cartesian coordinates.</returns>
-        public static VectorCart[] CorrelatedEnsemble3D(double[,] covMatrix, int nSize)
+        public static EulerVector[] CorrelatedEnsemble3D(double[,] covMatrix, int nSize)
         {
             // Store matrix as MathNet matrix class
             Matrix<double> matrix = Matrix<double>.Build.DenseOfArray(covMatrix);
@@ -127,7 +114,7 @@ namespace MYRIAM
 
 
             // Build ensemble
-            VectorCart[] CorrelatedEnsemble = new VectorCart[nSize];
+            EulerVector[] CorrelatedEnsemble = new EulerVector[nSize];
             double[,] rndArray = Utils.RandomNormal2D(nSize, 3);
 
             for (int i = 0; i < nSize; i++)
@@ -136,7 +123,7 @@ namespace MYRIAM
                 double[,] sqrdVaVector = Turn1DTo2D(sqrdVaProd, 0);
                 double[,] eigenProduct = MatrixOperations.MatrixDotProduct(eigenVector, sqrdVaVector);
 
-                CorrelatedEnsemble[i] = new VectorCart()
+                CorrelatedEnsemble[i] = new EulerVector
                 {
                     X = eigenProduct[0, 0],
                     Y = eigenProduct[1, 0],

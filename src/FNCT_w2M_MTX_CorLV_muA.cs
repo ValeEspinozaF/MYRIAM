@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CartographicCoordinates;
+using System.Xml.Schema;
 using StructOperations;
 using DataStructures;
 using ComputationalGeometry;
-using static CartographicCoordinates.TransformSystem;
 using static CartographicCoordinates.ManageCoordinates;
 using static MYRIAM.ManageOutputs;
-using System.Xml.Schema;
 using Cartography;
 
 namespace MYRIAM
@@ -77,14 +75,22 @@ namespace MYRIAM
                 ToArray();
 
 
-            // Turn filtered matrix coordinates from radians to degrees
-            Coordinate[] gridPntsRad = DegToRad(gridPntsDeg);
+            // Turn filtered matrix coordinates from degrees to radians
+            Coordinate[] gridPntsRad = new Coordinate[gridPntsDeg.Length];
+            for (int i = 0; i < gridPntsDeg.Length; i++)
+            {
+                gridPntsRad[i] = new Coordinate() 
+                {
+                    Lon = gridPntsDeg[i].Lon * (Math.PI / 180),
+                    Lat = (90 - gridPntsDeg[i].Lat) * (Math.PI / 180),
+                };
+            }
 
             
 
             // === Plate area ===
 
-            double stepRad = ToRadians(stepDeg);
+            double stepRad = stepDeg * (Math.PI / 180);
             double[] Rt = ArrayManagement.Repeat1D(Re - HL, gridPntsDeg.Length);
             double[] dArea = new double[gridPntsRad.Length];
             
@@ -100,7 +106,8 @@ namespace MYRIAM
 
 
             // Turn inplate coordinates from radians to cartesian
-            Coordinate[] gridPntsCart = RadToCart(gridPntsRad, Rt);
+            Vector[] gridPntsCart = gridPntsRad.Select(x => x.ToCartesian(Rt[0])).ToArray();
+            
 
 
             // Plate area
@@ -116,7 +123,7 @@ namespace MYRIAM
             if (defLength != 0)
             {
                 // Densify plate contour 
-                cntrArray = DensifyPolygon.DensifyPolygon_toDistance(cntrArray, defLength / 2);
+                cntrArray = PolygonGeometry.DensifyPolygon_toDistance(cntrArray, defLength / 2);
 
                 fDef = DeformationArea.DeformationGridScore(gridPntsDeg, cntrArray, defLength);
 
@@ -171,7 +178,7 @@ namespace MYRIAM
 
             // --- Save grid coordinates TXT file ---
             string filenameInBoundary = Set_BoundaryIn_FileName(plateLabel);
-            double[,] gridPoints = ToArray(gridPntsDeg, fDef);
+            double[,] gridPoints = Coordinate.ToArray(gridPntsDeg, fDef);
             Save_toTXT(gridPoints, dir_MTXwM, filenameInBoundary, "F2");
 
 

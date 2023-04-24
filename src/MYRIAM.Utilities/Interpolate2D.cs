@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using static StructOperations.ArrayManagement;
 using StructOperations;
-using DataStructures;
-using MYRIAM;
+using Cartography;
+using MYRIAM;       // print console progress
 
 
 namespace ComputationalGeometry
@@ -73,7 +73,7 @@ namespace ComputationalGeometry
         /// <param name="XYqs">Coordinate array with points to intepolate.</param>
         /// <param name="method">Interpolation method. Only "linear" and "nearest" are supported.</param>
         /// <returns>Array of Val-values for the queried points.</returns>
-        public static double[] Interpolation2D(double[,] X, double[,] Y, double[,] V, Coord[] XYqs, string method="linear")
+        public static double[] Interpolation2D(double[,] X, double[,] Y, double[,] V, Coordinate[] XYqs, string method="linear")
         {
             double[,] Vt = MatrixOperations.MatrixTranspose(V);
             double[,] Xt = MatrixOperations.MatrixTranspose(X);
@@ -99,7 +99,7 @@ namespace ComputationalGeometry
                 {
                     Console_Banners.WriteReports(6, i/10, Zvals.Length/10);
                 }
-                Zvals[i] = Interpolation_Method(Xdata, Ydata, V_, XYqs[i].X, XYqs[i].Y);
+                Zvals[i] = Interpolation_Method(Xdata, Ydata, V_, XYqs[i].Lon, XYqs[i].Lat);
             }
             return Zvals;
         }

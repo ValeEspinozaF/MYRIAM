@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Histograms;
+using Cartography;
+
 
 namespace ContourBuilder
 {
@@ -17,14 +19,14 @@ namespace ContourBuilder
             Level = level;
             PercentInterval = percentage;
 
-            var CoordinatesList = new List<Coord>();
+            var CoordinatesList = new List<Coordinate>();
             foreach (var isobar in isoBars)
             {
                 foreach (IsobarPoint point in isobar.Points)
                 {
-                    CoordinatesList.Add(new Coord(point.Location.X, point.Location.Y));
+                    CoordinatesList.Add(new Coordinate(point.Location.Lon, point.Location.Lat));
                 }
-                CoordinatesList.Add(new Coord(double.NaN, double.NaN));
+                CoordinatesList.Add(new Coordinate(double.NaN, double.NaN));
             }
 
             Coordinates = CoordinatesList.ToArray();
@@ -34,7 +36,7 @@ namespace ContourBuilder
         public int Length { get; private set; }
         public double Level { get; private set; }
         public double PercentInterval { get; private set; }
-        public Coord[] Coordinates { get; private set; }
+        public Coordinate[] Coordinates { get; set; }
 
 
         public static Contour[] CreateContour(Histogram2D hist2D, double[] confPercent)

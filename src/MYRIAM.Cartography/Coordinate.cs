@@ -1,7 +1,9 @@
 ﻿using DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
@@ -50,6 +52,54 @@ namespace Cartography
             }
             return array;
         }
+
+        public static Coordinate ToSpherical(Vector vector)
+        {
+            vector.ToSpherical();
+
+            return new Coordinate
+            {
+                // radians to degrees
+                Lon = vector.Longitude * (180 / Math.PI),
+                Lat = vector.Latitude * (180 / Math.PI),
+                Val = vector.Magnitude,
+            };
+        }
+        public Vector ToCartesian(double? zVal = null)
+        {
+            // degrees to radians
+            double lon = this.Lon * (Math.PI / 180);
+            double lat = this.Lat * (Math.PI / 180);
+            double val;
+
+            if (this.Val != 0)
+            {
+                val = this.Val;
+            }
+            else
+            {
+                val = (double)(zVal != null ? zVal : 1);
+            }
+
+            double X = val * Math.Cos(lon) * Math.Cos(lat);
+            double Y = val * Math.Cos(lat) * Math.Sin(lon);
+            double Z = val * Math.Sin(lat);
+
+            return new Vector{ 
+                X = X, 
+                Y = Y, 
+                Z = Z 
+            };
+        }
+
+
+        public Coordinate ToRadians()
+        {
+            this.Lon = this.Lon * (Math.PI / 180);
+            this.Lat = (90 - this.Lat) * (Math.PI / 180);
+            return this;
+        }
+
 
         public static Coordinate[] MakeGrid(Coordinate[] coordsArray, double stepDeg)
         {

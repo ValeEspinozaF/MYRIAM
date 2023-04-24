@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using StructOperations;
 using DataStructures;
 using static StructOperations.ArrayManagement;
+using Torque;
+using Cartography;
 
 
 namespace MYRIAM
@@ -161,13 +163,16 @@ namespace MYRIAM
         }
 
 
-        public static void Save_toTXT(VectorCart[] array, string fileDir, string fileName, string format = "0.000")
+        public static void Save_toTXT(TorqueVector[] array, string fileDir, string fileName, string format = "0.000")
         {
             string filePath = Path.Combine(fileDir, fileName);
 
             StringBuilder stringbuilder = new ();
             for (int i = 0; i < array.Length; i++)
-                stringbuilder.Append(SetString(array[i].Values(), format) + "\n");
+            {
+                double[] values = new double[] { array[i].X, array[i].Y, array[i].Z };
+                stringbuilder.Append(SetString(values, format) + "\n");
+            }
 
             File.WriteAllText(filePath, stringbuilder.ToString());
         }

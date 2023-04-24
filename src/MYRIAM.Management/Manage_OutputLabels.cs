@@ -1,4 +1,5 @@
 ﻿using DataStructures;
+using Cartography;
 
 
 namespace MYRIAM
@@ -49,11 +50,11 @@ namespace MYRIAM
 
 
             // Default global extension array
-            var glbExt = new CoordsLimits().SetGlobal();
+            var glbExt = new CartoLimits().SetGlobal();
 
 
             // Compare map extension with global extension
-            if (avExt.IsEqual(glbExt))
+            if (avExt.Equals(glbExt))
             {
                 // Set label as global
                 SQUARE_lbl = "GLBL";

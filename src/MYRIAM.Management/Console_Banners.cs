@@ -1,13 +1,12 @@
-﻿using DataStructures;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MYRIAM.ManageOutputs;
-using static CartographicCoordinates.TransformSystem;
 using Microsoft.VisualBasic;
 using System.Collections;
+using static MYRIAM.ManageOutputs;
+using Torque;
 
 
 namespace MYRIAM
@@ -75,10 +74,8 @@ namespace MYRIAM
         }
 
 
-        public static void OutputSummaryBanner(VectorDegCov dMvector)
+        public static void OutputSummaryBanner(TorqueVector dMvector)
         {
-            VectorCart cartCoords = DegToCart(dMvector.ToVectorSph());
-
             ClearCurrentConsoleLine();
             ReplacePreviousConsoleLine("Output Torque Variation (dM) Summary");
             Console.WriteLine("");
@@ -91,14 +88,14 @@ namespace MYRIAM
 
             // Average Magnitude
             Console.WriteLine(String.Format("{0, 34} {1}", "Average Magnitude :", 
-                $"{SetString(dMvector.Angle, "#.##E+0")} N m")
+                $"{SetString(dMvector.Magnitude, "#.##E+0")} N m")
                 );
 
             // Average Cartesian Vector
             Console.WriteLine(String.Format("{0, 34} {1}", "Average Cartesian Vector :", 
-                $"{SetString(cartCoords.X, "#.##E+0")}, " +
-                $"{SetString(cartCoords.Y, "#.##E+0")}, " +
-                $"{SetString(cartCoords.Z, "#.##E+0")}, ")
+                $"{SetString(dMvector.X, "#.##E+0")}, " +
+                $"{SetString(dMvector.Y, "#.##E+0")}, " +
+                $"{SetString(dMvector.Z, "#.##E+0")}, ")
                 );
             Console.WriteLine("\n");
         }

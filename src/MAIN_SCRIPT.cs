@@ -8,6 +8,8 @@ using DataStructures;
 using StructOperations;
 using static MYRIAM.Console_Banners;
 using static MYRIAM.ManageOutputs;
+using Torque;
+using Cartography;
 
 
 namespace MYRIAM
@@ -102,7 +104,7 @@ namespace MYRIAM
             FNCT_EVdM.EV_to_dM(
                 stageIndex_Old, stageIndex_Young, EVo_Path, EVy_Path,
                 dir_MTXwM, dir_dM_PDD, mtxLabel, saveEnsemble,
-                out VectorCart[] dM, out VectorDegCov dMvector);
+                out TorqueVector[] dM, out TorqueVector dMvector);
 
 
             OutputSummaryBanner(dMvector);
@@ -169,7 +171,7 @@ namespace MYRIAM
 
 
             // Empty large variables
-            dM = new VectorCart[0];
+            dM = new TorqueVector[0];
             GC.Collect();
             GC.WaitForPendingFinalizers();            
             

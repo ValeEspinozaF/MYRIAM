@@ -1,18 +1,55 @@
-﻿using CartographicCoordinates;
-//using DataStructures;
-using MathNet.Numerics.Distributions;
+﻿using MathNet.Numerics.Distributions;
 using StructOperations;
 using System;
 using System.Linq;
 using System.Net;
 using static StructOperations.ArrayManagement;
 using static StructOperations.ArrayOperations;
+using DataStructures;
 
 
 namespace EnsembleAnalysis
 {
     public class Ensemble_Statistics
-    { 
+    {
+        public static T EnsembleMean<T>(T[] vectorArray, bool cov = false) where T : Vector, new()
+        {
+            Vector.GetCartesianColumns(vectorArray, out double[] colX, out double[] colY, out double[] colZ);
+            return EnsembleMean<T>(colX, colY, colZ, cov);
+        }
+
+        public static T EnsembleMean<T>(double[] colX, double[] colY, double[] colZ, bool cov = false) where T : Vector, new()
+        {
+            T result = new T()
+            {
+                X = colX.Average(),
+                Y = colY.Average(),
+                Z = colZ.Average()
+            };
+            
+            result.ToSpherical();
+
+            if (cov == true)
+            {
+                int N = colX.Length;
+
+                // Set covariance values [units^2]
+                Covariance covArray = new()
+                {
+                    C11 = Sum(ArrayProduct(colX, colX)) / N - Sum(colX) / N * Sum(colX) / N,
+                    C12 = Sum(ArrayProduct(colX, colY)) / N - Sum(colX) / N * Sum(colY) / N,
+                    C13 = Sum(ArrayProduct(colX, colZ)) / N - Sum(colX) / N * Sum(colZ) / N,
+                    C22 = Sum(ArrayProduct(colY, colY)) / N - Sum(colY) / N * Sum(colY) / N,
+                    C23 = Sum(ArrayProduct(colY, colZ)) / N - Sum(colY) / N * Sum(colZ) / N,
+                    C33 = Sum(ArrayProduct(colZ, colZ)) / N - Sum(colZ) / N * Sum(colZ) / N,
+                };
+
+                result.Covariance = covArray;
+            }
+
+            return result;
+        }
+
         public static double[] Extract_ConfidenceLevels1D(double[] H, double[] percentageLevel, double delta = 0.01)
         {
             double meanH = H.Average();
@@ -107,7 +144,6 @@ namespace EnsembleAnalysis
             }
             return levels;
         }
-
 
         private static void eval_tolerance(double count, double tolerance, double cl, out double level, out int swtch)
         {

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using DataStructures;
-
+using Cartography;
 
 namespace ContourBuilder
 {
@@ -22,7 +21,7 @@ namespace ContourBuilder
     { 
         public Isobar? Parent { get; set; }
 
-        public Coord Location { get; set; }
+        public Coordinate Location { get; set; }
 
         public double Value { get; set; }
 

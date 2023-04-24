@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using DataStructures;
 using GeographicLib;
 using StructOperations;
+using Cartography;
 
 namespace MYRIAM
 {
-    class DensifyPolygon
+    public partial class PolygonGeometry
     {
         public static Coordinate[] DensifyPolygon_toDistance(Coordinate[] polygon, double step)
         {
