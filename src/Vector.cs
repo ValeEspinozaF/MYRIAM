@@ -50,6 +50,9 @@ namespace DataStructures
             this.Latitude = Math.Atan2(z, Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
             this.Magnitude = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2) + Math.Pow(z, 2));
 
+            this.Longitude *= 180 / Math.PI;
+            this.Latitude *= 180 / Math.PI;
+
             return this;
         }
 

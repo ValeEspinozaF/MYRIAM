@@ -29,6 +29,7 @@ namespace EnsembleAnalysis
             
             result.ToSpherical();
 
+
             if (cov == true)
             {
                 int N = colX.Length;

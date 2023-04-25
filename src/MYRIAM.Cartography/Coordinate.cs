@@ -60,8 +60,8 @@ namespace Cartography
             return new Coordinate
             {
                 // radians to degrees
-                Lon = vector.Longitude * (180 / Math.PI),
-                Lat = vector.Latitude * (180 / Math.PI),
+                Lon = vector.Longitude,
+                Lat = vector.Latitude,
                 Val = vector.Magnitude,
             };
         }

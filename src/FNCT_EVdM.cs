@@ -104,8 +104,10 @@ namespace MYRIAM
             // Save dM mean values
             double[] dMmeans = new double[] {
                 dMm.X, dMm.Y, dMm.Z,
-                dMm.Longitude, dMm.Latitude, dMm.Magnitude
+                dMm.Longitude, dMm.Latitude, dMm.Magnitude,
             };
+
+            dMmeans = dMmeans.Concat(dMm.Covariance.Values()).ToArray();
 
             string LBL_VECdM = $"VECdM_STGs_{stageIndex_Old}_{stageIndex_Young}_{mtxLabel}.txt";
             ManageOutputs.Save_toTXT(dMmeans, dir_dM_PDD, LBL_VECdM, format: "#.###E+0");

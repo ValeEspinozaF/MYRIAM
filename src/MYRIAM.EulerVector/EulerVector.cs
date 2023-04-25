@@ -36,24 +36,6 @@ namespace DataStructures
             return vectorArray;
         }
 
-        public override Vector ToSpherical()  // cartesian[radians] to spherical[degrees]
-        {
-            double x = this.X;
-            double y = this.Y;
-            double z = this.Z;
-
-            if (x == 0) x = double.Epsilon;
-
-            this.Longitude = Math.Atan2(y, x);
-            this.Latitude = Math.Atan2(z, Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
-            this.Magnitude = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2) + Math.Pow(z, 2));
-
-            // From rad to degrees
-            this.Longitude = this.Longitude * (180 / Math.PI);
-            this.Latitude = this.Latitude * (180 / Math.PI);
-
-            return this;
-        }
 
         public static EulerVector[] ToSpherical(EulerVector[] vectorArray)
         {

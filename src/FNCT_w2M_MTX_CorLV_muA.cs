@@ -106,8 +106,7 @@ namespace MYRIAM
 
 
             // Turn inplate coordinates from radians to cartesian
-            Vector[] gridPntsCart = gridPntsRad.Select(x => x.ToCartesian(Rt[0])).ToArray();
-            
+            Vector[] gridPntsCart = gridPntsDeg.Select(x => x.ToCartesian(Rt[0])).ToArray();
 
 
             // Plate area

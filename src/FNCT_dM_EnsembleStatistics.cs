@@ -57,7 +57,7 @@ namespace MYRIAM
 
             // Store coordinates columns in 1D arrays 
             TorqueVector.GetSphericalColumns(dM_rot, out double[] colLon, out double[] colLat, out _); // !!! chnage sintax?
-            dM_rot = new TorqueVector[0];
+            //dM_rot = new TorqueVector[0];
 
 
             // Dump storage
@@ -187,12 +187,9 @@ namespace MYRIAM
             out double[] ANG_R)
         {
             // Average vector in spherical coordinates
-            TorqueVector dEVmean = Ensemble_Statistics.EnsembleMean(ens);
-
-
-            // Convert mean pole to degrees
-            double meanLon = Math.Round(dEVmean.Longitude * (180 / Math.PI), 1);
-            double meanLat = Math.Round(dEVmean.Latitude * (180 / Math.PI), 1);
+            TorqueVector dMmean = Ensemble_Statistics.EnsembleMean(ens);
+            double meanLon = Math.Round(dMmean.Longitude, 1);
+            double meanLat = Math.Round(dMmean.Latitude, 1);
 
 
             // Set rotation angles (for output)
@@ -217,7 +214,19 @@ namespace MYRIAM
             Vector[] cntrCart = coordinates.Select(x => x.ToCartesian()).ToArray();
 
             // Rotate cartesian coordiantes
-            TorqueVector[] cntrCartInv = (TorqueVector[])TorqueVector.VectorProduct(cntrCart, rotMatrix);
+            TorqueVector[] cntrCartInv = new TorqueVector[cntrCart.Length];
+
+            for (int i = 0; i < cntrCart.Length; i++)
+            {
+                cntrCartInv[i] = new TorqueVector
+                {
+                    X = rotMatrix[0, 0] * cntrCart[i].X + rotMatrix[0, 1] * cntrCart[i].Y + rotMatrix[0, 2] * cntrCart[i].Z,
+                    Y = rotMatrix[1, 0] * cntrCart[i].X + rotMatrix[1, 1] * cntrCart[i].Y + rotMatrix[1, 2] * cntrCart[i].Z,
+                    Z = rotMatrix[2, 0] * cntrCart[i].X + rotMatrix[2, 1] * cntrCart[i].Y + rotMatrix[2, 2] * cntrCart[i].Z
+                };
+            }
+
+
 
             // Transform back to spherical coordinates
             Coordinate[] cntrSph = cntrCartInv.Select(x => Coordinate.ToSpherical(x)).ToArray();
