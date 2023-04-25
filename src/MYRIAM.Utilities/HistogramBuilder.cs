@@ -87,11 +87,11 @@ namespace Histograms
         public Coordinate MidCoordinates;
         public double WidthX;
         public double WidthY;
-        public HistogramBin2D(Coordinate lowerLeftBound, Coordinate upperRightBound, Coordinate midCoordinates, double widthX, double widthY)
+        public HistogramBin2D(Coordinate llCoord, Coordinate urCoord, Coordinate midCoord, double widthX, double widthY)
         {
-            LowerLeftBound = lowerLeftBound;
-            UpperRightBound = upperRightBound;
-            MidCoordinates = midCoordinates;
+            LowerLeftBound = llCoord;
+            UpperRightBound = urCoord;
+            MidCoordinates = midCoord;
             WidthX = widthX;
             WidthY = widthY;
         }
@@ -100,7 +100,9 @@ namespace Histograms
 
     class HistogramBuilder
     {
-        public static Histogram MakeHistogram(double[] source, int? nBins = null, double binSize = double.NaN, double min = double.NaN, double max = double.NaN)
+        public static Histogram MakeHistogram(
+            double[] source, int? nBins = null, double binSize = double.NaN, 
+            double min = double.NaN, double max = double.NaN)
         {
             // --- Check given inputs ---
 
@@ -232,7 +234,9 @@ namespace Histograms
             return new Histogram ((int)nBins, binCount, bounds, binSize);
         }
 
-        public static void MakeHistogram2D<T>(out Histogram2D hist2D, T[] arrayX, T[] arrayY, int[]? nBins = null, T[][]? binEdges = null, T[,]? range = null)
+        public static void MakeHistogram2D<T>(
+            out Histogram2D hist2D, T[] arrayX, T[] arrayY, 
+            int[]? nBins = null, T[][]? binEdges = null, T[,]? range = null)
         {
             hist2D = MakeHistogram2D<T>(arrayX, arrayY, nBins, binEdges, range);
         }

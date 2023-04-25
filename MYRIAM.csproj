@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>bin\Debug\Documents.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -12,35 +14,26 @@
   </PropertyGroup>
 
   <!--Skip .pdb file in publish
-<PropertyGroup>
-  <DebugType>None</DebugType>
-  <DebugSymbols>False</DebugSymbols>
-</PropertyGroup>-->
+  <PropertyGroup>
+    <DebugType>None</DebugType>
+    <DebugSymbols>False</DebugSymbols>
+  </PropertyGroup>-->
 
 
   <!--Skip compiling of non-cs files-->
   <ItemGroup>
-    <Compile Remove="PythonFunctions\**" />
-    <Compile Remove="SAMPLE_FILES\**" />
-    <Compile Remove="EXECUTABLES\**" />
-    <Compile Remove="Shapefiles\**" />
+    <Compile Remove="assets\**" />
+    <Compile Remove="build\**" />
+    <Compile Remove="samples\**" />
   </ItemGroup>
   
   
-  <!--Core Text Files-->
+  <!--Assets-->
   <ItemGroup>
-    <None Remove="SAMPLE_FILES\**" />
-    <Content Include="SAMPLE_FILES\**" CopyToPublishDirectory="PreserveNewest" />
-    <Content Include="TextFiles\**" CopyToPublishDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  
-  <!--Supplementary code (Python)-->
-  <ItemGroup>
-    <None Remove="PythonFunctions\**" />
-    <None Remove="Shapefiles\**" />
-    <Content Include="PythonFunctions\**" CopyToPublishDirectory="PreserveNewest" />
-    <Content Include="Shapefiles\**" CopyToPublishDirectory="PreserveNewest" />
+    <None Remove="assets\**" />
+    <None Remove="samples\**" />
+    <Content Include="assets\**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="samples\**" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   

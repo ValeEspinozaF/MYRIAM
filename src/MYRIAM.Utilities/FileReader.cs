@@ -30,10 +30,8 @@ namespace MYRIAM
 
         public static string GetContourPath(string plateLabel)
         {
-            string dirPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                @"..\..\..\assets\TextFiles\PlateContours_PresentDay_Matthews2016");
-
+            string dirDefault = Get_ItemPath("assets");
+            string dirPath = Path.Combine(dirDefault, "TextFiles/PlateContours_PresentDay_Matthews2016");
             string filePath = Path.Combine(dirPath, $"{plateLabel}_contourXY_Matthews2016.txt");
 
             if (!File.Exists(filePath))

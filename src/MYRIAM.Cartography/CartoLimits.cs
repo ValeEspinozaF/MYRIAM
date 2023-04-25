@@ -27,7 +27,7 @@ namespace Cartography
         }
 
 
-        public CartoLimits SetGlobal()      // !!! check if works
+        public CartoLimits SetGlobal()
         {
             return new CartoLimits
             {

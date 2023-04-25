@@ -6,8 +6,16 @@ namespace MYRIAM
 {
     partial class ManageOutputs
     {
-        public static string Set_Model_Label(double fHA, double muM, double muA, double HL, CartoLimits REGION_muA_LV, double defLength)
+        public static string Set_Model_Label(InputParameters inputParams)
         {
+            double fHA = inputParams.FRACTION_HA;
+            double muM = inputParams.muM;
+            double muA = inputParams.muA;
+            double HL = inputParams.HL;
+            CartoLimits REGION_muA_LV = inputParams.REGION_muA_LV;
+            double defLength = inputParams.DEF_DISTANCE;
+
+
             string SV_MODEL_NAME = "";
 
             // Set up map extention label
@@ -44,17 +52,17 @@ namespace MYRIAM
         }
 
 
-        public static string Set_MapExtension_Label(CartoLimits avExt)
+        public static string Set_MapExtension_Label(CartoLimits setExt)
         {
             string SQUARE_lbl = "";
 
 
             // Default global extension array
-            var glbExt = new CartoLimits().SetGlobal();
+            var globalExt = new CartoLimits().SetGlobal();
 
 
             // Compare map extension with global extension
-            if (avExt.Equals(glbExt))
+            if (setExt.Equals(globalExt))
             {
                 // Set label as global
                 SQUARE_lbl = "GLBL";
@@ -65,22 +73,25 @@ namespace MYRIAM
                 // Cardinal coordinate labels
                 var cardLbls = new string[4]
                 {
-                    (avExt.LonMin < 0) ? "W" : "E",
-                    (avExt.LonMax < 0) ? "W" : "E",
-                    (avExt.LatMin < 0) ? "S" : "N",
-                    (avExt.LatMax < 0) ? "S" : "N"
+                    (setExt.LonMin < 0) ? "W" : "E",
+                    (setExt.LonMax < 0) ? "W" : "E",
+                    (setExt.LatMin < 0) ? "S" : "N",
+                    (setExt.LatMax < 0) ? "S" : "N"
                 };                
 
                 for (int i = 0; i < 4; i++)
-                    SQUARE_lbl += Math.Abs(avExt.ToArray()[i]) + cardLbls[i];
+                    SQUARE_lbl += Math.Abs(setExt.ToArray()[i]) + cardLbls[i];
 
             }
             return SQUARE_lbl;
         }
 
 
-        public static string Set_Matrix_Label(string plateLabel, string interpMethod, string modelName)
+        public static string Set_Matrix_Label(InputParameters inputParams, string modelName)
         {
+            string plateLabel = inputParams.PLT_LABEL;
+            string interpMethod = inputParams.INTERP_MTD;
+
             string MATRIX_LABEL = plateLabel + "_" + modelName;
 
             if (interpMethod == "linear")

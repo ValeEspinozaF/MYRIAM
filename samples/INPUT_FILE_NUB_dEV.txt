@@ -45,7 +45,7 @@ GRID_RES = 2
 
 
 !-Geographic region for viscosity averaging [degrees]
-!REGION_muA_LV = 
+!REGION_muA_LV =
 
 
 !-Vertical fraction of asthenospheric channel to use

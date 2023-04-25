@@ -1,16 +1,13 @@
 ﻿using ContourBuilder;
-using DataStructures;
-using MYRIAM;
 using Histograms;
 using System;
+using System.Text;
+//using MYRIAM;
 using Utilities;
-using static ContourBuilder.Contour;
 
 
 namespace EnsembleAnalysis
 {
-
-
     class Pole_Statistics
     {
         /// <summary>
@@ -36,36 +33,62 @@ namespace EnsembleAnalysis
         /// <param name="DM_BINS_OUT"></param>
         /// <returns>Array of contours, one structure for each given confidence interval.</returns>
         /// <exception cref="InputErrorException"></exception>
-        public static Contour[] Extract_PoleContours(double[] xArray, double[] yArray, double[] confPercentArray,
-                                                     double[] DM_CNTR_BINS, out double[] DM_BINS_OUT)
+        public static Contour[] Extract_PoleContours(
+            double[] xArray, double[] yArray, double[] confPercentArray, out double[] outParams,
+            double[]? xBinRange = null, double[]? yBinRange = null, double gStep = double.NaN)
         {
 
             // =========== Poles Grid Histogram2D ============================================
 
-            // --- Check SPH_PDD_BINS inputs, if given ---
 
-            double gStep = DM_CNTR_BINS[0];
-            double xBinMin = DM_CNTR_BINS[1];
-            double xBinMax = DM_CNTR_BINS[2];
-            double yBinMin = DM_CNTR_BINS[3];
-            double yBinMax = DM_CNTR_BINS[4];
+            set_HistogramParams(
+                xArray, yArray, xBinRange, yBinRange, gStep,
+                out outParams, out int[] nBins, out double[][] binEdges, out double[,] range);
 
 
-            // Check inputs
+            //  --- Build 2D Histogram ---
+            Histogram2D hist2D = HistogramBuilder.MakeHistogram2D(xArray, yArray, nBins, binEdges, range);
+
+
+            // --- Extract Contour Boundaries --
+            Contour[] contourArray = Contour.CreateContour(hist2D, confPercentArray);
+
+
+            return contourArray;
+        }
+
+        private static void set_HistogramParams(
+            double[] xArray, double[] yArray,
+            double[] xBinRange, double[] yBinRange, double gStep,
+            out double[] outParams, out int[] nBins, out double[][] binEdges, out double[,] range)
+        {
+            //  --- Check inputs ---
+
+            double xBinMin = double.NaN;
+            double xBinMax = double.NaN;
+            double yBinMin = double.NaN;
+            double yBinMax = double.NaN;
+
+            if (xArray != null)
+            {
+                xBinMin = xBinRange[0];
+                xBinMax = xBinRange[1];
+            }
+
+            if (yArray != null)
+            {
+                yBinMin = yBinRange[0];
+                yBinMax = yBinRange[1];
+            }
+
+
             if (!double.IsNaN(gStep) && !double.IsNaN(xBinMin))
             {
                 // Throw error if given step is larger than given ranges
                 if (gStep > xBinMax - xBinMin)
-                    throw new InputErrorException(
-                        "Error in DM_CNTR_BINS. " +
-                        "Given contouring grid resolution exceeds the given longitude range."
+                    throw new ArgumentException(
+                        "Given contouring grid resolution (gStep) exceeds the given longitude range (xBinRange)."
                         );
-
-                if (gStep > yBinMax - yBinMin)
-                    throw new InputErrorException(
-                        "Error in DM_CNTR_BINS. " +
-                        "Given contouring grid resolution exceeds the given latitude range.");
-
 
                 // Throw warning when given ranges are undivisable by the given step
                 if ((xBinMax - xBinMin) % gStep != 0)
@@ -73,6 +96,13 @@ namespace EnsembleAnalysis
                         "Warning! " +
                         "Given longitude contouring range is not divisible by the given grid resolution."
                         );
+            }
+
+            if (!double.IsNaN(gStep) && !double.IsNaN(xBinMin))
+            {
+                if (gStep > yBinMax - yBinMin)
+                    throw new ArgumentException(
+                        "Given contouring grid resolution exceeds the given latitude range.");
 
                 if ((yBinMax - yBinMin) % gStep != 0)
                     Console.WriteLine(
@@ -85,9 +115,9 @@ namespace EnsembleAnalysis
 
             //  --- Set Historgram2D params ---
 
-            int[]? nBins = null;
-            double[][]? binEdges = null;
-            double[,]? range = null;
+            nBins = null;
+            binEdges = null;
+            range = null;
 
 
             // Boundaries not given
@@ -125,8 +155,8 @@ namespace EnsembleAnalysis
 
 
                 // Set boundaries equally spaced bin edges
-                double[] lo = Utils.Arange(xBinMin, xBinMax, gStep).ToArray();
-                double[] la = Utils.Arange(yBinMin, yBinMax, gStep).ToArray();
+                double[] lo = Utils.Arange(xBinMin, xBinMax, gStep);
+                double[] la = Utils.Arange(yBinMin, yBinMax, gStep);
 
 
                 // Add one more bin if Arange fuction cut highest value out
@@ -139,26 +169,7 @@ namespace EnsembleAnalysis
                 binEdges = new double[2][] { lo, la };
             }
 
-
-
-            //  --- Build 2D Histogram ---
-            Histogram2D hist2D = new ();
-
-            Parallel.Invoke(
-                () => Console_Banners.WriteReports(13, 1, 1),
-                () => HistogramBuilder.MakeHistogram2D(out hist2D, xArray, yArray, nBins, binEdges, range)
-                );
-
-
-            // --- Extract Contour Boundaries --
-            Contour[] contourArray = CreateContour(hist2D, confPercentArray);
-
-
-            // --- DM_BINS_OUT parameters used report ---
-            DM_BINS_OUT = new double[] { gStep, xBinMin, xBinMax, yBinMin, yBinMax };
-
-
-            return contourArray;
+            outParams = new double[] { gStep, xBinMin, xBinMax, yBinMin, yBinMax };
         }
     }
 }

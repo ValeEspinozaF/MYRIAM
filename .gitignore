@@ -6,6 +6,7 @@
 *.user
 *.sln.docstates
 .vs/
+Properties/
 
 
 # Build results
@@ -14,6 +15,7 @@
 x64/
 bin/
 obj/
+docs/
 
 # Node artifact files
 node_modules/
@@ -59,8 +61,6 @@ Thumbs.db
 *.mov
 *.wmv
 
-
-Properties/
 
 *.pdb
 

@@ -55,17 +55,17 @@ namespace MYRIAM
         }
 
 
-        public static void InputSummaryBanner(Dictionary<string, object> inputParams)
+        public static void InputSummaryBanner(InputParameters inputParams)
         {
-            string str_muA = SetString((double)inputParams["muA"], "#.#E+0");
-            string str_muM = SetString((double)inputParams["muM"], "#.#E+0");
-            string str_HL  = SetString((double)inputParams["HL"], "F0");
-            string str_fHA = SetString((double)inputParams["FRACTION_HA"], "F2");
+            string str_muA = SetString(inputParams.muA, "#.#E+0");
+            string str_muM = SetString(inputParams.muM, "#.#E+0");
+            string str_HL  = SetString(inputParams.HL, "F0");
+            string str_fHA = SetString(inputParams.FRACTION_HA, "F2");
 
             ClearCurrentConsoleLine();
             ReplacePreviousConsoleLine("Input Summary");
             Console.WriteLine("");
-            Console.WriteLine(String.Format("{0, 34} {1}", "Plate :", inputParams["PLT_LABEL"]));
+            Console.WriteLine(String.Format("{0, 34} {1}", "Plate :", inputParams.PLT_LABEL));
             Console.WriteLine(String.Format("{0, 34} {1} Pa s", "muA :", str_muA));
             Console.WriteLine(String.Format("{0, 34} {1} Pa s", "muM :", str_muM));
             Console.WriteLine(String.Format("{0, 34} {1} km", "LAB's Depth :", str_HL));

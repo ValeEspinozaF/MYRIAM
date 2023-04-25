@@ -92,7 +92,11 @@ namespace Cartography
             };
         }
 
-
+        public static Vector[] ToCartesian(Coordinate[] coordDeg, double? zVal = null)
+        {
+            return coordDeg.Select(x => x.ToCartesian(zVal)).ToArray();
+        }
+        
         public Coordinate ToRadians()
         {
             this.Lon = this.Lon * (Math.PI / 180);
@@ -100,6 +104,19 @@ namespace Cartography
             return this;
         }
 
+        public static Coordinate[] ToRadians(Coordinate[] coordsDeg)
+        {
+            Coordinate[] coordsRad = new Coordinate[coordsDeg.Length];
+            for (int i = 0; i < coordsDeg.Length; i++)
+            {
+                coordsRad[i] = new Coordinate()
+                {
+                    Lon = coordsDeg[i].Lon * (Math.PI / 180),
+                    Lat = (90 - coordsDeg[i].Lat) * (Math.PI / 180),
+                };
+            }
+            return coordsRad;
+        }
 
         public static Coordinate[] MakeGrid(Coordinate[] coordsArray, double stepDeg)
         {
@@ -115,8 +132,8 @@ namespace Cartography
 
 
             // Generate latitude and longitude range 
-            var lonRange = Utils.Arange(lonStart, lonStop, stepDeg).ToArray();
-            var latRange = Utils.Arange(latStart, latStop, stepDeg).ToArray();
+            var lonRange = Utils.Arange(lonStart, lonStop, stepDeg);
+            var latRange = Utils.Arange(latStart, latStop, stepDeg);
 
 
             // Fill matrix

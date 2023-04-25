@@ -9,6 +9,7 @@ using DataStructures;
 using static StructOperations.ArrayManagement;
 using Torque;
 using Cartography;
+using static MYRIAM.FileReader;
 
 
 namespace MYRIAM
@@ -16,9 +17,15 @@ namespace MYRIAM
     partial class ManageOutputs
     {
         public static void Create_OutputDirs(
-            string outputDir, string pltLabel, string outputLabel, bool overwriteOutput,
+            InputParameters inputParams,
             out string dir_MTXwM, out string dir_dM_PDD, out string dir_TMP)
         {
+            string outputDir = inputParams.OUTPUTS_DIR;
+            string pltLabel = inputParams.PLT_LABEL;
+            string outputLabel = inputParams.OUTPUT_LABEL;
+            bool overwriteOutput = inputParams.OVERWRT_OUTPUT;
+
+
             dir_MTXwM = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_MTX_w2M");
             dir_dM_PDD = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_dM_PDD");
             dir_TMP = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_TMP");
@@ -210,10 +217,8 @@ namespace MYRIAM
 
         public static string Get_pyScriptPath(string pyScriptName)
         {
-            string pyScriptsDir = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                @"..\..\..\src\MYRIAM.PythonFunctions");
-
+            string dirDefault = Get_ItemPath("assets");
+            string pyScriptsDir = Path.Combine(dirDefault, "PythonFunctions");
             return Path.Combine(pyScriptsDir, pyScriptName);
         }
 
@@ -254,13 +259,11 @@ namespace MYRIAM
         }
 
 
-        public static void Save_InputParamsReport(Dictionary<string, object> inputParams)
+        public static void Save_InputParamsReport(InputParameters inputParams)
         {
             // Upload Template file
-            string pathReport = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                @"..\..\..\assets\TextFiles\InputFileReport_Template.txt");
-
+            string dirDefault = Get_ItemPath("assets");
+            string pathReport = Path.Combine(dirDefault, "TextFiles/InputFileReport_Template.txt");
             string[] lines = File.ReadAllLines(pathReport);
             
 
@@ -275,16 +278,13 @@ namespace MYRIAM
                     if (!inputParams.ContainsKey(key))
                         lines[i] = "!" + lines[i];
 
-                    else if (inputParams[key] == null)
-                        lines[i] = "!" + lines[i];
-
                     else
                     {
                         switch (key)
                         {
                             case "SAVE_ENS":
                                 {
-                                    bool value = (bool)inputParams[key];
+                                    bool value = (bool)inputParams.GetValue(key);
                                     lines[i] = lines[i] + $" {value}";
 
                                     break;
@@ -299,7 +299,7 @@ namespace MYRIAM
                             case "CTR_PATH":
                             case "OUTPUT_LABEL":
                                 {
-                                    string value = (string)inputParams[key];
+                                    string value = (string)inputParams.GetValue(key);
 
                                     if (value != null)
                                         lines[i] = lines[i] + $" {value}";
@@ -312,7 +312,7 @@ namespace MYRIAM
                             case "FRACTION_HA":
                             case "DEF_DISTANCE":
                                 {
-                                    double value = (double)inputParams[key];
+                                    double value = (double)inputParams.GetValue(key);
                                     lines[i] = lines[i] + $" {SetString(value, "F1")}";
 
                                     break;
@@ -321,7 +321,7 @@ namespace MYRIAM
                             case "muM":
                             case "muA":
                                 {
-                                    double value = (double)inputParams[key];
+                                    double value = (double)inputParams.GetValue(key);
                                     lines[i] = lines[i] + $" {SetString(value, "#.##E+0")}";
 
                                     break;
@@ -329,7 +329,7 @@ namespace MYRIAM
 
                             case "DM_MAGHIST_BINS":
                                 {
-                                    int value = (int)inputParams[key];
+                                    int value = (int)inputParams.GetValue(key);
                                     lines[i] = lines[i] + $" {SetString(value, "F1")}";
 
                                     break;
@@ -339,7 +339,7 @@ namespace MYRIAM
                             case "DM_CNTR_PERCENT":
                             case "ANG_ROT":
                                 {
-                                    var values = (double[])inputParams[key];
+                                    var values = (double[])inputParams.GetValue(key);
 
                                     if (values != null)
                                     {
@@ -352,7 +352,7 @@ namespace MYRIAM
 
                             case "STG_IDXs":
                                 {
-                                    int[] values = (int[])inputParams[key];
+                                    int[] values = (int[])inputParams.GetValue(key);
                                     lines[i] = lines[i] + $" {SetString(values, format: "F0", delimiter: ", ")}";
 
                                     break;
@@ -360,7 +360,7 @@ namespace MYRIAM
 
                             case "REGION_muA_LV":
                                 {
-                                    CartoLimits value = (CartoLimits)inputParams[key];
+                                    CartoLimits value = (CartoLimits)inputParams.GetValue(key);
                                     lines[i] = lines[i] + $" [" +
                                         $"{SetString(value.LonMin, "F1")}, " +
                                         $"{SetString(value.LonMax, "F1")}, " +
@@ -374,13 +374,13 @@ namespace MYRIAM
                 }
             }
             string fileName = 
-                $"INPUT_FILE_REPORT_{inputParams["PLT_LABEL"]}" +
-                $"_{((int[])inputParams["STG_IDXs"])[0]}" +
-                $"_{((int[])inputParams["STG_IDXs"])[1]}" +
-                $"_{(string)inputParams["OUTPUT_LABEL"]}" +
+                $"INPUT_FILE_REPORT_{inputParams.PLT_LABEL}" +
+                $"_{inputParams.STG_IDX_1}" +
+                $"_{inputParams.STG_IDX_2}" +
+                $"_{inputParams.OUTPUT_LABEL}" +
                 $".txt";
             
-            SaveLines_asTXT(lines.ToList(), (string)inputParams["OUTPUTS_DIR"], fileName);
+            SaveLines_asTXT(lines.ToList(), inputParams.OUTPUTS_DIR, fileName);
         }
     }
 }

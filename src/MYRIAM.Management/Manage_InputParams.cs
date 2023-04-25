@@ -7,7 +7,7 @@ namespace MYRIAM
 {
     class Manage_InputParams
     {
-        public static Dictionary<string, object> Set_InputParams(string inputFilePath)
+        public static InputParameters Set_InputParams(string inputFilePath)
         {
             // Upload input file
             var givenStrParams = File_toInputStrings(inputFilePath);
@@ -28,13 +28,12 @@ namespace MYRIAM
 
             // If contour path (CTR_PATH) is not given, use Matthews et al. 2016 Present-day contour
             if (!inputParams.ContainsKey("CTR_PATH"))
-                inputParams.Add("CTR_PATH", GetContourPath((string) inputParams["PLT_LABEL"]));
+                inputParams.Add("CTR_PATH", GetContourPath(inputParams.PLT_LABEL));
 
 
             // If python path (PYTHON_PATH) is not given, set empty string instead
             if (!inputParams.ContainsKey("PYTHON_PATH"))
                 inputParams.Add("PYTHON_PATH", null);
-
 
             return inputParams;
         }
@@ -56,18 +55,16 @@ namespace MYRIAM
 
         public static Dictionary<string, string> Load_defaultParams()
         {
-            string pathDefault = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                @"..\..\..\assets\TextFiles\DefaultParameters.txt");
-
+            string dirDefault = Get_ItemPath("assets");
+            string pathDefault = Path.Combine(dirDefault, "TextFiles/DefaultParameters.txt");
             return File_toInputStrings(pathDefault);
         }
 
 
-        public static Dictionary<string, object> InputStrings_toParams(Dictionary<string, string> inputStrings)
+        public static InputParameters InputStrings_toParams(Dictionary<string, string> inputStrings)
         {
             // Set output dictionary
-            var inputVars = new Dictionary<string, object>();
+            InputParameters inputVars = new InputParameters();
 
 
             // Iterate over dictionary
@@ -550,12 +547,16 @@ namespace MYRIAM
                                         int stg1 = int.Parse(values[0]);
                                         int stg2 = int.Parse(values[1]);
                                         inputVars.Add(entry.Key, new int[2] { stg1, stg2 });
+                                        inputVars.Add("STG_IDX_1", stg1);
+                                        inputVars.Add("STG_IDX_2", stg2);
                                     }
                                     catch (FormatException)
                                     {
                                         int stg1 = int.Parse(values[0].Split(new char[] { '.' })[0]);
                                         int stg2 = int.Parse(values[1].Split(new char[] { '.' })[0]);
                                         inputVars.Add(entry.Key, new int[2] { stg1, stg2 });
+                                        inputVars.Add("STG_IDX_1", stg1);
+                                        inputVars.Add("STG_IDX_2", stg2);
                                     }
                                 }
                             }
@@ -575,11 +576,11 @@ namespace MYRIAM
             // Additional actions
             if (inputVars.ContainsKey("PYTHON_PATH"))
             {
-                double[] percentArray = (double[])inputVars["DM_CNTR_PERCENT"];
+                double[] percentArray = inputVars.DM_CNTR_PERCENT;
 
                 if (!percentArray.Contains(68))
                 {
-                    inputVars["DM_CNTR_PERCENT"] = percentArray.Concat(new double[] { 68 }).ToArray();
+                    inputVars.DM_CNTR_PERCENT = percentArray.Concat(new double[] { 68 }).ToArray();
                     
                     Console.WriteLine(
                         "Warning! " +
@@ -588,7 +589,7 @@ namespace MYRIAM
 
                 if (!percentArray.Contains(20))
                 {
-                    inputVars["DM_CNTR_PERCENT"] = percentArray.Concat(new double[] { 20 }).ToArray();
+                    inputVars.DM_CNTR_PERCENT = percentArray.Concat(new double[] { 20 }).ToArray();
 
                     Console.WriteLine(
                         "Warning! " +

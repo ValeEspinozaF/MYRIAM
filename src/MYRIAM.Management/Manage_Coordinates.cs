@@ -19,6 +19,24 @@ namespace CartographicCoordinates
             return PolygonGeometry.Points_InPolygon(cntrArray, gridPoints);
         }
 
+        public static Coordinate[] Grid_InPolygon(List<Coordinate[]> cntrArrays, double stepDeg)
+        {
+            // Create grid of coordinates within multiple plate boundary limits
+            // with stepDeg as spacing
+            Coordinate[] gridPntsDeg = cntrArrays.
+                SelectMany(coordArray => Grid_InPolygon(coordArray, stepDeg)).
+                ToArray();
+
+
+            // Eliminate grid duplicates (same latitude, one with Lon=180, the other Lon=-180)
+            gridPntsDeg = gridPntsDeg.
+                Where(x => !(x.Lon == -180 && gridPntsDeg.Where(p => p.Lon == 180).Select(p => p.Lat).Contains(x.Lat))).
+                ToArray();
+
+
+            // Return grid points in degrees
+            return gridPntsDeg;
+        }
 
         public static Coordinate[] Clean_boundaryDuplicates(Coordinate[] cntrArray)
         {

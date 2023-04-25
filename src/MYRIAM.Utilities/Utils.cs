@@ -68,19 +68,19 @@ namespace Utilities
                 }
         }
 
-
-        public static IEnumerable<double> Arange(double start, double stop, double step = 1)
+        public static double[] Arange(double start, double stop, double step = 1)
         {
-            if (step > 0) while (Math.Round(start*1e6) <= Math.Round(stop*1e6)) // Ugly workaround to tiny decimal difference when comparing equality !!! Does not work for big numbers
-                {
-                    yield return start;
-                    start += step;
-                }
-            else while (start >= stop) 
-                {
-                    yield return start;
-                    start += step;
-                }
+            int n = (int)Math.Ceiling((stop - start) / step);
+            double[] result = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                result[i] = start + i * step;
+            }
+
+            if (start + n * step <= stop)
+                result = result.Concat(new double[] { start + n * step }).ToArray();
+
+            return result;
         }
 
         public static double[] Linspace(double start, double stop, int nSamples)
@@ -124,22 +124,6 @@ namespace Utilities
         }
 
 
-        public static T? Min<T>(this T[] arr, T ignore) where T : IComparable
-        {
-            bool minSet = false;
-            T min = default;
 
-            for (int i = 0; i < arr.Length; i++)
-                if (arr[i].CompareTo(ignore) != 0)
-                    if (!minSet)
-                    {
-                        minSet = true;
-                        min = arr[i];
-                    }
-                    else if (arr[i].CompareTo(min) < 0)
-                        min = arr[i];
-
-            return minSet ? min : ignore;
-        }
     }
 }

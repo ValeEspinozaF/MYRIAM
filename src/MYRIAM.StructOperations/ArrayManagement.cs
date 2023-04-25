@@ -14,7 +14,7 @@ namespace StructOperations
             return new int[] { array.GetLength(0), array.GetLength(1) };
         }
 
-        public static T[] InsertbyIndex<T>(T[] array, T element, int index) //!!! can surely be optimized
+        public static T[] InsertbyIndex<T>(T[] array, T element, int index)
         {
             T[] newArray = new T[array.Length + 1];
 
