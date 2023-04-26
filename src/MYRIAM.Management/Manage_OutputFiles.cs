@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using StructOperations;
 using DataStructures;
 using static StructOperations.ArrayManagement;
-using Torque;
+using MYRIAM.Torque;
 using Cartography;
 using static MYRIAM.FileReader;
 

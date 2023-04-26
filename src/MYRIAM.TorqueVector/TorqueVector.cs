@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataStructures;
 
-namespace Torque
+namespace MYRIAM.Torque
 {
     public class TorqueVector : Vector
     {

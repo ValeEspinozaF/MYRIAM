@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DataStructures;
 using static StructOperations.ArrayOperations;
 
-namespace Torque
+namespace MYRIAM.Torque
 {
     internal class TorqueStatistics
     {

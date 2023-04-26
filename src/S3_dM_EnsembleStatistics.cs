@@ -2,7 +2,7 @@
 using EnsembleAnalysis;
 using StructOperations;
 using Histograms;
-using Torque;
+using MYRIAM.Torque;
 using ContourBuilder;
 using Cartography;
 using DataStructures;

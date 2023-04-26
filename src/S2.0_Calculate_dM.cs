@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static EnsembleAnalysis.Ensemble_Statistics;
 using DataStructures;
-using Torque;
+using MYRIAM.Torque;
 
 
 namespace MYRIAM
