@@ -15,7 +15,6 @@ Properties/
 x64/
 bin/
 obj/
-docs/
 
 # Node artifact files
 node_modules/
