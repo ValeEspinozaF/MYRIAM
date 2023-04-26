@@ -1,8 +1,8 @@
 ﻿using static MYRIAM.ManageOutputs;
 using EnsembleAnalysis;
 using StructOperations;
-using Histograms;
-using Torque;
+using Histogram;
+using MYRIAM.Torque;
 using ContourBuilder;
 using Cartography;
 using DataStructures;
@@ -44,7 +44,7 @@ namespace MYRIAM
 
 
             // Use alternative matrix if RMTX is not explicitly set
-            if (MatrixOperations.Matrix_IsNaN(RMTX))
+            if (Matrix.IsNaN(RMTX))
                 RMTX_2use = getOptimal_rotMatrix(dM, out ANG_R);
 
 
@@ -113,7 +113,7 @@ namespace MYRIAM
             // --- Rotate contours back ---
 
             // Calculate the inverse of RMTX_2use
-            double[,] RMTX_INV = MatrixOperations.MatrixInverse(RMTX_2use);
+            double[,] RMTX_INV = Matrix.Inverse(RMTX_2use);
 
 
             // Rotate each percentage contour
@@ -172,11 +172,11 @@ namespace MYRIAM
             GC.WaitForPendingFinalizers();
 
 
-            // --- Construct Histogram ---
+            // --- Construct Histogram1D ---
 
 
             // Calculate histogram
-            Histogram hist = HistogramBuilder.MakeHistogram(magArray, nBins);
+            Histogram1D hist = Histogram1D.MakeHistogram(magArray, nBins);
             magArray = new double[0];
 
 
@@ -225,7 +225,7 @@ namespace MYRIAM
 
 
             // Multiply rotation matrices
-            return Build_RotationMatrix.Set_RotationMatrix(-meanLon, meanLat);
+            return Matrix.Build_RotationMatrix(-meanLon, meanLat);
         }
 
 

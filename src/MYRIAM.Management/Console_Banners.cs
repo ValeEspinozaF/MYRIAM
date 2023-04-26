@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 using System.Collections;
 using static MYRIAM.ManageOutputs;
-using Torque;
-
+using MYRIAM.Torque;
+using System.Xml.Linq;
 
 namespace MYRIAM
 {
-    class Console_Banners
+    internal class Console_Banners
     {
         const char _block = '■';
         const string _twirl = "-\\|/";
 
-        public static void ClearCurrentConsoleLine()
+        private static void ClearCurrentConsoleLine()
         {
             int currentLineCursor = Console.CursorTop;
             Console.SetCursorPosition(0, Console.CursorTop);
@@ -24,7 +24,7 @@ namespace MYRIAM
             Console.SetCursorPosition(0, currentLineCursor); 
         }
 
-        public static void ReplacePreviousConsoleLine(string newLine)
+        private static void ReplacePreviousConsoleLine(string newLine)
         {
             int currentLineCursor = Console.CursorTop;
             Console.SetCursorPosition(0, Console.CursorTop - 1);
@@ -34,7 +34,7 @@ namespace MYRIAM
             Console.SetCursorPosition(0, currentLineCursor);
         }
 
-        public static void MainBanner()
+        internal static void MainBanner()
         {
             Console.WriteLine("");
             Console.WriteLine("===================================================================");
@@ -55,7 +55,7 @@ namespace MYRIAM
         }
 
 
-        public static void InputSummaryBanner(InputParameters inputParams)
+        internal static void InputSummaryBanner(InputParameters inputParams)
         {
             string str_muA = SetString(inputParams.muA, "#.#E+0");
             string str_muM = SetString(inputParams.muM, "#.#E+0");
@@ -74,7 +74,7 @@ namespace MYRIAM
         }
 
 
-        public static void OutputSummaryBanner(TorqueVector dMvector)
+        internal static void OutputSummaryBanner(TorqueVector dMvector)
         {
             ClearCurrentConsoleLine();
             ReplacePreviousConsoleLine("Output Torque Variation (dM) Summary");
@@ -130,20 +130,14 @@ namespace MYRIAM
                     }
                 case 5:
                     {
-                        //ClearCurrentConsoleLine();
                         int progress = 10 + (int)Math.Round((15.0 / itLength) * (iteration + 1));
                         WriteProgressBar(progress, true);
                         break;
                     }
                 case 6:
                     {
-                        if (iteration == 0)
-                        {
-                            ReplacePreviousConsoleLine("Interpolating plate's grid viscosity");
-                        }
-                        //ClearCurrentConsoleLine();
-                        int progress = 25 + (int)Math.Round((5.0 / itLength) * (iteration + 1));
-                        WriteProgressBar(progress, false);
+                        ReplacePreviousConsoleLine("Interpolating plate's grid viscosity");
+                        WriteProgressBar(30, false);
                         break;
                     }
                 case 7:
@@ -266,13 +260,13 @@ namespace MYRIAM
                                 Thread.Sleep(300);
                             }
 
-                        // Magnitude Histogram
+                        // Magnitude Histogram1D
                         else if (_case == 1)
                             if (_do == true)
                             {
                                 for (var i = 1; i <= 5; ++i)
                                 {
-                                    ReplacePreviousConsoleLine("Make Figures - Magnitude Histogram");
+                                    ReplacePreviousConsoleLine("Make Figures - Magnitude Histogram1D");
                                     WriteProgressBar(80 + i, true);
                                     Thread.Sleep(100);
                                 }
@@ -281,7 +275,7 @@ namespace MYRIAM
                             {
                                 for (var i = 1; i <= 5; ++i)
                                 {
-                                    ReplacePreviousConsoleLine("Make Figures - Skip Magnitude Histogram");
+                                    ReplacePreviousConsoleLine("Make Figures - Skip Magnitude Histogram1D");
                                     WriteProgressBar(80 + i, true);
                                     Thread.Sleep(5);
                                 }

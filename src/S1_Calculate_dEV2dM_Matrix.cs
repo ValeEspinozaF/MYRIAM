@@ -11,6 +11,7 @@ using ComputationalGeometry;
 using static CartographicCoordinates.ManageCoordinates;
 using static MYRIAM.ManageOutputs;
 using Cartography;
+using System.Xml.Linq;
 
 namespace MYRIAM
 {
@@ -112,7 +113,8 @@ namespace MYRIAM
                 out double[,] muA_mlat, out double[,] muA_mdat, 
                 out double[,] YM_mdat, out double[,] MT_mdat);
 
-            
+
+            Console_Banners.WriteReports(6);
             double[] muA_gridPnts = GridInterpolation.Interpolation2D( 
                 muA_mlon, muA_mlat, muA_mdat, gridPntsDeg, interpMethod);
 

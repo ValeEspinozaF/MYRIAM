@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using DataStructures;
+using System.Reflection;
 using StructOperations;
 using static MYRIAM.Console_Banners;
 using static MYRIAM.ManageOutputs;
-using Torque;
-using Cartography;
-using System.Reflection.Metadata;
+using MYRIAM.Torque;
+using DataStructures;
 
-
-using Utilities;
 
 namespace MYRIAM
 {
@@ -124,7 +121,7 @@ namespace MYRIAM
 
 
                 // Set up rotation matrix for contour ellipse calculation improvement
-                double[,] ROT_MTX = Build_RotationMatrix.Set_RotationMatrix(ANG_R[0], ANG_R[1], ANG_R[2]);
+                double[,] ROT_MTX = Matrix.Build_RotationMatrix(ANG_R[0], ANG_R[1], ANG_R[2]);
 
 
                 // === Calculate Contours ===

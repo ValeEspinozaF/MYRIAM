@@ -181,18 +181,35 @@ namespace MYRIAM
         }
 
 
+        /// <summary>
+        /// Add a value to a property, using the property name as string.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">Value to be set.</param>
         public void Add(string propertyName, object value)
         {
             PropertyInfo nameProperty = typeof(InputParameters).GetProperty(propertyName);
             nameProperty.SetValue(this, value);
         }
 
+        /// <summary>
+        /// Retrieve the value of a property, using the property name as string
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>Value of the property.</returns>
         public object GetValue(string propertyName)
         {
             PropertyInfo nameProperty = typeof(InputParameters).GetProperty(propertyName);
             return nameProperty.GetValue(this);
         }
 
+
+        /// <summary>
+        /// Checks whether a given <see cref="InputParameters"/> instance, contains
+        /// a non-null value for a given property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>False is the property value is null, True if otherwise.</returns>
         public bool ContainsKey(string propertyName)
         {
             PropertyInfo nameProperty = typeof(InputParameters).GetProperty(propertyName);
