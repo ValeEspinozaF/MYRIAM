@@ -8,14 +8,14 @@ using System.Xml.Schema;
 using StructOperations;
 using DataStructures;
 using ComputationalGeometry;
-using static CartographicCoordinates.ManageCoordinates;
+using static Cartography.ManageCoordinates;
 using static MYRIAM.ManageOutputs;
 using Cartography;
 using System.Xml.Linq;
 
 namespace MYRIAM
 {
-    internal class Calculate_dEV2dM_Matrix
+    internal partial class MainFunctions
     {
         // Earth's radius in km
         static readonly double Re = 6371e3;
@@ -24,9 +24,18 @@ namespace MYRIAM
         /// This function calculates the matrix that link Euler-vector variations 
         /// to torque-variations.
         /// </summary>
-        /// <param name="dir_MTXwM"></param>
+        /// <param name="inputParams"><see cref="InputParameters"/> instance with the necessary running parameters (See below).</param>
+        /// <param name="dir_MTX_dEV2dM">String path to the directory containing the dEV to dM matrix.</param>
         /// <param name="modelName">String with the name of the current model.</param>
-        public static void w2M_MTX_CorLV_muA(InputParameters inputParams, string dir_MTXwM, string modelName)
+        /// <remarks>Needed input parameters:
+        /// <para>[CTR_PATH] as longitude and latitude columns in degrees,</para>
+        /// <para>[muM] in Pa · s,</para>
+        /// <para>[muA] in Pa · s,</para>
+        /// <para>[HL] in kilometers,</para>
+        /// <para>[FRACTION_HA] between 0 and 1,</para>
+        /// <para>[GRID_RES] in degrees,</para>
+        /// </remarks>
+        public static void Calculate_dEV2dM_Matrix(InputParameters inputParams, string dir_MTX_dEV2dM, string modelName)
         {
             string contourPath = inputParams.CTR_PATH;
             double muM = inputParams.muM;
@@ -107,7 +116,7 @@ namespace MYRIAM
 
             // ======= Asthenosphere viscosity / thickness interpolation ======
 
-            FNCT_muA_MAPPER.muA_MAPPER(
+            MainFunctions.Map_muA_AverageGrid(
                 muM, muA, HL, REGION_muA_LV, fHA, 
                 out double HA, out double[,] muA_mlon, 
                 out double[,] muA_mlat, out double[,] muA_mdat, 
@@ -136,23 +145,23 @@ namespace MYRIAM
 
             // --- Save m2M TXT file ---
             string FILENAME_w2M = Set_Matrix_w2M_FileName(plateLabel, modelName, interpMethod);
-            Save_toTXT(MTX_w2M, dir_MTXwM, FILENAME_w2M);
+            Save_toTXT(MTX_w2M, dir_MTX_dEV2dM, FILENAME_w2M);
 
 
             // --- Save plate Area TXT file ---
             string filenameArea = Set_Area_FileName(plateLabel, HL);
-            Save_toTXT(plateArea, dir_MTXwM, filenameArea);
+            Save_toTXT(plateArea, dir_MTX_dEV2dM, filenameArea);
 
 
             // --- Save plate boundary coordinates TXT file ---
             string filenameBoundary = Set_Boundary_FileName(plateLabel);
-            Save_toTXT(cntrArray, dir_MTXwM, filenameBoundary);
+            Save_toTXT(cntrArray, dir_MTX_dEV2dM, filenameBoundary);
 
 
             // --- Save grid coordinates TXT file ---
             string filenameInBoundary = Set_BoundaryIn_FileName(plateLabel);
             double[,] gridPoints = Coordinate.ToArray(gridPntsDeg, fDef);
-            Save_toTXT(gridPoints, dir_MTXwM, filenameInBoundary, "F2");
+            Save_toTXT(gridPoints, dir_MTX_dEV2dM, filenameInBoundary, "F2");
 
 
             // --- Save grid values for muA (Asthenospheres Viscosity), YM (Youngs Modeule) and TXT file ---
@@ -161,11 +170,11 @@ namespace MYRIAM
                 out string GRID_MuA_FILENAME, out string GRID_YM_FILENAME,
                 out string GRID_MT_FILENAME);
 
-            Save_toTXT(muA_mlon, dir_MTXwM, GRID_LON_FILENAME, "0.0");
-            Save_toTXT(muA_mlat, dir_MTXwM, GRID_LAT_FILENAME, "0.0");
-            Save_toTXT(muA_mdat, dir_MTXwM, GRID_MuA_FILENAME);
-            Save_toTXT(YM_mdat, dir_MTXwM, GRID_YM_FILENAME);
-            Save_toTXT(MT_mdat, dir_MTXwM, GRID_MT_FILENAME);
+            Save_toTXT(muA_mlon, dir_MTX_dEV2dM, GRID_LON_FILENAME, "0.0");
+            Save_toTXT(muA_mlat, dir_MTX_dEV2dM, GRID_LAT_FILENAME, "0.0");
+            Save_toTXT(muA_mdat, dir_MTX_dEV2dM, GRID_MuA_FILENAME);
+            Save_toTXT(YM_mdat, dir_MTX_dEV2dM, GRID_YM_FILENAME);
+            Save_toTXT(MT_mdat, dir_MTX_dEV2dM, GRID_MT_FILENAME);
         }
 
         private static double[,] build_MTX_w2M(double[] muAfHA, double[] dA, Vector[] cartArray)

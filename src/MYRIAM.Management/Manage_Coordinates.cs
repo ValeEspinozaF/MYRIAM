@@ -1,7 +1,7 @@
-﻿using Cartography;
+﻿
 
 
-namespace CartographicCoordinates
+namespace Cartography
 {
     class ManageCoordinates
     {

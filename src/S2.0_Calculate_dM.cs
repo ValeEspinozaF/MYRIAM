@@ -6,14 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using static EnsembleAnalysis.Ensemble_Statistics;
 using DataStructures;
-using MYRIAM.Torque;
 
 
 namespace MYRIAM
 {
-    internal class FNCT_EVdM
+    internal partial class MainFunctions
     {
-        public static void EV_to_dM(
+        public static void Calculate_dM(
             InputParameters inputParams, string dir_MTXwM, string dir_dM_PDD,
             string mtxLabel, out TorqueVector[] dM, out TorqueVector dMm)
         {

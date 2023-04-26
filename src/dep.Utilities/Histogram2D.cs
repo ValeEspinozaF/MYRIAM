@@ -11,25 +11,28 @@ using Utilities;
 
 namespace Histogram
 {
-    public struct HistogramBin2D
-    {
-        public Coordinate LowerLeftBound { get; set; }
-        public Coordinate UpperRightBound { get; set; }
-        public Coordinate MidCoordinates { get; set; }
-        public double WidthX { get; set; }
-        public double WidthY { get; set; }
-        public HistogramBin2D(Coordinate llCoord, Coordinate urCoord, Coordinate midCoord, double widthX, double widthY)
-        {
-            LowerLeftBound = llCoord;
-            UpperRightBound = urCoord;
-            MidCoordinates = midCoord;
-            WidthX = widthX;
-            WidthY = widthY;
-        }
-    }
-
+    /// <summary>
+    /// Properties and metrics of a bi-dimensional histogram of two data samples.
+    /// </summary>
     public class Histogram2D
     {
+        public struct HistogramBin2D
+        {
+            public Coordinate LowerLeftBound { get; set; }
+            public Coordinate UpperRightBound { get; set; }
+            public Coordinate MidCoordinates { get; set; }
+            public double WidthX { get; set; }
+            public double WidthY { get; set; }
+            public HistogramBin2D(Coordinate llCoord, Coordinate urCoord, Coordinate midCoord, double widthX, double widthY)
+            {
+                LowerLeftBound = llCoord;
+                UpperRightBound = urCoord;
+                MidCoordinates = midCoord;
+                WidthX = widthX;
+                WidthY = widthY;
+            }
+        }
+
         public int[] Nbins { get; set; }
         public int[,] Values { get; set; }
         public double[] EdgesX { get; set; }
@@ -38,34 +41,6 @@ namespace Histogram
         public double[] WidthY { get; set; }
         public KeyValuePair<HistogramBin2D, int>[,] BinsAndValues { get; set; }
 
-
-        public Histogram2D(int[] nbins, int[,] values, double[][] edges, double[][] width)
-        {
-            Nbins = nbins;
-            Values = values;
-            EdgesX = edges[1];
-            EdgesY = edges[0];
-            WidthX = width[1];
-            WidthY = width[0];
-            BinsAndValues = new KeyValuePair<HistogramBin2D, int>[values.GetLength(0), values.GetLength(1)];
-
-            for (int i = 0; i < values.GetLength(0); i++)
-            {
-                for (int j = 0; j < values.GetLength(1); j++)
-                {
-                    HistogramBin2D binVars = new HistogramBin2D
-                    {
-                        LowerLeftBound = new Coordinate(edges[1][j], edges[0][i]),
-                        UpperRightBound = new Coordinate(edges[1][j + 1], edges[0][i + 1]),
-                        MidCoordinates = new Coordinate((edges[1][j] + edges[1][j + 1]) / 2, (edges[0][i] + edges[0][i + 1]) / 2),
-                        WidthX = WidthX[j],
-                        WidthY = WidthY[i]
-                    };
-
-                    BinsAndValues[i, j] = new KeyValuePair<HistogramBin2D, int>(binVars, values[i, j]);
-                }
-            }
-        }
 
         /// <summary>
         /// Compute the bi-dimensional histogram of two data arrays, containg 
@@ -78,21 +53,21 @@ namespace Histogram
         /// parameters are given, <paramref name="range"/> is ignored.
         /// </remarks>
         /// <typeparam name="T">Type of array; will be processed as double.</typeparam>
-        /// <param name="arrayX">Array of Lon-coordinates</param>
-        /// <param name="arrayY">Array of Lat-coordinates</param>
-        /// <param name="nBins">Number of bins for each (Length == 2) or both dimensions (Length == 1). Optional</param>
-        /// <param name="binEdges">Bin edges for each (Length == 2) or both dimensions (Length == 1). Optional</param>
-        /// <param name="range">Min and maximun limits for each dimension (Size = 2,2). Optional </param>
-        /// <returns>Histogram2D structure with the resulting bin values</returns>
+        /// <param name="arrayX">Array of x-coordinates</param>
+        /// <param name="arrayY">Array of y-coordinates</param>
+        /// <param name="nBins">Number of bins for each (Length == 2) or both dimensions (Length == 1). Optional.</param>
+        /// <param name="binEdges">Bin edges for each (Length == 2) or both dimensions (Length == 1). Optional.</param>
+        /// <param name="range">Minimum and maximun bin edges for each dimension (Size = 2,2). Optional. </param>
+        /// <returns>Histogram2D instance.</returns>
         /// <exception cref="ArgumentException">Thrown when:
         /// <para>Arrays <paramref name="arrayX"/> and <paramref name="arrayY"/> do not have the same length.</para>
         /// <para>Inputs <paramref name="nBins"/> and <paramref name="binEdges"/> are both supplied.</para>
         /// <para>Input <paramref name="nBins"/> is empty or has more values than 2 values (one for each dimension).</para>
-        /// <para>Input <paramref name="nBins"/> must be a positive integer bigger than zero.</para>
+        /// <para>Input <paramref name="nBins"/> is not a positive integer bigger than zero.</para>
         /// <para>Input <paramref name="binEdges"/> values must be in increasing order.</para>
         /// <para>Input <paramref name="range"/> values must be increasing in each dimension.</para>
         /// </exception>
-        public static Histogram2D MakeHistogram2D<T>(T[] arrayX, T[] arrayY, int[]? nBins = null, T[][]? binEdges = null, T[,]? range = null)
+        public Histogram2D(double[] arrayX, double[] arrayY, int[]? nBins = null, double[][]? binEdges = null, double[,]? range = null)
         {
             /*
              * The following code and its dependencies (get_outerEdges, searchSorted, ravel_multiIndex, binCount) 
@@ -246,8 +221,32 @@ namespace Histogram
             dedges = ArrayManagement.Flip(dedges, 0);
 
 
-            // Store bin data as histrogram structure
-            return new Histogram2D(nBins, binCount2D, edges, dedges);
+            // Fill Histogram2D properties
+            Nbins = nBins;
+            Values = binCount2D;
+            EdgesX = edges[1];
+            EdgesY = edges[0];
+            WidthX = dedges[1];
+            WidthY = dedges[0];
+            BinsAndValues = new KeyValuePair<HistogramBin2D, int>[binCount2D.GetLength(0), binCount2D.GetLength(1)];
+
+            for (int i = 0; i < binCount2D.GetLength(0); i++)
+            {
+                for (int j = 0; j < binCount2D.GetLength(1); j++)
+                {
+                    HistogramBin2D binVars = new()
+                    {
+                        LowerLeftBound = new Coordinate(edges[1][j], edges[0][i]),
+                        UpperRightBound = new Coordinate(edges[1][j + 1], edges[0][i + 1]),
+                        MidCoordinates = new Coordinate((edges[1][j] + edges[1][j + 1]) / 2, (edges[0][i] + edges[0][i + 1]) / 2),
+                        WidthX = WidthX[j],
+                        WidthY = WidthY[i]
+                    };
+
+                    BinsAndValues[i, j] = new KeyValuePair<HistogramBin2D, int>(binVars, binCount2D[i, j]);
+                }
+            }
+            
         }
 
         private static double[] genericToDouble<T>(T[] array)

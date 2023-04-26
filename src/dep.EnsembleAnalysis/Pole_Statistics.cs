@@ -15,7 +15,7 @@ namespace EnsembleAnalysis
         /// </summary>
         /// <remarks>
         /// This function takes 2 arrays of xy coordinates and turns
-        /// them into a 2D histogram (MakeHistogram2D) with bins that 
+        /// them into a 2D histogram (MakeHistogram) with bins that 
         /// record the spatial recurrence of coordinates. This 
         /// recurrence is now the Val value, whereas the 2D-bin center 
         /// is the Lon an Lat coordinates. The CreateContour method then
@@ -46,7 +46,7 @@ namespace EnsembleAnalysis
 
 
             //  --- Build 2D Histogram1D ---
-            Histogram2D hist2D = Histogram2D.MakeHistogram2D(xArray, yArray, nBins, binEdges, range);
+            Histogram2D hist2D = new Histogram2D(xArray, yArray, nBins, binEdges, range);
 
 
             // --- Extract Contour Boundaries --

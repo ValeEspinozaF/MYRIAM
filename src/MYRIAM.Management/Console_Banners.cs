@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 using System.Collections;
 using static MYRIAM.ManageOutputs;
-using MYRIAM.Torque;
 using System.Xml.Linq;
+using DataStructures;
+
 
 namespace MYRIAM
 {

@@ -18,7 +18,7 @@ using Utilities;
 
 namespace MYRIAM
 {
-    internal class FNCT_muA_MAPPER
+    internal partial class MainFunctions
     {
         /// <summary>
         /// This function calculates the average thickness of the asthenosphere channel 
@@ -34,7 +34,7 @@ namespace MYRIAM
         /// <param name="glat">Output 2D grid with the latitude (in degrees) for each datapoint.</param>
         /// <param name="gmuA">Output 2D grid with the asthenosphere viscosity (in Pa*s) for each datapoint.</param>
         /// <param name="gYM">Output 2D grid with the asthenosphere Young's modulus (in Pa) for each datapoint.</param>
-        public static void muA_MAPPER(
+        public static void Map_muA_AverageGrid(
             double muM, 
             double muA, 
             double HL, 

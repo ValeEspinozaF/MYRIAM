@@ -56,7 +56,7 @@ namespace DataStructures
             return this;
         }
 
-        public static Vector[] ToSpherical(Vector[] vectorArray)
+        public static T[] ToSpherical<T>(T[] vectorArray) where T : Vector, new()
         {
             for (int i = 0; i < vectorArray.Length; i++)
                 vectorArray[i].ToSpherical();

@@ -18,7 +18,7 @@ namespace EnsembleAnalysis
             // --- Histogram1D ---
 
             // Create histogram 
-            hist = Histogram1D.MakeHistogram(magArray, nBins, binSize, min, max);
+            hist = new Histogram1D(magArray, nBins, binSize, min, max);
 
 
             // Store recurrence in each bin (histValues) and edges of bins (histEdges)

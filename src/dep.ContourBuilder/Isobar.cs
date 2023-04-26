@@ -48,7 +48,7 @@ namespace ContourBuilder
 
         public static List<Isobar> CreateIsobar(Histogram2D hist2D, double level)
         {
-            KeyValuePair<HistogramBin2D, int>[,] bins = hist2D.BinsAndValues;
+            var bins = hist2D.BinsAndValues;
 
             int xLength = hist2D.BinsAndValues.GetLength(0);
             int yLength = hist2D.BinsAndValues.GetLength(1);

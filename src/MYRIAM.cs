@@ -8,7 +8,6 @@ using System.Reflection;
 using StructOperations;
 using static MYRIAM.Console_Banners;
 using static MYRIAM.ManageOutputs;
-using MYRIAM.Torque;
 using DataStructures;
 
 
@@ -66,7 +65,7 @@ namespace MYRIAM
             // Euler vector(w) to torque(M) with lateral variations of asthenosphere
             // viscosity(muA)
 
-            Calculate_dEV2dM_Matrix.w2M_MTX_CorLV_muA(inputParams, dir_MTXwM, modelName);
+            MainFunctions.Calculate_dEV2dM_Matrix(inputParams, dir_MTXwM, modelName);
 
 
 
@@ -74,7 +73,7 @@ namespace MYRIAM
             // Calculates the torque-variation (dM) associated with an Euler-vector
             // change(dEV) of a given tectonic plate
 
-            FNCT_EVdM.EV_to_dM(
+            MainFunctions.Calculate_dM(
                 inputParams, dir_MTXwM, dir_dM_PDD, mtxLabel, 
                 out TorqueVector[] dM, out TorqueVector dMvector);
 
@@ -91,7 +90,7 @@ namespace MYRIAM
             {
                 WriteReports(12, 1);
 
-                dM_EnsembleStatistics.Magnitude_Histogram(
+                Torque_EnsembleStatistics.Magnitude_Histogram(
                     inputParams, dM, dir_dM_PDD, mtxLabel,
                     out int DM_MAGHIST_OUT);
 
@@ -125,7 +124,7 @@ namespace MYRIAM
 
 
                 // === Calculate Contours ===
-                dM_EnsembleStatistics.Pole_Contours(
+                Torque_EnsembleStatistics.Pole_Contours(
                     inputParams, dM, ROT_MTX, DM_CNTR_BINS, DM_CNTR_PERCENT,
                     dir_dM_PDD, dir_TMP, mtxLabel,
                     out double[] DM_CNTR_OUT, out double[] ANG_R_OUT);
