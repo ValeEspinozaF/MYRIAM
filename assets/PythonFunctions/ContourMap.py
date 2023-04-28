@@ -16,7 +16,7 @@ import matplotlib.patches as mpatches
 
 
 from MapFeatures import globalFeatures, gridLabels_inside
-    
+
 
 # Cmd inputs
 contourLabel = sys.argv[1]
@@ -43,7 +43,6 @@ except pd.errors.EmptyDataError:
     cntr68 = pd.DataFrame()
 
 
-
 # Plate contour path
 contourName = "BDR_%s.txt" %plateAccronym
 contourPath = os.path.join(MTX_w2M_Dir, contourName)
@@ -68,25 +67,23 @@ gridLabels_inside(ax, xLinspace, yLinspace)
 plt.title('Torque-variation pole distribution (20% and 68%)', fontsize=13, pad=10)
 
 
-
 # Plot Ellipse Contour    
 for contour, lwidth, lstyle in zip([cntr20, cntr68], [1.2, 0.8], [":", "-"]):
     
     if not contour.empty:
-        
+
         # Split Dataframes where nan rows appear (when multiple contours are stacked)
         contour["cntrNr"] = contour.isnull().all(axis=1).cumsum()
-        
+
         for n, rows in contour.groupby("cntrNr").groups.items():
-            
+
             indCntr = contour.iloc[rows].drop(columns="cntrNr", axis=1).dropna()
-        
+
             poly = mpatches.Polygon(indCntr, closed=True, ec='r', fill=False, ls=lstyle,
                                     lw=lwidth, fc=None, transform=ccrs.PlateCarree(), zorder=9)
             ax.add_patch(poly)
-    
-    
-    
+
+
 # Save figure as png
 figName = "MAP_CNTR20c68%s.png" %contourLabel
 figpath = os.path.join(dM_PDD_Dir, figName)       

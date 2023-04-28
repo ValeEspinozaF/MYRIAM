@@ -28,12 +28,40 @@ namespace MYRIAM
         /// <param name="dir_MTX_dEV2dM">String path to the directory containing the dEV to dM matrix.</param>
         /// <param name="modelName">String with the name of the current model.</param>
         /// <remarks>Needed input parameters:
-        /// <para>[CTR_PATH] as longitude and latitude columns in degrees,</para>
-        /// <para>[muM] in Pa · s,</para>
-        /// <para>[muA] in Pa · s,</para>
-        /// <para>[HL] in kilometers,</para>
-        /// <para>[FRACTION_HA] between 0 and 1,</para>
-        /// <para>[GRID_RES] in degrees,</para>
+        /// <list type="table">
+        /// <listheader>
+        /// <term>term</term>
+        /// <description>description</description>
+        /// </listheader>
+        /// <item>
+        ///     <term>CTR_PATH</term>
+        ///     <description>String path to a plain-text file containing the plate contour coordinates as two 
+        ///     columns: [1] longitude and [2] latitude values, both expressed in degrees.</description>
+        /// </item>
+        /// <item>
+        ///     <term>muM</term>
+        ///     <description>Average value of the lower part of the upper mantle viscosity, expressed in Pa · s.</description>
+        /// </item>
+        /// <item>
+        ///     <term>muA</term>
+        ///     <description>Average value of the asthenosphere viscosity, expressed in Pa · s.</description>
+        /// </item>
+        /// <item>
+        ///     <term>HL</term>
+        ///     <description>Value of the lithosphere thickness (i.e., depth of the lithosphere-asthenosphere 
+        ///     boundary), expressed in kilometers.</description>
+        /// </item>
+        /// <item>
+        ///     <term>FRACTION_HA</term>
+        ///     <description>Value between 0 and 1 that sets the vertical fraction of the region utilized
+        ///     to define the depth-average viscosity of the asthenosphere using the model 
+        ///     PM_v2_2012 by Priestley and McKenzie, 2013.</description>
+        /// </item>
+        /// <item>
+        ///     <term>GRID_RES</term>
+        ///     <description>Value for the grid resolution of the plate's base, expressed in degrees.</description>
+        /// </item>
+        /// </list>
         /// </remarks>
         public static void Calculate_dEV2dM_Matrix(InputParameters inputParams, string dir_MTX_dEV2dM, string modelName)
         {

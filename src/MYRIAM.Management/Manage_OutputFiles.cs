@@ -233,7 +233,7 @@ namespace MYRIAM
 
         public static void Generate_histogramFigure(string pythonPath, string dir_dM_PDD, string histLabel)
         {
-            string args = string.Format("{0} {1}", histLabel, dir_dM_PDD);
+            string args = string.Format("{0} {1} {2}", histLabel, dir_dM_PDD, "False");
             string pyScriptPath = Get_pyScriptPath("MagnitudeHistogram.py");
 
             PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);

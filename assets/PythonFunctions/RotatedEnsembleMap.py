@@ -13,7 +13,7 @@ import pandas as pd
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from math import sin, cos, asin, atan2, sqrt, radians
+from math import atan2, sqrt
 
 
 from MapFeatures import globalFeatures, gridLabels_inside, plot_poles

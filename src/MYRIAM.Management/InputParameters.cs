@@ -86,13 +86,13 @@ namespace MYRIAM
         public double HL { get; set; }
 
         /// <summary>
-        /// Average value of the asthenosphere viscosity ($\mu_A$), expressed in Pa s$.
+        /// Average value of the asthenosphere viscosity, expressed in Pa · s.
         /// </summary>
         public double muA { get; set; }
 
         /// <summary>
-        /// Average viscosity value of the lower part of the upper mantle ($\mu_M$), 
-        /// expressed in Pa s$.
+        /// Average viscosity value of the lower part of the upper mantle, 
+        /// expressed in Pa · s.
         /// </summary>
         public double muM { get; set; }
 

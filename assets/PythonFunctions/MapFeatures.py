@@ -74,12 +74,15 @@ def setCartographic_AxisLabels(ax):
             yTickLabels[i] = "%d$^\circ$" %ytick
             
     
-    ax.set_yticks(yTickList)
-    ax.set_xticks(xTickList)
-    ax.set_yticklabels(yTickLabels)
-    ax.set_xticklabels(xTickLabels)
-    ax.set_ylim(yminO, ymax)
-    ax.set_xlim(xminO, xmax)
+    ax.set(
+        yticks = yTickList,
+        xticks = xTickList,
+        yticklabels = yTickLabels,
+        xticklabels = xTickLabels,
+        ylim = (yminO, ymax),
+        xlim = (xminO, xmax),
+    )
+
 
 
 
