@@ -15,19 +15,19 @@ namespace MYRIAM
 {
     partial class ManageOutputs
     {
-        public static void Create_OutputDirs(
-            InputParameters inputParams,
-            out string dir_MTXwM, out string dir_dM_PDD, out string dir_TMP)
+        public static void Create_OutputDirs(InputParameters inputParams)
         {
-            string outputDir = inputParams.OUTPUTS_DIR;
+
+            string outputDir = inputParams.DIR_OUTPUTS;
             string pltLabel = inputParams.PLT_LABEL;
             string outputLabel = inputParams.OUTPUT_LABEL;
             bool overwriteOutput = inputParams.OVERWRT_OUTPUT;
 
 
-            dir_MTXwM = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_MTX_w2M");
-            dir_dM_PDD = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_dM_PDD");
-            dir_TMP = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_TMP");
+            string dir_MTXwM = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_MTX_w2M");
+            string dir_dM_PDD = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_dM_PDD");
+            string dir_TMP = Path.Combine(outputDir, $"REPOSITORY_{pltLabel}_TMP");
+
 
             if (!string.IsNullOrEmpty(outputLabel))
             {                
@@ -47,11 +47,10 @@ namespace MYRIAM
                         {
                             Console.Write("\nRepository folder already exists, files may be overwriten. Do you want to continue [Lat/n]? ");
 
-                            char answer;
                             char[] yes = { 'Y', 'y' };
                             char[] no = { 'N', 'n' };
 
-                            if (char.TryParse(Console.ReadLine(), out answer))
+                            if (char.TryParse(Console.ReadLine(), out char answer))
                             {
                                 if (no.Contains(answer))
                                     Environment.Exit(0);
@@ -68,7 +67,6 @@ namespace MYRIAM
                             Console.SetCursorPosition(0, Console.CursorTop - 1);
                             Console.Write(new string(' ', Console.WindowWidth));
                             Console.SetCursorPosition(0, Console.CursorTop - 1);
-                            //Console.Write(new string(' ', Console.WindowWidth));
                         }
                     }
                     else
@@ -82,6 +80,10 @@ namespace MYRIAM
                     Console.WriteLine("Directory creation failed: {0}", e.ToString());
                 }
             }
+
+            inputParams.Add("DIR_MTX_w2M", dir_MTXwM);
+            inputParams.Add("DIR_dM_PPD", dir_dM_PDD);
+            inputParams.Add("DIR_TMP", dir_TMP);
         }
 
 
@@ -222,39 +224,63 @@ namespace MYRIAM
         }
 
 
-        public static void Generate_gridFigures(string pythonPath, string dir_MTXwM, string modelLabel, string boundaryLabel)
+        public static void Generate_gridFigures(InputParameters inputParams)
         {
-            string args = string.Format("{0} {1} {2}", modelLabel, boundaryLabel, dir_MTXwM);
+            string args = string.Format("{0} {1} {2}", 
+                inputParams.MODEL_LABEL, 
+                inputParams.PLT_LABEL, 
+                inputParams.DIR_MTX_w2M
+                );
+
             string pyScriptPath = Get_pyScriptPath("GridMaps.py");
 
-            PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
+            PythonCaller.Run_pythonFile(inputParams.PYTHON_PATH, pyScriptPath, args);
         }
 
 
-        public static void Generate_histogramFigure(string pythonPath, string dir_dM_PDD, string histLabel)
+        public static void Generate_histogramFigure(InputParameters inputParams)
         {
-            string args = string.Format("{0} {1} {2}", histLabel, dir_dM_PDD, "False");
+            string histLabel = Set_MagnitudeHistogram_Label(inputParams);
+            string args = string.Format("{0} {1} {2}", 
+                histLabel,
+                inputParams.DIR_dM_PPD, 
+                "False"
+                );
+
             string pyScriptPath = Get_pyScriptPath("MagnitudeHistogram.py");
 
-            PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
+            PythonCaller.Run_pythonFile(inputParams.PYTHON_PATH, pyScriptPath, args);
         }
 
 
-        public static void Generate_contourFigure(string pythonPath, string dir_MTXwM, string dir_dM_PDD, string contourLabel, string plateLabel)
+        public static void Generate_contourFigure(InputParameters inputParams)
         {
-            string args = string.Format("{0} {1} {2} {3}", contourLabel, plateLabel, dir_MTXwM, dir_dM_PDD);
+            string contourLabel = Set_ContourCoordinates_Label(inputParams);
+            string args = string.Format("{0} {1} {2} {3}", 
+                contourLabel,
+                inputParams.PLT_LABEL,
+                inputParams.DIR_MTX_w2M,
+                inputParams.DIR_dM_PPD
+                );
+
             string pyScriptPath = Get_pyScriptPath("ContourMap.py");
 
-            PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
+            PythonCaller.Run_pythonFile(inputParams.PYTHON_PATH, pyScriptPath, args);
         }
 
 
-        public static void Generate_rotatedCntr_Figure(string pythonPath, string plateLabel, string dir_TMP, string dir_MTXwM, string dir_dM_PDD)
+        public static void Generate_rotatedCntr_Figure(InputParameters inputParams)
         {
-            string args = string.Format("{0} {1} {2} {3}", plateLabel, dir_TMP , dir_MTXwM, dir_dM_PDD);
+            string args = string.Format("{0} {1} {2} {3}",
+                inputParams.PLT_LABEL,
+                inputParams.DIR_TMP,
+                inputParams.DIR_MTX_w2M,
+                inputParams.DIR_dM_PPD
+                );
+
             string pyScriptPath = Get_pyScriptPath("RotatedEnsembleMap.py");
 
-            PythonCaller.Run_pythonFile(pythonPath, pyScriptPath, args);
+            PythonCaller.Run_pythonFile(inputParams.PYTHON_PATH, pyScriptPath, args);
         }
 
 
@@ -292,7 +318,7 @@ namespace MYRIAM
                             case "PLT_LABEL":
                             case "EVo_PATH":
                             case "EVy_PATH":
-                            case "OUTPUTS_DIR":
+                            case "DIR_OUTPUTS":
                             case "INTERP_MTD":
                             case "PYTHON_PATH":
                             case "CTR_PATH":
@@ -379,7 +405,7 @@ namespace MYRIAM
                 $"_{inputParams.OUTPUT_LABEL}" +
                 $".txt";
             
-            SaveLines_asTXT(lines.ToList(), inputParams.OUTPUTS_DIR, fileName);
+            SaveLines_asTXT(lines.ToList(), inputParams.DIR_OUTPUTS, fileName);
         }
     }
 }

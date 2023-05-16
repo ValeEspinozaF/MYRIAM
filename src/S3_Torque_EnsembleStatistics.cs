@@ -17,16 +17,15 @@ namespace MYRIAM
             TorqueVector[] dM, 
             double[,] RMTX,
             double[] DM_CNTR_BINS, 
-            double[] DM_CNTR_PERCENT,
-            string dir_dM_PDD, 
-            string dir_TMP,
-            string mtxLabel, 
-            out double[] DM_BINS_OUT,
-            out double[] ANG_R
+            double[] DM_CNTR_PERCENT
             )
         {
             int stageIndex_Old = inputParams.STG_IDX_1;
             int stageIndex_Young = inputParams.STG_IDX_2;
+            string dir_dM_PDD = inputParams.DIR_dM_PPD;
+            string dir_TMP = inputParams.DIR_TMP;
+            string mtxLabel = inputParams.MTX_LABEL;
+
 
             // Store temporal text file with dM ensemble
             string NAME_ENSdM = $"ENSdM.txt";
@@ -39,12 +38,12 @@ namespace MYRIAM
 
 
             // Set angles of rotation to the given angle sin RMTX
-            ANG_R = new double[3];
+            double[] ANG_R_OUT = new double[3];
 
 
             // Use alternative matrix if RMTX is not explicitly set
             if (Matrix.IsNaN(RMTX))
-                RMTX_2use = getOptimal_rotMatrix(dM, out ANG_R);
+                RMTX_2use = getOptimal_rotMatrix(dM, out ANG_R_OUT);
 
 
             // Apply rotation to ensemble
@@ -86,8 +85,12 @@ namespace MYRIAM
 
             // Calculate 2D histogram and extract contours
             Contour[] contourArray = Pole_Statistics.Extract_PoleContours(
-                colLon, colLat, DM_CNTR_PERCENT, out DM_BINS_OUT,
+                colLon, colLat, DM_CNTR_PERCENT, out double[] DM_BINS_OUT,
                 xBinRange, yBinRange, gStep);
+
+            // Update used parameters
+            inputParams.ANG_ROT = ANG_R_OUT;
+            inputParams.DM_CNTR_BINS = DM_BINS_OUT;
 
 
             colLon = new double[0];
@@ -124,8 +127,7 @@ namespace MYRIAM
 
             foreach (Contour contour in contourArray)
             {
-                string CNTR_PDD_LBL = Set_ContourCoordinates_FileName(
-                    contour.PercentInterval, stageIndex_Old, stageIndex_Young, mtxLabel, DM_BINS_OUT[0]);
+                string CNTR_PDD_LBL = Set_ContourCoordinates_FileName(inputParams, contour.PercentInterval);
 
                 Save_toTXT(contour.Coordinates, dir_dM_PDD, CNTR_PDD_LBL);
             }
@@ -145,15 +147,15 @@ namespace MYRIAM
 
         public static void Magnitude_Histogram(
             InputParameters inputParams, 
-            TorqueVector[] dM, 
-            string dir_dM_PDD, 
-            string mtxLabel, 
-            out int DM_MAGHIST_OUT
+            TorqueVector[] dM
             )
         {
             int nBins = inputParams.DM_MAGHIST_BINS;
             int stageIndex_Old = inputParams.STG_IDX_1;
             int stageIndex_Young = inputParams.STG_IDX_2;
+            string dir_dM_PDD = inputParams.DIR_dM_PPD;
+            string mtxLabel = inputParams.MTX_LABEL;
+
 
             // --- Extract dM Magnitude array ---
 
@@ -190,13 +192,12 @@ namespace MYRIAM
             double[,] magHist_XY = ArrayManagement.To2DArray(binMidValues, binCount);
 
 
-            // Store histogram metrics
-            DM_MAGHIST_OUT = (int) hist.Length;
+            // Update histogram metrics in parameters
+            inputParams.DM_MAGHIST_BINS = (int)hist.Length;
 
 
             // Save dM's magnitude histogram outline as txt file
-            string MAG_HIST_LBL = Set_MagnitudeHistogram_FileName(
-                stageIndex_Old, stageIndex_Young, mtxLabel, DM_MAGHIST_OUT);
+            string MAG_HIST_LBL = Set_MagnitudeHistogram_FileName(inputParams);
 
             Save_toTXT(magHist_XY, dir_dM_PDD, MAG_HIST_LBL, new string[] { "#.###E+0", "F0" });
         }

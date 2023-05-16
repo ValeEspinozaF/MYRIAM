@@ -15,18 +15,22 @@ using System.Xml.Linq;
 
 namespace MYRIAM
 {
+    /// <summary>
+    /// Main functions whitin the MYRIAM program.
+    /// </summary>
     internal partial class MainFunctions
     {
         // Earth's radius in km
         static readonly double Re = 6371e3;
 
         /// <summary>
-        /// This function calculates the matrix that link Euler-vector variations 
+        /// This function calculates the 3×3 matrix that link Euler-vector variations 
         /// to torque-variations.
         /// </summary>
-        /// <param name="inputParams"><see cref="InputParameters"/> instance with the necessary running parameters (See below).</param>
-        /// <param name="dir_MTX_dEV2dM">String path to the directory containing the dEV to dM matrix.</param>
-        /// <param name="modelName">String with the name of the current model.</param>
+        /// <param name="inputParams"><see cref="InputParameters"/> instance with the necessary running parameters (See Remaks).</param>
+        /// <param name="dir_MTX_dEV2dM">Optional. String path to the directory where to save the dEV to dM matrix. If not given, the function use the property <see cref="InputParameters.DIR_MTX_w2M"/>.</param>
+        /// <param name="modelName">Optional. String with the label the current model (for output file naming). If not given, the function use the property <see cref="InputParameters.MODEL_LABEL"/>.</param>
+        /// 
         /// <remarks>Needed input parameters:
         /// <list type="table">
         /// <listheader>
@@ -63,8 +67,12 @@ namespace MYRIAM
         /// </item>
         /// </list>
         /// </remarks>
-        public static void Calculate_dEV2dM_Matrix(InputParameters inputParams, string dir_MTX_dEV2dM, string modelName)
+        public static void Calculate_dEV2dM_Matrix(
+            InputParameters inputParams, 
+            string dir_MTX_dEV2dM = "", 
+            string modelName = "")
         {
+
             string contourPath = inputParams.CTR_PATH;
             double muM = inputParams.muM;
             double muA = inputParams.muA;
@@ -79,6 +87,14 @@ namespace MYRIAM
 
             double stepRad = stepDeg * (Math.PI / 180);
             double Rt = Re - HL;
+
+
+            if (dir_MTX_dEV2dM == "")
+                dir_MTX_dEV2dM = inputParams.DIR_MTX_w2M;
+            
+            if (modelName == "")
+                modelName = inputParams.MODEL_LABEL;
+
 
 
             // ============== Plate basal grid =============================
@@ -170,6 +186,7 @@ namespace MYRIAM
 
             // ============== Save TXT files ===========================================
             Console_Banners.WriteReports(8);
+
 
             // --- Save m2M TXT file ---
             string FILENAME_w2M = Set_Matrix_w2M_FileName(plateLabel, modelName, interpMethod);

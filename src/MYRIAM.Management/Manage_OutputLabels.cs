@@ -87,17 +87,14 @@ namespace MYRIAM
         }
 
 
-        public static string Set_Matrix_Label(InputParameters inputParams, string modelName)
+        public static string Set_Matrix_Label(InputParameters inputParams)
         {
-            string plateLabel = inputParams.PLT_LABEL;
-            string interpMethod = inputParams.INTERP_MTD;
+            string MATRIX_LABEL = inputParams.PLT_LABEL + "_" + inputParams.MODEL_LABEL;
 
-            string MATRIX_LABEL = plateLabel + "_" + modelName;
-
-            if (interpMethod == "linear")
+            if (inputParams.INTERP_MTD == "linear")
                 MATRIX_LABEL += "_iLINR";
 
-            else if (interpMethod == "nearest")
+            else if (inputParams.INTERP_MTD == "nearest")
                 MATRIX_LABEL += "_iNRST";
 
             return MATRIX_LABEL;
@@ -147,9 +144,9 @@ namespace MYRIAM
             GRID_MT_FILENAME = "GRID_MT_" + modelName + ".txt";
         }
 
-        public static string Set_ContourCoordinates_FileName(double percentageLevel, double STG_OLD, double STG_YOUNG, string MATRIX_LABEL, double gstep)
+        public static string Set_ContourCoordinates_FileName(InputParameters inputParams, double percentageLevel)
         {
-            string CNTR_PDD_LBL = Set_ContourCoordinates_Label(STG_OLD, STG_YOUNG, MATRIX_LABEL, gstep);
+            string CNTR_PDD_LBL = Set_ContourCoordinates_Label(inputParams);
 
             if (percentageLevel.ToString().Contains(','))
                 CNTR_PDD_LBL = $"CNTR" + string.Format(percentageLevel.ToString()).Replace(",", "p") + CNTR_PDD_LBL + ".txt";
@@ -160,9 +157,10 @@ namespace MYRIAM
         }
 
 
-        public static string Set_ContourCoordinates_Label(double STG_OLD, double STG_YOUNG, string matrixLabel, double gStep)
+        public static string Set_ContourCoordinates_Label(InputParameters inputParams)
         {
-            string CNTR_PDD_LBL = $"_STGs_{STG_OLD}_{STG_YOUNG}_{matrixLabel}_r";
+            double gStep = inputParams.DM_CNTR_BINS[0];
+            string CNTR_PDD_LBL = $"_STGs_{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}_{inputParams.MTX_LABEL}_r";
 
             if (gStep.ToString().Contains(','))
                 CNTR_PDD_LBL += string.Format(gStep.ToString()).Replace(",", "p");
@@ -172,14 +170,14 @@ namespace MYRIAM
             return CNTR_PDD_LBL;
         }
 
-        public static string Set_MagnitudeHistogram_Label(double STG_OLD, double STG_YOUNG, string MATRIX_LABEL, int nBins)
+        public static string Set_MagnitudeHistogram_Label(InputParameters inputParams)
         {
-            return $"STGs_{STG_OLD}_{STG_YOUNG}_{MATRIX_LABEL}_{nBins}";
+            return $"STGs_{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}_{inputParams.MTX_LABEL}_{inputParams.DM_MAGHIST_BINS}";
         }
 
-        public static string Set_MagnitudeHistogram_FileName(double STG_OLD, double STG_YOUNG, string MATRIX_LABEL, int nBins)
+        public static string Set_MagnitudeHistogram_FileName(InputParameters inputParams)
         {
-            string label = Set_MagnitudeHistogram_Label(STG_OLD, STG_YOUNG, MATRIX_LABEL, nBins);
+            string label = Set_MagnitudeHistogram_Label(inputParams);
             return $"MAGHIST_{label}.txt";
         }
     }

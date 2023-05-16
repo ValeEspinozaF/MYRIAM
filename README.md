@@ -25,7 +25,7 @@ Alternatively, you can download the latest version of MYRIAM as a ZIP file from 
 
 ### Executable Files
 
-To download a pre-compiled version of MYRIAM, go to the [Releases](https://github.com/ValeEspinozaF/MYRIAM/releases) page and select the latest version. Under the "Assets" section, download the appropiate file for your operating system. Once the download is complete, unzip the file and move the folder to the desired location.
+To download a pre-compiled version of MYRIAM, go to the [Releases](https://github.com/ValeEspinozaF/MYRIAM/releases) page and select the latest version. Under the "Assets" section, download the appropriate file for your operating system. Once the download is complete, unzip the file and move the folder to the desired location.
 
 
 

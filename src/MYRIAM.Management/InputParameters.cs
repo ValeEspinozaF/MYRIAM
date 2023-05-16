@@ -10,14 +10,14 @@ using System.Xml.Linq;
 namespace MYRIAM
 {
     /// <summary>
-    /// Contains all the necessary input parameters required to run the MYRIAM program.
+    /// Stores all the necessary input parameters required to run the MYRIAM program.
     /// </summary>
     public class InputParameters
     {
         /// <summary>
         /// Path to an existing directory in which all the output folders and files are stored.
         /// </summary>
-        public string OUTPUTS_DIR { get; set; }
+        public string DIR_OUTPUTS { get; set; }
 
         /// <summary>
         /// String that is added to all output directories and input report file to help the 
@@ -54,9 +54,9 @@ namespace MYRIAM
         /// Cartesian values of the younger Euler vector, expressed in deg/Myr (degrees 
         /// per million year). Alternatively, MYRIAM can sample its own ensemble from a 
         /// singular Euler vector stage, by supplying a 10-column single line containing: 
-        /// [1--2] Euler pole longitude and latitude in degrees, [3] angular velocity 
-        /// magnitude in deg/Myr, [4--9] elements of the covariance matrix associated 
-        /// with the Euler vector ensemble, in rad^2/Myr^2, and [10] size of the ensemble.
+        /// [1-2] Euler pole longitude and latitude in degrees, [3] angular velocity 
+        /// magnitude in deg/Myr, [4-9] elements of the covariance matrix associated 
+        /// with the Euler vector ensemble, in rad²/Myr², and [10] size of the ensemble.
         /// </summary>
         public string EVy_PATH { get; set; }
 
@@ -175,6 +175,12 @@ namespace MYRIAM
         /// current intended output.
         /// </summary>
         public bool OVERWRT_OUTPUT { get; set; }
+
+        public string DIR_MTX_w2M { get; set; }
+        public string DIR_dM_PPD { get; set; }
+        public string DIR_TMP { get; set; }
+        public string MODEL_LABEL { get; set; }
+        public string MTX_LABEL { get; set; }
 
         public InputParameters()
         {

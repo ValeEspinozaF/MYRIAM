@@ -91,7 +91,7 @@ namespace MYRIAM
                             break;
                         }
 
-                    case "OUTPUTS_DIR":
+                    case "DIR_OUTPUTS":
                         {
                             if (entry.Value == "")
                                 throw new InputErrorException(

@@ -114,9 +114,10 @@ namespace MYRIAM
             List<Coordinate[]> polygonList = new();
             List<Coordinate> polygonCoords = new();
 
+            List<char> commentChars = new List<char> { '!', '#', '%' };
             foreach (var line in lines)
             {
-                if (line[0].ToString() != "!")
+                if (!commentChars.Contains(line[0]))
                 {
                     var values = line.Split(new char[] { ' ', '\t', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
 

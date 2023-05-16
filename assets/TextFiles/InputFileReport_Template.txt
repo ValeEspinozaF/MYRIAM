@@ -1,7 +1,7 @@
 ﻿! ============== dEVdM Parameters Report ===============================================
 
 !-Output directory
-OUTPUTS_DIR =
+DIR_OUTPUTS =
 
 
 !-Output label

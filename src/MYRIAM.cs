@@ -51,13 +51,12 @@ namespace MYRIAM
 
             // Create output directories
             WriteReports(2);
-            Create_OutputDirs(inputParams,
-                out string dir_MTXwM, out string dir_dM_PDD, out string dir_TMP);
+            Create_OutputDirs(inputParams);
 
 
             // Set up model and matrix labels
-            string modelName = Set_Model_Label(inputParams);
-            string mtxLabel = Set_Matrix_Label(inputParams, modelName);
+            inputParams.Add("MODEL_LABEL", Set_Model_Label(inputParams));
+            inputParams.Add("MTX_LABEL", Set_Matrix_Label(inputParams));
 
 
 
@@ -65,7 +64,7 @@ namespace MYRIAM
             // Euler vector(w) to torque(M) with lateral variations of asthenosphere
             // viscosity(muA)
 
-            MainFunctions.Calculate_dEV2dM_Matrix(inputParams, dir_MTXwM, modelName);
+            MainFunctions.Calculate_dEV2dM_Matrix(inputParams);
 
 
 
@@ -74,8 +73,8 @@ namespace MYRIAM
             // change(dEV) of a given tectonic plate
 
             MainFunctions.Calculate_dM(
-                inputParams, dir_MTXwM, dir_dM_PDD, mtxLabel, 
-                out TorqueVector[] dM, out TorqueVector dMvector);
+                inputParams, out TorqueVector[] dM, out TorqueVector dMvector
+                );
 
 
             OutputSummaryBanner(dMvector);
@@ -91,11 +90,8 @@ namespace MYRIAM
                 WriteReports(12, 1);
 
                 Torque_EnsembleStatistics.Magnitude_Histogram(
-                    inputParams, dM, dir_dM_PDD, mtxLabel,
-                    out int DM_MAGHIST_OUT);
-
-                // Update used parameters
-                inputParams.DM_MAGHIST_BINS = DM_MAGHIST_OUT;
+                    inputParams, dM);
+                
             }
             else
                 WriteReports(12, 0);
@@ -125,14 +121,8 @@ namespace MYRIAM
 
                 // === Calculate Contours ===
                 Torque_EnsembleStatistics.Pole_Contours(
-                    inputParams, dM, ROT_MTX, DM_CNTR_BINS, DM_CNTR_PERCENT,
-                    dir_dM_PDD, dir_TMP, mtxLabel,
-                    out double[] DM_CNTR_OUT, out double[] ANG_R_OUT);
+                    inputParams, dM, ROT_MTX, DM_CNTR_BINS, DM_CNTR_PERCENT);
 
-
-                // Update used parameters
-                inputParams.ANG_ROT = ANG_R_OUT;
-                inputParams.DM_CNTR_BINS = DM_CNTR_OUT;
             }
             else
                 WriteReports(13, 0);
@@ -164,20 +154,16 @@ namespace MYRIAM
                 // Generate Asthenosphere-Viscosity, Youngs-Modulus and Maxwell-time maps
                 Parallel.Invoke(
                         () => WriteReports(15, 0),
-                        () => Generate_gridFigures(pythonPath, dir_MTXwM, modelName, inputParams.PLT_LABEL)
+                        () => Generate_gridFigures(inputParams)
                         );
 
 
                 // Generate Torque variation magnitude histogram
                 if (inputParams.ContainsKey("DM_MAGHIST_BINS"))
                 {
-                    int nBins = inputParams.DM_MAGHIST_BINS;
-                    string histLabel = Set_MagnitudeHistogram_Label(
-                        inputParams.STG_IDX_1, inputParams.STG_IDX_2, mtxLabel, nBins);
-
                     Parallel.Invoke(
                         () => WriteReports(15, 1, 1),
-                        () => Generate_histogramFigure(pythonPath, dir_dM_PDD, histLabel)
+                        () => Generate_histogramFigure(inputParams)
                         );
                 }
                 else
@@ -187,14 +173,9 @@ namespace MYRIAM
                 // Generate Torque variation pole distribution maps
                 if (inputParams.ContainsKey("DM_CNTR_BINS"))
                 {
-                    // Contour Map
-                    double cntrRes = inputParams.DM_CNTR_BINS[0];
-                    string contourLabel = Set_ContourCoordinates_Label(
-                        inputParams.STG_IDX_1, inputParams.STG_IDX_2, mtxLabel, cntrRes);
-
                     Parallel.Invoke(
                         () => WriteReports(15, 2, 1),
-                        () => Generate_contourFigure(pythonPath, dir_MTXwM, dir_dM_PDD, contourLabel, inputParams.PLT_LABEL)
+                        () => Generate_contourFigure(inputParams)
                         );
 
 
@@ -203,7 +184,7 @@ namespace MYRIAM
                         // Rotated ensemble map
                         Parallel.Invoke(
                             () => WriteReports(15, 3, 1),
-                            () => Generate_rotatedCntr_Figure(pythonPath, inputParams.PLT_LABEL, dir_TMP, dir_MTXwM, dir_dM_PDD)
+                            () => Generate_rotatedCntr_Figure(inputParams)
                             );
                     }
                     else
@@ -215,7 +196,7 @@ namespace MYRIAM
             else
                 WriteReports(14, 0);
 
-            Delete_TMPs(dir_TMP);
+            Delete_TMPs(inputParams.DIR_TMP);
             WriteReports(16);
         }
     }

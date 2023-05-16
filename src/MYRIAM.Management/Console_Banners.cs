@@ -96,7 +96,7 @@ namespace MYRIAM
             Console.WriteLine(String.Format("{0, 34} {1}", "Average Cartesian Vector :", 
                 $"{SetString(dMvector.X, "#.##E+0")}, " +
                 $"{SetString(dMvector.Y, "#.##E+0")}, " +
-                $"{SetString(dMvector.Z, "#.##E+0")}, ")
+                $"{SetString(dMvector.Z, "#.##E+0")}")
                 );
             Console.WriteLine("\n");
         }
@@ -261,13 +261,13 @@ namespace MYRIAM
                                 Thread.Sleep(300);
                             }
 
-                        // Magnitude Histogram1D
+                        // Magnitude Histogram
                         else if (_case == 1)
                             if (_do == true)
                             {
                                 for (var i = 1; i <= 5; ++i)
                                 {
-                                    ReplacePreviousConsoleLine("Make Figures - Magnitude Histogram1D");
+                                    ReplacePreviousConsoleLine("Make Figures - Magnitude Histogram");
                                     WriteProgressBar(80 + i, true);
                                     Thread.Sleep(100);
                                 }
@@ -276,7 +276,7 @@ namespace MYRIAM
                             {
                                 for (var i = 1; i <= 5; ++i)
                                 {
-                                    ReplacePreviousConsoleLine("Make Figures - Skip Magnitude Histogram1D");
+                                    ReplacePreviousConsoleLine("Make Figures - Skip Magnitude Histogram");
                                     WriteProgressBar(80 + i, true);
                                     Thread.Sleep(5);
                                 }

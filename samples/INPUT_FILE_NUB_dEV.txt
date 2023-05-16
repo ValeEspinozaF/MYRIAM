@@ -1,7 +1,7 @@
 ! ============== Main Input Parameters ===============================================
 
 !-Output directory
-OUTPUTS_DIR = C:\Users\nbt571\MYRIAM_Outputs
+DIR_OUTPUTS = C:\Users\nbt571\MYRIAM_Outputs
 
 
 !-Output label for folders and input parameters report

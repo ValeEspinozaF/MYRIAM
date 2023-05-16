@@ -13,14 +13,17 @@ namespace MYRIAM
     internal partial class MainFunctions
     {
         public static void Calculate_dM(
-            InputParameters inputParams, string dir_MTXwM, string dir_dM_PDD,
-            string mtxLabel, out TorqueVector[] dM, out TorqueVector dMm)
+            InputParameters inputParams, out TorqueVector[] dM, out TorqueVector dMm)
         {
             string EVo_Path = inputParams.EVo_PATH;
             string EVy_Path = inputParams.EVy_PATH;
             int stageIndex_Old = inputParams.STG_IDX_1;
             int stageIndex_Young = inputParams.STG_IDX_2;
             bool saveEnsemble = inputParams.SAVE_ENS;
+
+            string dir_MTXwM = inputParams.DIR_MTX_w2M;
+            string dir_dM_PDD = inputParams.DIR_dM_PPD;
+            string mtxLabel = inputParams.MTX_LABEL;
 
 
             // =========== Calculate Torque variation ==============================
