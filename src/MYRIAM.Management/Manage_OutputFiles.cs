@@ -271,11 +271,12 @@ namespace MYRIAM
 
         public static void Generate_rotatedCntr_Figure(InputParameters inputParams)
         {
-            string args = string.Format("{0} {1} {2} {3}",
+            string args = string.Format("{0} {1} {2} {3} {4}",
                 inputParams.PLT_LABEL,
                 inputParams.DIR_TMP,
                 inputParams.DIR_MTX_w2M,
-                inputParams.DIR_dM_PPD
+                inputParams.DIR_dM_PPD,
+                inputParams.RUN_LABEL
                 );
 
             string pyScriptPath = Get_pyScriptPath("RotatedEnsembleMap.py");
@@ -333,9 +334,9 @@ namespace MYRIAM
                                 }
 
                             case "GRID_RES":
-                            case "HL":
+                            case "HL_km":
                             case "FRACTION_HA":
-                            case "DEF_DISTANCE":
+                            case "DEF_DISTANCE_km":
                                 {
                                     double value = (double)inputParams.GetValue(key);
                                     lines[i] = lines[i] + $" {SetString(value, "F1")}";

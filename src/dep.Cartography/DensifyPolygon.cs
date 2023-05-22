@@ -16,6 +16,7 @@ namespace MYRIAM
         {
             Coordinate[] dense_polygon = (Coordinate[])polygon.Clone();
 
+
             //Ellipsoid
             Geodesic ell = Geodesic.WGS84;
 
@@ -38,7 +39,7 @@ namespace MYRIAM
                     {                    
                         // New point along line
                         var ph = ell.Direct(v1.Lat, v1.Lon, v1v2.Azimuth1, step * j);
-                        Coordinate vr = new() { Lon = ph.Longitude, Lat = ph.Latitude };
+                        Coordinate vr = Coordinate.FromDegrees(ph.Longitude, ph.Latitude);
 
                         // Update array with inserted element
                         dense_polygon = ArrayManagement.InsertbyIndex(dense_polygon, vr, index + j);

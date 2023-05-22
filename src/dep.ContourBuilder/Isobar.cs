@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using Histogram;
 using Cartography;
+using DataStructures;
 
 
 namespace ContourBuilder
@@ -74,13 +75,13 @@ namespace ContourBuilder
                         if ((value <= level && level < bins[i - 1, j].Value) || (value >= level && level > bins[i - 1, j].Value))
                         {
                             double ratio = (level - value) / (bins[i - 1, j].Value - value);
-                            double x = bin.Key.MidCoordinates.Lon;
-                            double y = (bins[i - 1, j].Key.MidCoordinates.Lat - bin.Key.MidCoordinates.Lat) * ratio + bin.Key.MidCoordinates.Lat;
+                            double x = bin.Key.MidCoordinates.X;
+                            double y = (bins[i - 1, j].Key.MidCoordinates.Y - bin.Key.MidCoordinates.Y) * ratio + bin.Key.MidCoordinates.Y;
 
                             vgrid[i - 1][j] = new IsobarPoint
                                 {
                                     Coordinate = new CoordinateXY(i - 1, j),
-                                    Location = new Coordinate(x, y),
+                                    Location = Coordinate.FromDegrees(x, y),
                                     Direction = (value > bins[i - 1, j].Value) ? IsobarDirection.East : IsobarDirection.West, // circle the mountain clockwise
                                 Value = level
                                 };
@@ -92,13 +93,13 @@ namespace ContourBuilder
                         if ((value < level && level <= bins[i, j + 1].Value) || (value > level && level >= bins[i, j + 1].Value))
                         {
                             double ratio = (level - value) / (bins[i, j + 1].Value - value);
-                            double x = (bins[i, j + 1].Key.MidCoordinates.Lon - bin.Key.MidCoordinates.Lon) * ratio + bin.Key.MidCoordinates.Lon;
-                            double y = bin.Key.MidCoordinates.Lat; 
+                            double x = (bins[i, j + 1].Key.MidCoordinates.X - bin.Key.MidCoordinates.X) * ratio + bin.Key.MidCoordinates.X;
+                            double y = bin.Key.MidCoordinates.Y; 
 
                             hgrid[i][j] = new IsobarPoint
                             {
                                 Coordinate = new CoordinateXY(i, j),
-                                Location = new Coordinate(x, y),
+                                Location = Coordinate.FromDegrees(x, y),
                                 Direction = (value > bins[i, j + 1].Value) ? IsobarDirection.South : IsobarDirection.North,
                                 Value = level
                             };

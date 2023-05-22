@@ -60,7 +60,7 @@ namespace MYRIAM
         {
             string str_muA = SetString(inputParams.muA, "#.#E+0");
             string str_muM = SetString(inputParams.muM, "#.#E+0");
-            string str_HL  = SetString(inputParams.HL, "F0");
+            string str_HL  = SetString(inputParams.HL_km, "F0");
             string str_fHA = SetString(inputParams.FRACTION_HA, "F2");
 
             ClearCurrentConsoleLine();

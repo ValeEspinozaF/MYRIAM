@@ -131,7 +131,7 @@ namespace MYRIAM
                         polygonCoords = new List<Coordinate>();
                     }
                     else
-                        polygonCoords.Add(new Coordinate() { Lon = lon, Lat = lat});
+                        polygonCoords.Add(Coordinate.FromDegrees(lon, lat));
                 }
             }
 

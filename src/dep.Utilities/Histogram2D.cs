@@ -18,9 +18,9 @@ namespace Histogram
     {
         public struct HistogramBin2D
         {
-            public Coordinate LowerLeftBound { get; set; }
-            public Coordinate UpperRightBound { get; set; }
-            public Coordinate MidCoordinates { get; set; }
+            public PositionXY LowerLeftBound { get; set; }
+            public PositionXY UpperRightBound { get; set; }
+            public PositionXY MidCoordinates { get; set; }
             public double WidthX { get; set; }
             public double WidthY { get; set; }
             public HistogramBin2D(Coordinate llCoord, Coordinate urCoord, Coordinate midCoord, double widthX, double widthY)
@@ -236,9 +236,9 @@ namespace Histogram
                 {
                     HistogramBin2D binVars = new()
                     {
-                        LowerLeftBound = new Coordinate(edges[1][j], edges[0][i]),
-                        UpperRightBound = new Coordinate(edges[1][j + 1], edges[0][i + 1]),
-                        MidCoordinates = new Coordinate((edges[1][j] + edges[1][j + 1]) / 2, (edges[0][i] + edges[0][i + 1]) / 2),
+                        LowerLeftBound = new PositionXY(edges[1][j], edges[0][i]),
+                        UpperRightBound = new PositionXY(edges[1][j + 1], edges[0][i + 1]),
+                        MidCoordinates = new PositionXY((edges[1][j] + edges[1][j + 1]) / 2, (edges[0][i] + edges[0][i + 1]) / 2),
                         WidthX = WidthX[j],
                         WidthY = WidthY[i]
                     };

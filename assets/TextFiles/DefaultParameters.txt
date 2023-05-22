@@ -9,7 +9,7 @@ GRID_RES = 1
 
 
 !-Depth of Lithosphere-Asthenosphere boundary [km]
-HL = 180
+HL_km = 180
 
 
 !-Geographic region for viscosity averaging [degrees]
@@ -25,17 +25,13 @@ muA = 5e19
 muM = 15e20
 
 
-!-Interpolation method for asthenosphere parameters (linear or nearest)
-INTERP_MTD = linear
-
-
-!-Deformation lenght around the plate contour [km]
-DEF_DISTANCE = 0
+!-Deformation length around the plate contour [km]
+DEF_DISTANCE_km = 0
 
 
 !-Confidence percentage list for contouring
 DM_CNTR_PERCENT = [20, 68, 95]
 
 
-! Save torque variation ensemble (values in cartesian coordinates [N*m])
+! Save torque variation ensemble (values in Cartesian coordinates [N*m])
 SAVE_ENS = false

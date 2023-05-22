@@ -69,7 +69,7 @@ namespace Cartography
         public static Coordinate[] ConcatenateCoords(List<Coordinate[]> coordsArrays, double delimiter = double.NaN)
         {
             List<Coordinate> newCoordsList = new();
-            Coordinate[] delimRow = new Coordinate[1] {new Coordinate(delimiter, delimiter)};
+            Coordinate[] delimRow = new Coordinate[1] {Coordinate.FromUnit(delimiter, delimiter, (CoordinateUnit)coordsArrays[0][0]._unit)};
 
             foreach (Coordinate[] coordsArray in coordsArrays)
             {

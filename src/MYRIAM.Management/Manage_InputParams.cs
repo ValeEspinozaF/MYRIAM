@@ -166,20 +166,6 @@ namespace MYRIAM
                             break;
                         }
 
-                    case "INTERP_MTD":
-                        {
-                            if (entry.Value == "")
-                                throw new InputErrorException(
-                                    $"Error in {entry.Key} syntax. " +
-                                    $"Interpolation method entry is empty. " +
-                                    $"Fix this by supplying a string ('linear' or 'nearest') or omitting the parameter."
-                                    );
-
-                            inputVars.Add(entry.Key, entry.Value);
-
-                            break;
-                        }
-
                     case "FRACTION_HA":
                         {
                             try
@@ -206,7 +192,7 @@ namespace MYRIAM
                             break;
                         }
 
-                    case "HL":
+                    case "HL_km":
                     case "muM":
                     case "muA":
                         {
@@ -266,7 +252,7 @@ namespace MYRIAM
                             break;
                         }
 
-                    case "DEF_DISTANCE":
+                    case "DEF_DISTANCE_km":
                         {
                             try
                             {

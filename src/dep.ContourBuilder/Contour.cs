@@ -24,9 +24,9 @@ namespace ContourBuilder
             {
                 foreach (IsobarPoint point in isobar.Points)
                 {
-                    CoordinatesList.Add(new Coordinate(point.Location.Lon, point.Location.Lat));
+                    CoordinatesList.Add(Coordinate.FromDegrees(point.Location.X, point.Location.Y));
                 }
-                CoordinatesList.Add(new Coordinate(double.NaN, double.NaN));
+                CoordinatesList.Add(Coordinate.FromDegrees(double.NaN, double.NaN));
             }
 
             Coordinates = CoordinatesList.ToArray();

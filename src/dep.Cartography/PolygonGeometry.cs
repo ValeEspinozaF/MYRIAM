@@ -13,7 +13,7 @@ namespace Cartography
     {
         public static Coordinate[] Clean_coordDuplicates(Coordinate[] cntrArray)
         {
-            // Get differencial function from coordinates
+            // Get differential function from coordinates
             var diffArray = from i in Enumerable.Range(0, cntrArray.Length - 1)
                             select Math.Abs(
                                 cntrArray[i + 1].Lon - cntrArray[i].Lon) + 
@@ -21,7 +21,7 @@ namespace Cartography
                                 );
 
 
-            // Retrieve index of items where diff is zero
+            // Retrieve index of items where difference is zero
             var zeroPair = diffArray
                 .Select((element, index) => new KeyValuePair<double, double>(index, element))
                 .Where(x => x.Value.Equals(0))
@@ -73,7 +73,7 @@ namespace Cartography
             int n = polygon.Length;
 
             // Create a point for line segment from p to infinite (a big value)
-            Coordinate point2 = new(10000, point.Lat + 0.00000001);
+            Coordinate point2 = Coordinate.FromUnit(10000, point.Lat + 0.00000001, (CoordinateUnit)polygon[0]._unit);
 
 
             // Count intersections of the above line with sides of polygon

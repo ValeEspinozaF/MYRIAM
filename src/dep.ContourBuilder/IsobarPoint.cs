@@ -2,30 +2,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Cartography;
+using DataStructures;
 
 namespace ContourBuilder
 {
-    public struct CoordinateXY
+    public class CoordinateXY : GridXY
     {
-        public CoordinateXY(int x, int y)
-            : this()
+        public CoordinateXY(int x, int y) : base(x, y)
         {
-            Y = y;
-            X = x;
         }
-        public int Y { get; private set; }
-        public int X { get; private set; }
+
+        public new int Y { get; private set; }
+        public new int X { get; private set; }
     }
 
     public class IsobarPoint
     { 
         public Isobar? Parent { get; set; }
 
-        public Coordinate Location { get; set; }
+        public PositionXY Location { get; set; }
 
         public double Value { get; set; }
 
-        public CoordinateXY Coordinate { get; set; }
+        public GridXY Coordinate { get; set; }
 
         public IsobarDirection Direction { get; set; }
 

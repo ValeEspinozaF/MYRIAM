@@ -10,7 +10,7 @@ using System.Xml.Linq;
 namespace MYRIAM
 {
     /// <summary>
-    /// Stores all the necessary input parameters required to run the MYRIAM program.
+    /// Stores all the necessary input parameters required to run the MYRIAM methods.
     /// </summary>
     public class InputParameters
     {
@@ -34,7 +34,7 @@ namespace MYRIAM
 
         /// <summary>
         /// Array of two integers, which serve as indexes to identify the two particular 
-        /// Euler-vector stages used. File labelling prevents overwriting, e.g., when 
+        /// Euler-vector stages used. File labeling prevents overwriting, e.g., when 
         /// using the same plate but different Euler vectors.
         /// </summary>
         public int[] STG_IDXs { get; set; }
@@ -83,7 +83,7 @@ namespace MYRIAM
         /// Value of the lithosphere thickness (i.e., depth of the lithosphere-asthenosphere 
         /// boundary), expressed in kilometers.
         /// </summary>
-        public double HL { get; set; }
+        public double HL_km { get; set; }
 
         /// <summary>
         /// Average value of the asthenosphere viscosity, expressed in Pa · s.
@@ -111,19 +111,12 @@ namespace MYRIAM
         public double FRACTION_HA { get; set; }
 
         /// <summary>
-        /// Method used to interpolate the calculated asthenosphere viscosity using the
-        /// PM_v2_2012 model by Priestley and McKenzie, 2013. Options available are 
-        /// "linear" and "nearest".
-        /// </summary>
-        public string INTERP_MTD { get; set; }
-
-        /// <summary>
         /// Value used to set a deformation buffer width (in kilometers) across the plate 
         /// boundary. The boundary region has a linearly-decreased Euler vector magnitude,
         /// acting as a damped rigidity, as yielding an overall smaller torque-variation 
         /// estimate.
         /// </summary>
-        public double DEF_DISTANCE { get; set; }
+        public double DEF_DISTANCE_km { get; set; }
 
         /// <summary>
         /// Number of bins used to obtain the histogram showing the distribution of the 
@@ -151,7 +144,7 @@ namespace MYRIAM
         /// torque-variation pole confidence contours, since these can be inaccurate when the 
         /// bulk of the torque-variation ensemble is close to any of the polar regions. The 
         /// angles instruct MYRIAM to perform the three elemental rotations that seek to center 
-        /// and horizontally flatten the torque-variation ensemble on 0degN--0degE, where the 
+        /// and horizontally flatten the torque-variation ensemble on 0°N--0°E, where the 
         /// contouring is more accurate.
         /// </summary>
         public double[] ANG_ROT { get; set; }
@@ -170,8 +163,8 @@ namespace MYRIAM
         public string PYTHON_PATH { get; set; }
 
         /// <summary>
-        /// Boolean that instructs MYRIAM whether to overwritte files. If false, MYRIAM will ask 
-        /// whether overwritting is desired, when encountering folders with the same name as the
+        /// Boolean that instructs MYRIAM whether to overwrite files. If false, MYRIAM will ask 
+        /// whether overwriting is desired, when encountering folders with the same name as the
         /// current intended output.
         /// </summary>
         public bool OVERWRT_OUTPUT { get; set; }
@@ -180,7 +173,8 @@ namespace MYRIAM
         public string DIR_dM_PPD { get; set; }
         public string DIR_TMP { get; set; }
         public string MODEL_LABEL { get; set; }
-        public string MTX_LABEL { get; set; }
+        public string RUN_LABEL { get; set; }
+        public string MATRIX_PATH { get; set; }
 
         public InputParameters()
         {

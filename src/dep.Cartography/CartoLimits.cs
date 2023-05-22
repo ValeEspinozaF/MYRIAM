@@ -1,4 +1,5 @@
 ﻿using ComputationalGeometry;
+using ContourBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,10 +91,10 @@ namespace Cartography
         public Coordinate[] ToCoords()
         {
             return new Coordinate[4] {
-                new Coordinate(LonMin, LatMin),
-                new Coordinate(LonMax, LatMin),
-                new Coordinate(LonMax, LatMax),
-                new Coordinate(LonMin, LatMax)
+                Coordinate.FromDegrees(LonMin, LatMin),
+                Coordinate.FromDegrees(LonMax, LatMin),
+                Coordinate.FromDegrees(LonMax, LatMax),
+                Coordinate.FromDegrees(LonMin, LatMax)
             };
         }
 

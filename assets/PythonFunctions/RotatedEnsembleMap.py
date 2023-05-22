@@ -51,6 +51,7 @@ plateAccronym = sys.argv[1]
 TMP_Dir = sys.argv[2]
 MTX_w2M_Dir = sys.argv[3]
 dM_PDD_Dir = sys.argv[4]
+runLabel = sys.argv[5]
 
 
 
@@ -128,6 +129,6 @@ for contour, colour in zip([cntrNML, cntrROT], ['darkred', 'darkblue']):
         
         
 # Save figure as png
-figName = "MAP_ROTATED_CNTR68.png" 
+figName = "MAP_ROTATED_CNTR68_%s.png" %runLabel
 figpath = os.path.join(dM_PDD_Dir, figName)       
 plt.savefig(figpath, bbox_inches='tight', dpi=360)

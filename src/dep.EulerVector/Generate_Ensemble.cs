@@ -58,7 +58,7 @@ namespace DataStructures
 
         public static EulerVector[] Generate_Ensemble(EulerVector eulerVector, int nSize)
         {
-            // Euler Vector from spherical deg to cartesian coordinate
+            // Euler Vector from spherical deg to Cartesian coordinate
             eulerVector.ToCartesian();
 
 
@@ -83,20 +83,20 @@ namespace DataStructures
 
 
         /// <summary>
-        /// Builds an ensemble of cartesian coordinates of length
+        /// Builds an ensemble of Cartesian coordinates of length
         /// <paramref name="nSize"/>, using the covariance matrix
         /// <paramref name="covMatrix"/> as correlation. 
         /// </summary>
         /// <param name="covMatrix">Covariance matrix.</param>
         /// <param name="nSize">Length of the output ensemble.</param>
-        /// <returns>Array of cartesian coordinates.</returns>
+        /// <returns>Array of Cartesian coordinates.</returns>
         public static EulerVector[] CorrelatedEnsemble3D(double[,] covMatrix, int nSize)
         {
             // Store matrix as MathNet matrix class
             Matrix<double> matrix = Matrix<double>.Build.DenseOfArray(covMatrix);
 
 
-            // Compute matriz EVD decomposition
+            // Compute matrix EVD decomposition
             Evd<double> eigen = matrix.Evd();
 
 

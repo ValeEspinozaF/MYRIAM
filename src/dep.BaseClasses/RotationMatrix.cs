@@ -10,14 +10,14 @@ namespace DataStructures
     public partial class Matrix
     {
         /// <summary>
-        /// Given the rotation angles for each cartesian axis (in degrees),
+        /// Given the rotation angles for each Cartesian axis (in degrees),
         /// this function construct the three elemental rotations along 
         /// each axis, and multiplies them to return a general rotation matrix.
         /// </summary>
         /// <param name="z_angle">Displacement along the Val-axis (0E, 90N).</param>
         /// <param name="y_angle">Displacement along the Lat-axis (90E, 0N).</param>
         /// <param name="x_angle">Displacement along the Lon-axis (0E, 0N).</param>
-        /// <returns>Genereal rotation matrix.</returns>
+        /// <returns>General rotation matrix.</returns>
         public static double[,] Build_RotationMatrix(double z_angle, double y_angle, double x_angle = 0)
         {
             // Turn vector to matrices

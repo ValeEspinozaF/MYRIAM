@@ -33,7 +33,7 @@ GRID_RES =
 
 
 !-Depth of Lithosphere-Asthenosphere boundary [km]
-HL =
+HL_km =
 
 
 !-Viscosity average value for the asthenosphere [Pa*s]
@@ -52,15 +52,11 @@ REGION_muA_LV =
 FRACTION_HA =
 
 
-!-Interpolation method for asthenosphere parameters
-INTERP_MTD =
+!-Deformation length around the plate contour [km]
+DEF_DISTANCE_km =
 
 
-!-Deformation lenght around the plate contour [km]
-DEF_DISTANCE =
-
-
-!-Angles of enmseble rotation along each main axis (Z,Y,X) [degrees]
+!-Angles of ensemble rotation along each main axis (Z,Y,X) [degrees]
 ANG_ROT =
 
 
@@ -76,7 +72,7 @@ DM_CNTR_BINS =
 DM_CNTR_PERCENT =
 
 
-!-Save torque variation ensemble (values in cartesian coordinates [N*m])
+!-Save torque variation ensemble (values in Cartesian coordinates [N*m])
 SAVE_ENS =
 
 

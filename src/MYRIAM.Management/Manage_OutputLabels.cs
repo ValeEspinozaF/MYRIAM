@@ -11,14 +11,14 @@ namespace MYRIAM
             double fHA = inputParams.FRACTION_HA;
             double muM = inputParams.muM;
             double muA = inputParams.muA;
-            double HL = inputParams.HL;
+            double HL = inputParams.HL_km;
             CartoLimits REGION_muA_LV = inputParams.REGION_muA_LV;
-            double defLength = inputParams.DEF_DISTANCE;
+            double defLength = inputParams.DEF_DISTANCE_km;
 
 
             string SV_MODEL_NAME = "";
 
-            // Set up map extention label
+            // Set up map extension label
             string AvExtension_Lbl = Set_MapExtension_Label(REGION_muA_LV);
 
 
@@ -49,6 +49,11 @@ namespace MYRIAM
 
 
             return SV_MODEL_NAME;
+        }
+
+        public static string Set_Run_Label(InputParameters inputParams)
+        {
+            return $"STGs_{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}_{inputParams.PLT_LABEL}_{inputParams.MODEL_LABEL}";
         }
 
 
@@ -87,29 +92,12 @@ namespace MYRIAM
         }
 
 
-        public static string Set_Matrix_Label(InputParameters inputParams)
+        public static string Set_Matrix_w2M_FileName(string plateLabel, string modelName)
         {
-            string MATRIX_LABEL = inputParams.PLT_LABEL + "_" + inputParams.MODEL_LABEL;
-
-            if (inputParams.INTERP_MTD == "linear")
-                MATRIX_LABEL += "_iLINR";
-
-            else if (inputParams.INTERP_MTD == "nearest")
-                MATRIX_LABEL += "_iNRST";
-
-            return MATRIX_LABEL;
-        }
-
-
-        public static string Set_Matrix_w2M_FileName(string plateLabel, string modelName, string interpMethod)
-        {
-            string interpStr = interpMethod == "linear" ? "iLINR" : "iNRST";
-
             string LBL_w2M = 
                 $"MTX_w2M" +
                 $"_{plateLabel}" +
-                $"_{modelName}" +
-                $"_{interpStr}.txt";
+                $"_{modelName}.txt";
 
             return LBL_w2M;
         }
@@ -160,7 +148,7 @@ namespace MYRIAM
         public static string Set_ContourCoordinates_Label(InputParameters inputParams)
         {
             double gStep = inputParams.DM_CNTR_BINS[0];
-            string CNTR_PDD_LBL = $"_STGs_{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}_{inputParams.MTX_LABEL}_r";
+            string CNTR_PDD_LBL = $"_{inputParams.RUN_LABEL}_r";
 
             if (gStep.ToString().Contains(','))
                 CNTR_PDD_LBL += string.Format(gStep.ToString()).Replace(",", "p");
@@ -172,7 +160,7 @@ namespace MYRIAM
 
         public static string Set_MagnitudeHistogram_Label(InputParameters inputParams)
         {
-            return $"STGs_{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}_{inputParams.MTX_LABEL}_{inputParams.DM_MAGHIST_BINS}";
+            return $"{inputParams.RUN_LABEL}_{inputParams.DM_MAGHIST_BINS}";
         }
 
         public static string Set_MagnitudeHistogram_FileName(InputParameters inputParams)

@@ -17,7 +17,7 @@ namespace MYRIAM
     {
         static public void Main(string[] args)
         {
-            // --- Openning Console Banner ---
+            // --- Opening Console Banner ---
             MainBanner();
             WriteReports(1);
 
@@ -35,7 +35,7 @@ namespace MYRIAM
             {
                 throw new InputErrorException(
                     "Error in console syntax. " +
-                    "The software call must be followed by the path to the inputs textfile.");
+                    "The software call must be followed by the path to the inputs text file.");
             }
 
             // Set run parameters
@@ -47,7 +47,7 @@ namespace MYRIAM
 
 
 
-            // ============== Set output dirs and file labels ======================
+            // ========== Set output directories and file labels ==================
 
             // Create output directories
             WriteReports(2);
@@ -56,7 +56,8 @@ namespace MYRIAM
 
             // Set up model and matrix labels
             inputParams.Add("MODEL_LABEL", Set_Model_Label(inputParams));
-            inputParams.Add("MTX_LABEL", Set_Matrix_Label(inputParams));
+            inputParams.Add("RUN_LABEL", Set_Run_Label(inputParams));
+
 
 
 
@@ -64,7 +65,8 @@ namespace MYRIAM
             // Euler vector(w) to torque(M) with lateral variations of asthenosphere
             // viscosity(muA)
 
-            MainFunctions.Calculate_dEV2dM_Matrix(inputParams);
+            Motion2Torque m2W = new();
+            m2W.Calculate_dEV2dM_Matrix(inputParams);
 
 
 
@@ -72,7 +74,7 @@ namespace MYRIAM
             // Calculates the torque-variation (dM) associated with an Euler-vector
             // change(dEV) of a given tectonic plate
 
-            MainFunctions.Calculate_dM(
+            TorqueVariation.Calculate_dM(
                 inputParams, out TorqueVector[] dM, out TorqueVector dMvector
                 );
 
@@ -151,7 +153,7 @@ namespace MYRIAM
                 string pythonPath = inputParams.PYTHON_PATH;
 
 
-                // Generate Asthenosphere-Viscosity, Youngs-Modulus and Maxwell-time maps
+                // Generate Asthenosphere-Viscosity, Young's-Modulus and Maxwell-time maps
                 Parallel.Invoke(
                         () => WriteReports(15, 0),
                         () => Generate_gridFigures(inputParams)
