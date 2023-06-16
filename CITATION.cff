@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Espinoza"
+  given-names: "Valentina"
+  orcid: "https://orcid.org/0000-0001-6445-5643"
+- family-names: "Martin de Blas"
+  given-names: "Juan"
+  orcid: "https://orcid.org/0000-0002-9190-9329"
+- family-names: "Iaffaldano"
+  given-names: "Giampiero"
+  orcid: "https://orcid.org/0000-0003-1750-1576"
+title: "MYRIAM"
+version: 1.0.0
+doi: 10.5281/zenodo.8047063
+date-released: 2023-06-16
+url: "https://github.com/ValeEspinozaF/MYRIAM/tree/v1.0.0"
