@@ -74,6 +74,11 @@ namespace MYRIAM
         public string CTR_PATH { get; set; }
 
         /// <summary>
+        /// Array of coordinates for the plate's contour, in degrees.
+        /// </summary>
+        public List<Coordinate[]> CTR_COORDS { get; set; }
+
+        /// <summary>
         /// Value for the grid resolution of the plate's base, expressed in degrees. That is, 
         /// the longitudinal/latitudinal spacing of the grid.
         /// </summary>
@@ -122,7 +127,7 @@ namespace MYRIAM
         /// Number of bins used to obtain the histogram showing the distribution of the 
         /// torque-variation magnitude.
         /// </summary>
-        public int DM_MAGHIST_BINS { get; set; }
+        public int? DM_MAGHIST_BINS { get; set; }
 
         /// <summary>
         /// Array of values used to constrain the spatial statistical distribution of the

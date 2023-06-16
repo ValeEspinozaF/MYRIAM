@@ -37,7 +37,7 @@ HL_km =
 
 
 !-Viscosity average value for the asthenosphere [Pa*s]
-muA =
+muA = 
 
 
 !-Viscosity average value for the upper mantle [Pa*s]

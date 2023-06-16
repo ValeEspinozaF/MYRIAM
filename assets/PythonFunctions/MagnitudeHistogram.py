@@ -33,7 +33,6 @@ def set_ytickLabels(ax):
 # Cmd inputs
 modelLabel = sys.argv[1]
 repositoryDir = sys.argv[2]
-testOutputs = bool(sys.argv[3])
 
 
 # Load file
@@ -60,15 +59,6 @@ plt.hist(magHist["x"], weights=magHist["y"], bins = len(magHist), ec="1")
 
 
 # Save figure as png
-if not testOutputs:
-    
-    figName = "PLOT_MAGHIST_%s.png" %modelLabel
-    figpath = os.path.join(repositoryDir, figName)       
-    plt.savefig(figpath, bbox_inches='tight', dpi=360)
-    
-else:
-    arg1 = len(ax.containers[0])
-    arg2 = np.min([patch.get_width() for patch in ax.patches])
-    arg3 = sum(patch.get_height() * patch.get_width() for patch in ax.patches)
-    arg4 = np.max([patch.get_height() for patch in ax.patches])
-    print(arg1, arg2, arg3, arg4)
+figName = "PLOT_MAGHIST_%s.png" %modelLabel
+figpath = os.path.join(repositoryDir, figName)       
+plt.savefig(figpath, bbox_inches='tight', dpi=360)

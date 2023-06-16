@@ -69,7 +69,7 @@ namespace ComputationalGeometry
         /// <param name="X">Grid of Lon-coordinate values.</param>
         /// <param name="Y">Grid of Lat-coordinate values.</param>
         /// <param name="V">Grid of Val-values for each xy coordinate.</param>
-        /// <param name="XYqs">Coordinate array with points to intepolate.</param>
+        /// <param name="XYqs">Coordinate array with points to interpolate.</param>
         /// <param name="method">Interpolation method. Only "linear" and "nearest" are supported.</param>
         /// <returns>Array of Val-values for the queried points.</returns>
         public static double[] Interpolation2D(double[,] X, double[,] Y, double[,] V, Coordinate[] XYqs, string method="linear")

@@ -220,7 +220,7 @@ namespace Cartography
             // Get contour latlon limits
             CartoLimits cntrLim = CartoLimits.Extract_CoordsLimits(coordsArray);
 
-            var lonStart = Math.Floor(cntrLim.LonMin);  // !!! May not be the best idea when plate is small right?
+            var lonStart = Math.Floor(cntrLim.LonMin); 
             var lonStop = Math.Ceiling(cntrLim.LonMax);
             var latStart = Math.Floor(cntrLim.LatMin);
             var latStop = Math.Ceiling(cntrLim.LatMax);

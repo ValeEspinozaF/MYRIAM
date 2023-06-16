@@ -31,7 +31,7 @@ namespace Histogram
 
 
         /// <summary>
-        /// Compute the histogram of a uni-dimentional dataset.
+        /// Compute the histogram of a unidimensional dataset.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="nBins">Number of bins. Optional.</param>
@@ -136,7 +136,7 @@ namespace Histogram
                     }
 
                     else if (!double.IsNaN(min) && !double.IsNaN(max))
-                        throw new ArgumentException("Yet to programm.");
+                        throw new ArgumentException("Yet to program. No parameter given for nBins, min or max. Only binSize. Where to start?");
 
                 }
 

@@ -174,23 +174,33 @@ def gridLabels_inside(ax, xLinspace, yLinspace):
     ax.yaxis.set_major_formatter(lat_formatter)
     
     # Get label on the inside
-    ax.tick_params(axis="y",direction="in", pad=-22)
-    ax.tick_params(axis="x",direction="in", pad=-15)
+    ax.tick_params(axis="y",direction="in", length=2, pad=-5)
+    ax.tick_params(axis="x",direction="in", length=2, pad=-11)
     
     # Put ticks at the top and right axes
     ax.yaxis.tick_right()
     ax.xaxis.tick_top()
     
     # Format the label
-    ax.tick_params(axis='both', labelsize=8, labelcolor='dimgray')
-    
-    # White background
-    plt.setp(ax.get_xticklabels(), backgroundcolor="w")
-    plt.setp(ax.get_yticklabels(), backgroundcolor="w")
+    labelParams = {
+        "fontsize" : 7, 
+        "color" : "dimgray",
+        #"backgroundcolor" : "w"
+        }
+
+    plt.setp(ax.get_xticklabels(), **labelParams)
+    plt.setp(ax.get_yticklabels(), ha="right", **labelParams)
     
     # Plot grid
+    gridParams = {
+        "linewidth" : 0.2, 
+        "color" : '0.3', 
+        "alpha" : 0.5, 
+        "linestyle" : '--',
+        }
+
     ax.gridlines(crs=ccrs.PlateCarree(), xlocs=xLinspace, ylocs=yLinspace,
-                 linewidth=0.3, color='black', alpha=0.8, linestyle='--')
+                 **gridParams)
     
     
 

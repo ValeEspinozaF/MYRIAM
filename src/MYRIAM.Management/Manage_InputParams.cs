@@ -1,4 +1,7 @@
-﻿using StructOperations;
+﻿using System.Resources;
+using System.IO;
+using System.Reflection;
+using StructOperations;
 using static MYRIAM.FileReader;
 using Cartography;
 
@@ -26,14 +29,22 @@ namespace MYRIAM
                 inputParams.Add("EVo_PATH", null);
 
 
-            // If contour path (CTR_PATH) is not given, use Matthews et al. 2016 Present-day contour
-            if (!inputParams.ContainsKey("CTR_PATH"))
-                inputParams.Add("CTR_PATH", GetContourPath(inputParams.PLT_LABEL));
-
-
             // If python path (PYTHON_PATH) is not given, set empty string instead
             if (!inputParams.ContainsKey("PYTHON_PATH"))
                 inputParams.Add("PYTHON_PATH", null);
+
+
+            // If contour path (CTR_PATH) is not given, use Matthews et al. 2016 Present-day contour
+            if (!inputParams.ContainsKey("CTR_PATH"))
+            {
+                inputParams.Add("CTR_PATH", $"MYRIAM.Properties.PlateContours_PresentDay_Matthews2016.{inputParams.PLT_LABEL}_contourXY_Matthews2016.txt");
+                inputParams.Add("CTR_COORDS", GetContourCoords(inputParams.PLT_LABEL));
+            }
+                
+            else
+            {
+                inputParams.Add("CTR_COORDS", File_CoordinatesArray(inputParams.CTR_PATH));
+            }
 
             return inputParams;
         }
@@ -55,9 +66,8 @@ namespace MYRIAM
 
         public static Dictionary<string, string> Load_defaultParams()
         {
-            string dirDefault = Get_ItemPath("assets");
-            string pathDefault = Path.Combine(dirDefault, "TextFiles/DefaultParameters.txt");
-            return File_toInputStrings(pathDefault);
+            string s = Properties.TextFiles.DefaultParameters;
+            return StringArray_toInputStrings(s.Split("\r\n"));
         }
 
 
@@ -569,8 +579,8 @@ namespace MYRIAM
                     inputVars.DM_CNTR_PERCENT = percentArray.Concat(new double[] { 68 }).ToArray();
                     
                     Console.WriteLine(
-                        "Warning! " +
-                        "Adding 68% confidence percentage (for diagnostics figures)");
+                        "\nWarning! " +
+                        "Adding 68% confidence percentage (for diagnostics figures)\n");
                 }
 
                 if (!percentArray.Contains(20))
@@ -578,8 +588,8 @@ namespace MYRIAM
                     inputVars.DM_CNTR_PERCENT = percentArray.Concat(new double[] { 20 }).ToArray();
 
                     Console.WriteLine(
-                        "Warning! " +
-                        "Adding 20% confidence percentage (for diagnostics figures)");
+                        "\nWarning! " +
+                        "Adding 20% confidence percentage (for diagnostics figures)\n");
                 }
             }
 

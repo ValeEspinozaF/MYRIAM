@@ -89,11 +89,11 @@ namespace EnsembleAnalysis
                         "Given contouring grid resolution (gStep) exceeds the given longitude range (xBinRange)."
                         );
 
-                // Throw warning when given ranges are undivisable by the given step
+                // Throw warning when given ranges are indivisible by the given step
                 if ((xBinMax - xBinMin) % gStep != 0)
                     Console.WriteLine(
-                        "Warning! " +
-                        "Given longitude contouring range is not divisible by the given grid resolution."
+                        "\nWarning! " +
+                        "Given longitude contouring range is not divisible by the given grid resolution.\n"
                         );
             }
 
@@ -105,8 +105,8 @@ namespace EnsembleAnalysis
 
                 if ((yBinMax - yBinMin) % gStep != 0)
                     Console.WriteLine(
-                        "Warning! " +
-                        "Given latitude contouring range is not divisible by the given grid resolution."
+                        "\nWarning! " +
+                        "Given latitude contouring range is not divisible by the given grid resolution.\n"
                         );
             }
 

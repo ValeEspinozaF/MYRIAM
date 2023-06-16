@@ -45,7 +45,9 @@ namespace MYRIAM
                     {
                         if (!overwriteOutput)
                         {
-                            Console.Write("\nRepository folder already exists, files may be overwriten. Do you want to continue [Lat/n]? ");
+                            Console.Write(
+                                "\nRepository folder already exists, files may be overwritten." + 
+                                "\nDo you want to continue [y/n]? ");
 
                             char[] yes = { 'Y', 'y' };
                             char[] no = { 'N', 'n' };
@@ -64,9 +66,12 @@ namespace MYRIAM
                                 throw new Exception("Invalid input character, please type Lat for yes, n for no.");
                             }
 
-                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            int targetLineCursor = Console.CursorTop - 3;
+                            Console.SetCursorPosition(0, targetLineCursor + 1);
                             Console.Write(new string(' ', Console.WindowWidth));
-                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.SetCursorPosition(0, targetLineCursor + 2);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, targetLineCursor);
                         }
                     }
                     else
@@ -241,10 +246,9 @@ namespace MYRIAM
         public static void Generate_histogramFigure(InputParameters inputParams)
         {
             string histLabel = Set_MagnitudeHistogram_Label(inputParams);
-            string args = string.Format("{0} {1} {2}", 
+            string args = string.Format("{0} {1}", 
                 histLabel,
-                inputParams.DIR_dM_PPD, 
-                "False"
+                inputParams.DIR_dM_PPD
                 );
 
             string pyScriptPath = Get_pyScriptPath("MagnitudeHistogram.py");
@@ -288,10 +292,9 @@ namespace MYRIAM
         public static void Save_InputParamsReport(InputParameters inputParams)
         {
             // Upload Template file
-            string dirDefault = Get_ItemPath("assets");
-            string pathReport = Path.Combine(dirDefault, "TextFiles/InputFileReport_Template.txt");
-            string[] lines = File.ReadAllLines(pathReport);
-            
+            string s = Properties.TextFiles.InputFileReport_Template;
+            string[] lines = s.Split("\r\n");
+
 
             for (int i = 0; i < lines.Length; i++)
             {

@@ -13,12 +13,6 @@
     <Optimize>False</Optimize>
   </PropertyGroup>
 
-  <!--Skip .pdb file in publish
-  <PropertyGroup>
-    <DebugType>None</DebugType>
-    <DebugSymbols>False</DebugSymbols>
-  </PropertyGroup>-->
-
 
   <!--Skip compiling of non-cs files-->
   <ItemGroup>
@@ -26,15 +20,34 @@
     <Compile Remove="build\**" />
     <Compile Remove="samples\**" />
   </ItemGroup>
+
   
+  <ItemGroup>
+    <None Remove="build\**" />
+    <None Remove="docs\**" />
+    <None Remove="tests\**" />
+  </ItemGroup>
+
   
   <!--Assets-->
   <ItemGroup>
-    <None Remove="assets\**" />
-    <None Remove="samples\**" />
-    <Content Include="assets\**" CopyToPublishDirectory="PreserveNewest" />
-    <Content Include="samples\**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="assets\**" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="samples\**" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
+
+
+
+  <!--Exclude .pdb file in publish-->
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>None</DebugType>
+    <DebugSymbols>False</DebugSymbols>
+  </PropertyGroup>
+
+  <!--Exclude .xml in publish-->
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <PublishDocumentationFile>false</PublishDocumentationFile>
+    <PublishReferencesDocumentationFiles>false</PublishReferencesDocumentationFiles>
+  </PropertyGroup>
 
   
   <!--Packages-->
@@ -48,5 +61,35 @@
   <ItemGroup>
     <None Include="C:\Users\nbt571\Documents\VS_repos\MYRIAM\.editorconfig" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Update="Properties\PriestlyMcKenzey2013_T_model.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PriestlyMcKenzey2013_T_model.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\PlateContours_PresentDay_Matthews2016.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlateContours_PresentDay_Matthews2016.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\TextFiles.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TextFiles.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\PriestlyMcKenzey2013_T_model.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PriestlyMcKenzey2013_T_model.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\PlateContours_PresentDay_Matthews2016.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlateContours_PresentDay_Matthews2016.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\TextFiles.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TextFiles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>  
 </Project>

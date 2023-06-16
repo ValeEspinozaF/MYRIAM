@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from matplotlib import colormaps
 import matplotlib.colors as mcolors
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from MapFeatures import setCartographic_AxisLabels
@@ -100,7 +101,7 @@ mymap = mcolors.LinearSegmentedColormap.from_list('muA_cmap', colors)
 # Plot Z surface colormap
 im = ax.imshow(Z, origin='lower', extent=extent, cmap=mymap, vmin=18, vmax=21)
 cbar = fig.colorbar(im, cax=cax)
-cbar.set_label("$\mathrm{log(\mu_A)}$", rotation=270, fontsize=11, labelpad=25)
+cbar.set_label("$\mathrm{log(\mu_a)}$", rotation=270, fontsize=11, labelpad=25)
 
 
 # Enclose map to plate's contour 
@@ -150,7 +151,7 @@ Z = ym_reversed
 
 
 # Create the colormap
-cool = cm.get_cmap("cool")
+cool = colormaps["cool"]
 colors = cool(np.linspace(0, 1, 256))
 mymap = mcolors.LinearSegmentedColormap.from_list('ym_cmap', colors)
 
@@ -207,7 +208,7 @@ Z = TAU_MXWyr_reversed
 
 
 # Create the colormap
-cool = cm.get_cmap("jet")
+cool = colormaps["jet"]
 colors = cool(np.linspace(1, 0., 100))
 mymap = mcolors.LinearSegmentedColormap.from_list('mxw_cmap', colors)
 

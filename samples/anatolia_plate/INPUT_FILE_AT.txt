@@ -1,11 +1,11 @@
 ! ============== Main Input Parameters ===============================================
 
 !-Output directory
-DIR_OUTPUTS = 
+DIR_OUTPUTS = full\path\to\output_folder
 
 
 !-Output label for folders and input parameters report
-OUTPUT_LABEL = ""
+!OUTPUT_LABEL = "test1"
 
 
 !-Plate label (for file naming)
@@ -29,31 +29,31 @@ CTR_PATH = full\path\to\BDR_AT_Bird2003.txt
 
 
 !-Resolution for plate's base [degrees]
-GRID_RES = 2
+!GRID_RES = 2
 
 
 !-Depth of Lithosphere-Asthenosphere boundary [km]
-HL_km = 180
+!HL_km = 180
 
 
 !-Viscosity average value for the asthenosphere[Pa*s]
-muA = 5e19
+!muA = 5e19
 
 
 !-Viscosity average value for the upper mantle [Pa*s]
-muM = 15e20
+!muM = 15e20
 
 
 !-Geographic region for viscosity averaging [degrees]
-REGION_muA_LV = [-180, 180, -90, 90]
+!REGION_muA_LV = [-180, 180, -90, 90]
 
 
 !-Vertical fraction of asthenospheric channel to use
-FRACTION_HA = 1
+!FRACTION_HA = 1
 
 
 !-Deformation length around the plate contour [km]
-DEF_DISTANCE_km = 0
+!DEF_DISTANCE_km = 0
 
 
 
@@ -72,13 +72,13 @@ DEF_DISTANCE_km = 0
 
 
 !-Angles of ensemble rotation along each main axis (Z,Y,X), to improve the contouring [degrees]
-ANG_ROT = [0, 0, 0]
+!ANG_ROT = [0, 0, 0]
 
 
 !-Save torque variation ensemble (values in Cartesian coordinates [N*m])
 !SAVE_ENS = true
 
 
-!-Python3 path (if given, generates grid and contour reference figures with Python3) 
+!-Python3 path (if given, generates grid and contour reference figures with Python3)
 !-Warning! Requires [os, sys, numpy, pandas, matplotlib, cartopy] Python packages.
 !PYTHON_PATH = full\path\to\python

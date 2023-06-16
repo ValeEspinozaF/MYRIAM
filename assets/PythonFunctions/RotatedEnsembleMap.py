@@ -54,8 +54,27 @@ dM_PDD_Dir = sys.argv[4]
 runLabel = sys.argv[5]
 
 
+# Plate contour path
+contourName = "BDR_%s.txt" %plateAccronym
+contourPath = os.path.join(MTX_w2M_Dir, contourName)
 
-# Load files
+
+# Set Figure
+fig = plt.figure(constrained_layout=True, figsize=(9,9), dpi=360 )    
+ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+
+
+# Plot plate and continent contours
+globalFeatures(ax, contourPath, plotGridLines=False)
+
+
+# Plot grid lines
+xLinspace = np.arange(-180, 181, 20)[1:-1]
+yLinspace = np.arange(-90, 91, 15)[1:-1]
+gridLabels_inside(ax, xLinspace, yLinspace)
+
+
+# Load contours and ensembles
 cntrNML_fileName = "CNTR_68.txt" 
 cntrROT_fileName = "CNTR_ROT_68.txt" 
 ensNML_fileName = "ENSdM.txt" 
@@ -73,31 +92,19 @@ ensROT = pd.read_csv(ensROT_path, delimiter=' ', header=None, names=["x", "y", "
 
 
 
-# Plate contour path
-contourName = "BDR_%s.txt" %plateAccronym
-contourPath = os.path.join(MTX_w2M_Dir, contourName)
+if ensNML["x"][0] == ensROT["x"][0]:
+    plt.title('Torque-variation pole', fontsize=13, pad=10)
+    ensList = [ensNML]
+    cntrList = [cntrNML]
+
+else:
+    plt.title('Torque-variation pole: Original (red) vs Rotated (blue)', fontsize=13, pad=10)
+    ensList = [ensROT, ensNML]
+    cntrList = [cntrROT, cntrNML]
 
 
-# Set Figure
-fig = plt.figure(constrained_layout=True, figsize=(9,9), dpi=360 )    
-ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
-
-
-# Plot plate and continent contours
-globalFeatures(ax, contourPath, plotGridLines=False)
-
-
-# Plot grid lines
-xLinspace = np.linspace(-180, 180, 19)
-yLinspace = np.linspace(-90, 90, 13)
-gridLabels_inside(ax, xLinspace, yLinspace)
-
-
-# Figure title
-plt.title('Torque-variation pole: Original (red) vs Rotated (blue)', fontsize=13, pad=10)
-
-
-for ensemble, colour in zip([ensNML, ensROT], ['r', 'b']):
+# Plot ensemble
+for ensemble, colour in zip(ensList, ['cornflowerblue', 'indianred']):
     
     # Plot poles
     if len(ensemble) > 10000:
@@ -110,10 +117,8 @@ for ensemble, colour in zip([ensNML, ensROT], ['r', 'b']):
     plot_poles(ax, ensLat, ensLon, color=colour)
     
     
-    
-for contour, colour in zip([cntrNML, cntrROT], ['darkred', 'darkblue']):
-    
-    # Plot contour
+# Plot contour
+for contour, colour in zip(cntrList, ['blue', 'firebrick']):
     
     # Split Dataframes where nan rows appear (when multiple contours are stacked)
     contour["cntrNr"] = contour.isnull().all(axis=1).cumsum()

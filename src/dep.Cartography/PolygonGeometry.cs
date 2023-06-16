@@ -48,19 +48,6 @@ namespace Cartography
             return coordsList.ToArray();
         }
 
-        public static Coordinate[] Grid_InPolygon(Coordinate[] cntrArray, double step)
-        {
-            // Clean coordinates duplicates
-            cntrArray = Clean_coordDuplicates(cntrArray);
-
-
-            // Create rectangular grid of coordinates for plate boundary, with step as spacing
-            var gridPoints = Coordinate.MakeGrid(cntrArray, step);
-
-
-            // Filter points within plate boundary
-            return PolygonGeometry.Points_InPolygon(cntrArray, gridPoints);
-        }
 
         public static Coordinate[] Points_InPolygon(Coordinate[] polygonPoints, Coordinate[] testPoints)
         {

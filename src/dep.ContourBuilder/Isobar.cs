@@ -6,7 +6,7 @@ using Histogram;
 using Cartography;
 using DataStructures;
 
-
+// Credits to Uri Agassi for the base code (https://github.com/uriagassi/Creating-Isobars/).
 namespace ContourBuilder
 {
     public enum IsobarDirection

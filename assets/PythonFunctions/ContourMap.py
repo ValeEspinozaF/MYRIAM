@@ -58,8 +58,8 @@ globalFeatures(ax, contourPath, plotGridLines=False)
 
 
 # Plot grid lines
-xLinspace = np.linspace(-180, 180, 19)
-yLinspace = np.linspace(-90, 90, 13)
+xLinspace = np.arange(-180, 181, 20)[1:-1]
+yLinspace = np.arange(-90, 91, 15)[1:-1]
 gridLabels_inside(ax, xLinspace, yLinspace)
 
 

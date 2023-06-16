@@ -54,7 +54,7 @@ namespace MYRIAM
         {
             // ============== Parameters ===============================================
 
-            string contourPath = inputParams.CTR_PATH;
+            List<Coordinate[]> contourCoords = inputParams.CTR_COORDS;
             double muM = inputParams.muM;
             double muA = inputParams.muA;
             double fHA = inputParams.FRACTION_HA;
@@ -71,7 +71,7 @@ namespace MYRIAM
 
             Console_Banners.WriteReports(7);
             Calculate_dEV2dM_Matrix(
-                contourPath, muM, muA, HL, fHA, stepDeg, REGION_muA_LV, defLength
+                contourCoords, muM, muA, HL, fHA, stepDeg, REGION_muA_LV, defLength
                 );
 
 
@@ -86,8 +86,8 @@ namespace MYRIAM
         /// <summary>
         /// This function calculates the 3×3 matrix that link Euler-vector variations to torque-variations.
         /// </summary>
-        /// <param name="contourPath">String path to a plain-text file containing the plate contour coordinates as two 
-        /// columns: [1] longitude and [2] latitude values, both expressed in degrees.</param>
+        /// <param name="contourCoords">List of arrays of <see cref = "Coordinate" /> instance with the geographical coordinates for the plate's contour, expressed in degrees. 
+        /// The list may hold different portions of the same plate, that may have been sectioned at the 180 meridian.</param>
         /// <param name="muM">Average value of the lower part of the upper mantle viscosity, expressed in Pa · s.</param>
         /// <param name="muA">Average value of the asthenosphere viscosity, expressed in Pa · s.</param>
         /// <param name="HL">Value of the lithosphere thickness (i.e., depth of the lithosphere-asthenosphere boundary), expressed in meters.</param>
@@ -98,7 +98,7 @@ namespace MYRIAM
         /// <param name="defLength">Value used to set a deformation buffer width (in meters) across the plate boundary. The boundary region has a 
         /// linearly-decreased Euler vector magnitude, acting as a damped rigidity, as yielding an overall smaller torque-variation estimate.</param>
         public void Calculate_dEV2dM_Matrix(
-            string contourPath,
+            List<Coordinate[]> contourCoords,
             double muM,
             double muA,
             double HL,
@@ -122,9 +122,9 @@ namespace MYRIAM
 
             Console_Banners.WriteReports(3);
 
-            // Upload plate contour spherical coordinates
-            List<Coordinate[]> cntrArrays = FileReader.File_CoordinatesArray(contourPath);
-            this.cntrArray = ManageCoordinates.ConcatenateCoords(cntrArrays);
+            // Get plate contour spherical coordinates
+            this.cntrArray = ManageCoordinates.ConcatenateCoords(contourCoords);
+
 
 
             if (!REGION_muA_LV.IsEmpty() && !REGION_muA_LV.Encloses(cntrArray))
@@ -135,7 +135,7 @@ namespace MYRIAM
 
 
             // Create grid of coordinates within the plate boundary limits
-            Coordinate[] gridPntsDeg = ManageCoordinates.Grid_InPolygon(cntrArrays, stepDeg);
+            Coordinate[] gridPntsDeg = ManageCoordinates.Grid_InPolygon(contourCoords, stepDeg);
 
 
             // Turn filtered matrix coordinates to spherical radians and Cartesian
@@ -166,7 +166,6 @@ namespace MYRIAM
 
             // Default value is 1
             double[] fDef = ArrayManagement.Repeat1D(1.0, dArea.Length);
-            this.gridPoints = Coordinate.ToArray(gridPntsDeg, fDef);
 
             if (defLength != 0)
             {
@@ -179,6 +178,7 @@ namespace MYRIAM
                 dArea = ArrayOperations.ArrayProduct(dArea, fDef);
             }
 
+            this.gridPoints = Coordinate.ToArray(gridPntsDeg, fDef);
 
 
             // ======= Asthenosphere viscosity / thickness interpolation ======

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 using System.Collections;
 using static MYRIAM.ManageOutputs;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using DataStructures;
 
 
 namespace MYRIAM
 {
-    internal class Console_Banners
+    internal partial class Console_Banners
     {
         const char _block = '■';
         const string _twirl = "-\\|/";
@@ -37,6 +38,14 @@ namespace MYRIAM
 
         internal static void MainBanner()
         {
+            // Check and resize (if too small) the current width of the terminal
+            int minWidth = 68;
+            int currentWidth = Console.WindowWidth;
+            if (currentWidth < minWidth)
+            {
+                Console.WindowWidth = minWidth;
+            }
+
             Console.WriteLine("");
             Console.WriteLine("===================================================================");
             Console.WriteLine("|                             MYRIAM                              |");

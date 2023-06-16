@@ -146,7 +146,7 @@ namespace MYRIAM
             TorqueVector[] dM
             )
         {
-            int nBins = inputParams.DM_MAGHIST_BINS;
+            int? nBins = inputParams.DM_MAGHIST_BINS;
             int stageIndex_Old = inputParams.STG_IDX_1;
             int stageIndex_Young = inputParams.STG_IDX_2;
             string dir_dM_PDD = inputParams.DIR_dM_PPD;

@@ -90,7 +90,7 @@ namespace Histogram
                 throw new ArgumentException("nBins must be contain positive integers.");
 
             if (binEdges != null && range != null)
-                Console.WriteLine("Warning! When both binEdges and range are supplied, range is ignored.");
+                Console.WriteLine("\nWarning! When both binEdges and range are supplied, range is ignored.\n");
 
 
 

@@ -36,9 +36,11 @@ MYRIAM calculations run as a self-contained release, and require no additional d
 
 - [Python 3.8](https://www.python.org/) or later
 - [Pandas 1.4.4](https://https://pandas.pydata.org/) or later
-- [Matplotlib 3.2](https://matplotlib.org/stable/users/installing/index.html) or later
+- [Matplotlib 3.5](https://matplotlib.org/stable/users/installing/index.html) or later
 - [Cartopy 0.18.0](https://scitools.org.uk/cartopy/docs/latest/index.html#getting-started) or later, 
-- and dependencies therein
+- and dependencies therein*
+
+*Note that Cartopy up to version 0.21.0 may encounter package issues when importing, particularly *lgeos*. Make sure to install/downgrade Shapely to its version 1.8.5 to avoid the above issue.
 
 <!-- examples -->
 ## Examples

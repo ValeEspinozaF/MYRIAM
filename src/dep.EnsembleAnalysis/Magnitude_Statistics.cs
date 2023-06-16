@@ -27,7 +27,7 @@ namespace EnsembleAnalysis
 
 
 
-            // --- Bins XY vcurve ---
+            // --- Bins XY curve ---
 
             // Create line of bins outline
             double[,] magHist_XY = new double[histEdges.Length * 2, 2];

@@ -1,5 +1,6 @@
 ﻿using Cartography;
 using StructOperations;
+using System.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ using static StructOperations.ArrayManagement;
 using Utilities;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using System.Reflection;
+using MYRIAM.Properties;
 
 namespace MYRIAM
 {
@@ -53,10 +56,29 @@ namespace MYRIAM
 
         public struct GridLayer_PM13_T
         {
+            /// <summary>
+            /// Longitude in degrees-East.
+            /// </summary>
             public double[,] LonGrid { get; set; }
+
+            /// <summary>
+            /// Latitude in degree-North.
+            /// </summary>
             public double[,] LatGrid { get; set; }
+
+            /// <summary>
+            /// Temperature in degrees-Celsius.
+            /// </summary>
             public double[,] TempGrid { get; set; }
+
+            /// <summary>
+            /// Number of grid rows.
+            /// </summary>
             public int gRows { get; set; }
+
+            /// <summary>
+            /// Number of grid columns.
+            /// </summary>
             public int gCols { get; set; }
 
             public static GridLayer_PM13_T Upload_Grid(double depth)
@@ -69,11 +91,11 @@ namespace MYRIAM
                     DPT = $"{depth / 1e3}";
 
 
-                // Read Prem_MantleModel file as lines
-                string dirDefault = FileReader.Get_ItemPath("assets");
-                string premDir = Path.Combine(dirDefault, "TextFiles/PriestleyMcKenzey2013_T_model");
-                string filePath = Path.Combine(premDir, "GRD_PM13_DEPTH" + DPT + "km_T.txt");
-                string[] lines = File.ReadAllLines(filePath);
+                // Read PM13 Temperature-model file as lines
+                ResourceManager resourceManager = new ResourceManager("MYRIAM.Properties.PriestlyMcKenzey2013_T_model", typeof(PriestlyMcKenzey2013_T_model).Assembly);
+                string s = resourceManager.GetString("GRD_PM13_DEPTH" + DPT + "km_T");
+                string[] lines = s.Split("\r\n");
+
 
 
                 // Set empty 2D arrays
@@ -247,13 +269,13 @@ namespace MYRIAM
             double E = 402.9e3;     // activation energy [J/mol]
             double Va = 7.81e-6;    // activation volume [m^3/mol]
             double R = 8.314;       // gas constant
-            double CK_offset = 273.15; // !!! What is it? Where does it come from
+            double CK_offset = 273.15; // Celsius/Kelvin offset
 
             // Young's modulus [in Pa], based on Mantle from Turcotte and Schubert
             double Young_Mod_mean = 1.5e11;
 
-            // Derivative of Young modulus with temperature !!! [Pa/K]? From PM13?
-            double dYMdT = -0.87 * 1e-2 * 1e9;
+            // Derivative of Young modulus with temperature as in Priestley & McKenzie, EPSL 2013 - Table 1. [Pa/K]
+            double dYMdT = -0.87 * 1e-2 * 1e9; 
 
             // Maxwell time (in years)
             double TAU_MXWyr = (muA / Young_Mod_mean) / (365 * 24 * 60 * 60);
@@ -266,7 +288,7 @@ namespace MYRIAM
             double[] A_samples = PR09_F3_DATA_FIT(nSamples_PR09);
 
 
-            // Calculate asthenosphere thickness from muA and muU (Paulson & Richards, 2009)
+            // Calculate asthenosphere thickness from muA and muM (Paulson & Richards, 2009)
             double[] HA_SAMPLES = ArrayMultiply(A_samples, Math.Pow(muA / muM, 1.0 / 3.0));
             double HA_PR09 = HA_SAMPLES.Average();
             this.HA = HA_PR09;
@@ -284,8 +306,8 @@ namespace MYRIAM
             // Throw warnings and errors
             if (HL + HA > 400e3)
                 Console.WriteLine(
-                    "Warning! " +
-                    "Input HL_km and calculated HA yield an added thickness larger than 400 km (max. depth of PM13).");
+                    "\nWarning! " +
+                    "Input HL_km and calculated HA yield an added thickness larger than 400 km (max. depth of PM13).\n");
 
             if (z_PM13_2use.Length == 0)
                 throw new ArgumentException(
@@ -496,10 +518,8 @@ namespace MYRIAM
             // "Preliminary reference Earth model." Phys.Earth Plan. Int. 25:297 - 356.
 
             // Read Prem_MantleModel file as lines (skip first)
-            string dirDefault = Get_ItemPath("assets");
-            string pathPrem = Path.Combine(dirDefault, "TextFiles/Prem_MantleModel.txt");
-
-            string[] lines = File.ReadAllLines(pathPrem);
+            string s = Properties.TextFiles.Prem_MantleModel;
+            string[] lines = s.Split("\r\n");
             lines = lines.Skip(1).ToArray();
 
 

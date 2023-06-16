@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Linq.Expressions;
+using System.Resources;
 using Cartography;
+using MYRIAM.Properties;
 
 namespace MYRIAM
 {
@@ -28,20 +30,25 @@ namespace MYRIAM
         }
 
 
-        public static string GetContourPath(string plateLabel)
+        public static List<Coordinate[]> GetContourCoords(string plateLabel)
         {
-            string dirDefault = Get_ItemPath("assets");
-            string dirPath = Path.Combine(dirDefault, "TextFiles/PlateContours_PresentDay_Matthews2016");
-            string filePath = Path.Combine(dirPath, $"{plateLabel}_contourXY_Matthews2016.txt");
+            ResourceManager resourceManager = new ResourceManager("MYRIAM.Properties.PlateContours_PresentDay_Matthews2016", typeof(PlateContours_PresentDay_Matthews2016).Assembly);
+            string[] lines;
 
-            if (!File.Exists(filePath))
+            string s = resourceManager.GetString($"{plateLabel}_contourXY_Matthews2016");
+            if (s != null)
+            {
+                lines = s.Split("\r\n");
+                return StringArray_CoordinatesArray(lines);
+            }
+            else
+            {
                 throw new InputErrorException(
                     $"Error in PLT_LABEL entry. " +
-                    $"Embeded contour with label {plateLabel} does not exist. " +
+                    $"Embedded contour with label {plateLabel} does not exist. " +
                     $"Check the Manual for supported plate labels."
                     );
-
-            return filePath;
+            }
         }
 
 
@@ -54,7 +61,7 @@ namespace MYRIAM
             int cols = 0;
             int rows = 0;
 
-            // Find number of colums in data, by finding first data row (excluding header)
+            // Find number of columns in data, by finding first data row (excluding header)
             bool searchFirstLine = true;
             int k = 0;
             while (searchFirstLine)
@@ -104,11 +111,16 @@ namespace MYRIAM
         }
 
 
-        public static List<Coordinate[]> File_CoordinatesArray(string args)
+        public static List<Coordinate[]> File_CoordinatesArray(string path)
         {
             // Read file as lines
-            string[] lines = System.IO.File.ReadAllLines(args);
+            string[] lines = System.IO.File.ReadAllLines(path);
+            return StringArray_CoordinatesArray(lines);
+        }
 
+        public static List<Coordinate[]> StringArray_CoordinatesArray(string[] lines)
+        {
+            lines = lines.Where(s => s != "").ToArray();
 
             // Set up empty List
             List<Coordinate[]> polygonList = new();
@@ -135,10 +147,10 @@ namespace MYRIAM
                 }
             }
 
-            // If coordinates file dit not contain nan splitters,
+            // If coordinates file does not contain NaN splitters,
             if (polygonList.Count == 0)
 
-                // Append collected coords to polygonList
+                // Append collected coordinates to polygonList
                 polygonList.Add(polygonCoords.ToArray());
 
 
@@ -146,13 +158,19 @@ namespace MYRIAM
         }
 
 
+
         public static Dictionary<string, string> File_toInputStrings(string args)
+        {
+            // Read file as lines
+            string[] lines = File.ReadAllLines(args);
+
+            return StringArray_toInputStrings(lines);
+        }
+
+        public static Dictionary<string, string> StringArray_toInputStrings(string[] lines)
         {
             // Set output dictionary
             var inputVars = new Dictionary<string, string>();
-
-            // Read file as lines
-            string[] lines = File.ReadAllLines(args);
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -167,17 +185,17 @@ namespace MYRIAM
                         string key, value;
 
                         if (entries.Length > 2)
-                            throw new InputErrorException($"Warning! Too many equals signs in line {i + 1}.");
+                            throw new InputErrorException($"\nWarning! Too many equals signs in line {i + 1}.\n");
 
-                        else 
+                        else
                         {
                             key = entries[0].Trim();
 
                             if (entries.Length == 1)
                                 value = "";
-                            
+
                             else
-                                value = entries[1].Trim(); 
+                                value = entries[1].Trim();
 
                             try
                             {
