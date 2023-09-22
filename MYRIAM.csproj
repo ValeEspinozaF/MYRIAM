@@ -19,6 +19,7 @@
     <Compile Remove="assets\**" />
     <Compile Remove="build\**" />
     <Compile Remove="samples\**" />
+    <Compile Remove="pre-processing\**" />
   </ItemGroup>
 
   
@@ -33,6 +34,7 @@
   <ItemGroup>
     <Content Include="assets\**" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
     <Content Include="samples\**" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Content Include="pre-processing\**" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
 
 

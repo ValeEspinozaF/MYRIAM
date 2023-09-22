@@ -2,7 +2,7 @@
   "profiles": {
     "MYRIAM": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\nbt571\\Desktop\\dEVdM_Project\\Outputs\\INPUT_FILE_REPORT_SAM_0_1_.txt\""
+      "commandLineArgs": "\"C:\\Users\\nbt571\\Desktop\\benchmark_myriam\\INPUT_FILE_SQUARE.txt\""
     }
   }
 }

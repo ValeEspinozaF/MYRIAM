@@ -24,63 +24,77 @@ projFolder = Path(__file__).parents[2]
 def setCartographic_AxisLabels(ax):
     
     # Ticks range
-    yminO, ymax = ax.get_ylim()
-    xminO, xmax = ax.get_xlim()
-    
-    # Round mins
-    ymin = np.round((yminO-5)/5) * 5
-    xmin = np.round((xminO-5)/5) * 5
-    
-    
-    # New ticks
-    yTickList = np.arange(ymin, ymax, 10)
-    xTickList = np.arange(xmin, xmax, 10)
-    
-    if len(yTickList) < 5:
-        yTickList = np.arange(ymin, ymax, 5)    
+    ymin0, ymax0 = ax.get_ylim()
+    xmin0, xmax0 = ax.get_xlim()
         
-        if len(yTickList) < 5:
-            yTickList = np.arange(ymin, ymax, 2)    
-            
-            
-    if len(xTickList) < 5:
-        xTickList = np.arange(xmin, xmax, 5)    
+    
+    # Ensure min starts at factor of 5 (if extent is not too small)
+    if ymax0 - ymin0 > 5: 
+        ymin, ymax = np.round( (ymin0-5)/5 ) * 5, ymax0
+    else:
+        ymin, ymax = np.floor(ymin0), np.ceil(ymax0)
         
-        if len(xTickList) < 5:
-            xTickList = np.arange(xmin, xmax, 2)    
+        
+    if xmax0 - xmin0 > 5: 
+        xmin, xmax = np.round( (xmin0-5)/5 ) * 5, xmax0
+    else:
+        xmin, xmax = np.floor(xmin0), np.ceil(xmax0)
+        
+    
+    # Set ticks
+    yTickList = []
+    xTickList = []
+    step_sizes = [10, 5, 2, 1, 0.5]
+
+    for step in step_sizes:
+        yTickList = np.arange(ymin, ymax, step)
+        if len(yTickList) >= 5:
+            break
+        
+    for step in step_sizes:
+        xTickList = np.arange(xmin, xmax, step)
+        if len(xTickList) >= 5:
+            break
     
     
+    # Set labels
     xTickLabels = [""] * len(xTickList)
     for i in range(len(xTickList)):
         xtick = xTickList[i]
         
-        if xtick < 0:
-            xTickLabels[i] = "%d$^\circ$W" %xtick
-        elif xtick > 0:
-            xTickLabels[i] = "%d$^\circ$E" %xtick
-        else:
+        if step >= 1:
             xTickLabels[i] = "%d$^\circ$" %xtick
+        else:
+            xTickLabels[i] = "%.1f$^\circ$" %xtick
+        
+        if xtick < 0:
+            xTickLabels[i] += "W"
+        elif xtick > 0:
+            xTickLabels[i] += "E"
             
             
     yTickLabels = [""] * len(yTickList)
     for i in range(len(yTickList)):
         ytick = yTickList[i]
         
-        if ytick < 0:
-            yTickLabels[i] = "%d$^\circ$S" %ytick
-        elif ytick > 0:
-            yTickLabels[i] = "%d$^\circ$N" %ytick
-        else:
+        if step >= 1:
             yTickLabels[i] = "%d$^\circ$" %ytick
-            
+        else:
+            yTickLabels[i] = "%.1f$^\circ$" %ytick
+        
+        if ytick < 0:
+            yTickLabels[i] += "S"
+        elif ytick > 0:
+            yTickLabels[i] += "N" 
+    
     
     ax.set(
         yticks = yTickList,
         xticks = xTickList,
         yticklabels = yTickLabels,
         xticklabels = xTickLabels,
-        ylim = (yminO, ymax),
-        xlim = (xminO, xmax),
+        ylim = (ymin0, ymax0),
+        xlim = (xmin0, xmax0),
     )
 
 

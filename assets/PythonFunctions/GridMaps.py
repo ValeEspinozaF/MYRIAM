@@ -24,7 +24,6 @@ boundaryLabel = sys.argv[2]
 repositoryDir = sys.argv[3]
 
 
-
 # Load grids 
 lon_fileName = "GRID_LON_%s.txt" %modelLabel
 lat_fileName = "GRID_LAT_%s.txt" %modelLabel
@@ -51,6 +50,11 @@ mt = pd.read_csv(mt_path, delimiter=' ', header=None)
 contourName = "BDR_%s.txt" %boundaryLabel
 contourPath = os.path.join(repositoryDir, contourName)
 contourXY = pd.read_csv(contourPath, delimiter=' ', names=["lon", "lat"])
+
+cntr_yMin, cntr_yMax = np.min(contourXY["lat"]), np.max(contourXY["lat"])
+cntr_xMin, cntr_xMax = np.min(contourXY["lon"]), np.max(contourXY["lon"])
+cntr_xExtent = cntr_xMax - cntr_xMin
+cntr_yExtent = cntr_yMax - cntr_yMin
 
 
 # Load inContour points
@@ -105,8 +109,8 @@ cbar.set_label("$\mathrm{log(\mu_a)}$", rotation=270, fontsize=11, labelpad=25)
 
 
 # Enclose map to plate's contour 
-ax.set_ylim(np.min(contourXY["lat"])-5 , np.max(contourXY["lat"])+5)
-ax.set_xlim(np.min(contourXY["lon"])-5 , np.max(contourXY["lon"])+5)
+ax.set_ylim(cntr_yMin - 0.2*cntr_yExtent , cntr_yMax + 0.2*cntr_yExtent)
+ax.set_xlim(cntr_xMin - 0.2*cntr_xExtent , cntr_xMax + 0.2*cntr_xExtent)
 
 
 # Plot plate contour and inContour points
@@ -162,8 +166,8 @@ fig.colorbar(im, cax=cax)
 
 
 # Enclose map to plate's contour 
-ax.set_ylim(np.min(contourXY["lat"])-5 , np.max(contourXY["lat"])+5)
-ax.set_xlim(np.min(contourXY["lon"])-5 , np.max(contourXY["lon"])+5)
+ax.set_ylim(cntr_yMin - 0.2*cntr_yExtent , cntr_yMax + 0.2*cntr_yExtent)
+ax.set_xlim(cntr_xMin - 0.2*cntr_xExtent , cntr_xMax + 0.2*cntr_xExtent)
 
 
 # Plot plate contour and inContour points
@@ -219,8 +223,8 @@ fig.colorbar(im, cax=cax)
 
 
 # Enclose map to plate's contour 
-ax.set_ylim(np.min(contourXY["lat"])-5 , np.max(contourXY["lat"])+5)
-ax.set_xlim(np.min(contourXY["lon"])-5 , np.max(contourXY["lon"])+5)
+ax.set_ylim(cntr_yMin - 0.2*cntr_yExtent , cntr_yMax + 0.2*cntr_yExtent)
+ax.set_xlim(cntr_xMin - 0.2*cntr_xExtent , cntr_xMax + 0.2*cntr_xExtent)
 
 
 # Plot plate contour and inContour points

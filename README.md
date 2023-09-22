@@ -5,6 +5,10 @@ MYRIAM is an open-access, computationally-inexpensive, user-friendly software th
 <!-- installation -->
 ## Installation
 
+### Executable Files
+
+To download a pre-compiled version of MYRIAM, go to the [Releases](https://github.com/ValeEspinozaF/MYRIAM/releases) page and select the latest version. Under the "Assets" section, download the appropriate file for your operating system. Once the download is complete, unzip the file and move the folder to the desired location.
+
 ### Source code
 #### Pull from repository 
 
@@ -22,10 +26,6 @@ git pull                            # fetch all recent changes from this branch
 #### Download ZIP from GitHub
 
 Alternatively, you can download the latest version of MYRIAM as a ZIP file from the [GitHub repository](https://github.com/ValeEspinozaF/MYRIAM). Under the repository name, click on the blue button that says "Code" and select "Download ZIP". Once the download is complete, unzip the file and move the folder to the desired location.
-
-### Executable Files
-
-To download a pre-compiled version of MYRIAM, go to the [Releases](https://github.com/ValeEspinozaF/MYRIAM/releases) page and select the latest version. Under the "Assets" section, download the appropriate file for your operating system. Once the download is complete, unzip the file and move the folder to the desired location.
 
 
 

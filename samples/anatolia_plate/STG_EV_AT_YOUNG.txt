@@ -1,2 +1,2 @@
-!lon(degE) lat(degN) w(deg/Myr) a-f(rad^2/Myr^2) ensSize
+!lon(degE) lat(degN) w(deg/Myr) cov(rad^2/Myr^2) ensSize
 2.8625419e+01 4.0836067e+01 1.7504523e+00 1.2318994e-06 8.4852368e-07 1.1996946e-06 5.8601864e-07 8.2705540e-07 1.1701650e-06 1e+05
