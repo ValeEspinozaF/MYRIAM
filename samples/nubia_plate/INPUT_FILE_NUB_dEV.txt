@@ -1,7 +1,7 @@
 ! ============== Main Input Parameters ===============================================
 
 !-Output directory
-DIR_OUTPUTS = C:\Users\nbt571\MYRIAM_Outputs
+DIR_OUTPUTS = path\to\outputs_directory
 
 
 !-Output label for folders and input parameters report
@@ -17,7 +17,7 @@ STG_IDXs = 0, 1
 
 
 !-Euler vector - young (deg/Myr)
-EVy_PATH = C:\Users\nbt571\Documents\VS_repos\MYRIAM\samples\STG_dEV_NUB.txt
+EVy_PATH = path\to\STG_dEV_NUB.txt
 
 
 !-Euler vector - old (deg/Myr)
@@ -81,4 +81,4 @@ SAVE_ENS = true
 
 
 !-Python3 path (if given, generates grid and contour reference figures with Python3. Warning! Requires [os, sys, numpy, pandas, matplotlib, cartopy] Python packages.)
-PYTHON_PATH = C:\Users\nbt571\Anaconda3\python.exe
+PYTHON_PATH = path\to\python.exe

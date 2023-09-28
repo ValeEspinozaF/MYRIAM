@@ -1,0 +1,2 @@
+!lon(degE) lat(degN) w(deg/Myr) ensSize
+0.0e+00 9.0e+01 1.0e+00 1e+06

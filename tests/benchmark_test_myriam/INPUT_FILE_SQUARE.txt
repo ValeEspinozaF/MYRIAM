@@ -1,0 +1,83 @@
+! ============== Main Input Parameters ===============================================
+
+!-Output directory
+DIR_OUTPUTS = C:\Users\nbt571\Desktop\benchmark_myriam\outputs
+
+
+!-Output label for folders and input parameters report
+OUTPUT_LABEL = "micro_0.01"!
+
+
+!-Plate suffix
+PLT_LABEL = SQ
+
+
+!-Stage indexes
+STG_IDXs = 0, 1
+
+
+!-Euler vector - young (deg/Myr)
+EVy_PATH = C:\Users\nbt571\Desktop\benchmark_myriam\STG_dEV_SQUARE.txt
+
+
+!-Euler vector - old (deg/Myr)
+!EVo_PATH = 
+
+
+!-Plate contour coordinates (deg)
+CTR_PATH = C:\Users\nbt571\Desktop\benchmark_myriam\BDR_SQUARE_micro.txt
+
+
+!-Resolution for plate's base [degrees]
+GRID_RES = 0.01
+
+
+!-Depth of Lithosphere-Asthenosphere boundary [km]
+HL_km = 180
+
+
+!-Viscosity average value for the asthenosphere[Pa*s]
+muA = 5e19
+
+
+!-Viscosity average value for the upper mantle [Pa*s]
+muM = 15e20
+
+
+!-Geographic region for viscosity averaging [degrees]
+REGION_muA_LV = 
+
+
+!-Vertical fraction of asthenospheric channel to use
+FRACTION_HA = 1
+
+
+!-Deformation length around the plate contour [km]
+DEF_DISTANCE_km = 0
+
+
+
+! ============== Secondary Input Parameters ===============================================
+
+!-Values for dM magnitude histogram (see the Manual for details)
+DM_MAGHIST_BINS =
+
+
+!-Values for dM contour histogram2D (see the Manual for details)
+DM_CNTR_BINS = [1, -20, 20, -20, 20]
+
+
+!-Confidence percentage list for contouring
+!DM_CNTR_PERCENT = [20, 68]
+
+
+!-Angles of ensemble rotation along each main axis (Z,Y,X), to improve the contouring [degrees]
+!ANG_ROT = 
+
+
+!-Save torque variation ensemble (values in Cartesian coordinates [N*m]. Warning! for 1e6 values, uses ~40MB of space.)
+SAVE_ENS = false
+
+
+!-Python3 path (if given, generates grid and contour reference figures with Python3. Warning! Requires [os, sys, numpy, pandas, matplotlib, cartopy] Python packages.)
+PYTHON_PATH = C:\Users\nbt571\Anaconda3\envs\py38\python.exe
