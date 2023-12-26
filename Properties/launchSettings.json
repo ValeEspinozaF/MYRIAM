@@ -2,7 +2,7 @@
   "profiles": {
     "MYRIAM": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\nbt571\\Desktop\\benchmark_myriam\\INPUT_FILE_SQUARE.txt\""
+      "commandLineArgs": "C:\\Users\\nbt571\\Documents\\PhD\\Project_Folder_Andes\\1_Scripts\\4_Torque_variation\\MYRIAM_windows_x64\\INPUT_FILE_EXAMPLE.txt"
     }
   }
 }
