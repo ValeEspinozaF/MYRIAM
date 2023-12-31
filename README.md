@@ -45,6 +45,10 @@ MYRIAM calculations run as a self-contained release, and require no additional d
 <!-- examples -->
 ## Examples
 
+See the Manual for examples on how to use MYRIAM. All necessary files to run the examples are included in the `examples` folder.
+
 
 <!-- citing -->
 ## Citing
+
+Valentina Espinoza, Juan Martin de Blas, & Giampiero Iaffaldano. (2023). ValeEspinozaF/MYRIAM: MYRIAM v1.0.1 (v1.0.1). Zenodo. https://doi.org/10.5281/zenodo.8047062
