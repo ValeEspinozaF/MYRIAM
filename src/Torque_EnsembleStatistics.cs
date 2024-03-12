@@ -13,10 +13,10 @@ namespace MYRIAM
     internal class Torque_EnsembleStatistics
     {
         public static void Pole_Contours(
-            InputParameters inputParams, 
-            TorqueVector[] dM, 
+            InputParameters inputParams,
+            TorqueVector[] dM,
             double[,] RMTX,
-            double[] DM_CNTR_BINS, 
+            double[] DM_CNTR_BINS,
             double[] DM_CNTR_PERCENT
             )
         {
@@ -34,7 +34,7 @@ namespace MYRIAM
 
             // --- Rotate ensemble points (contouring fails at poles) ---
 
-            double[,] RMTX_2use = RMTX;           
+            double[,] RMTX_2use = RMTX;
 
 
             // Use alternative matrix if RMTX is not explicitly set
@@ -70,7 +70,7 @@ namespace MYRIAM
 
 
             // =========== Extract dM Contours ==============================
-            
+
             // Check SPH_PDD_BINS inputs, if given
             double gStep = DM_CNTR_BINS[0];
             double[] xBinRange = new double[] { DM_CNTR_BINS[1], DM_CNTR_BINS[2] };
@@ -112,6 +112,7 @@ namespace MYRIAM
 
             // Calculate the inverse of RMTX_2use
             double[,] RMTX_INV = Matrix.Inverse(RMTX_2use);
+            
 
 
             // Rotate each percentage contour
