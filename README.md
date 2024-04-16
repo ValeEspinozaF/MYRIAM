@@ -45,7 +45,13 @@ MYRIAM calculations run as a self-contained release, and require no additional d
 <!-- examples -->
 ## Examples
 
-See the Manual for examples on how to use MYRIAM. All necessary files to run the examples are included in the `examples` folder.
+See the Manual for an example on how to use MYRIAM to achieve refined results in a time-efficient manner. All necessary files to run the examples are included in the `examples` folder.
+
+You can also find examples of MYRIAM (or the base algorithm) used in plate motions research:
+- [Espinoza, V., & Iaffaldano, G. (2023). Rapid absolute plate motion changes inferred from high-resolution relative spreading reconstructions: A case study focusing on the South America plate and its Atlantic/Pacific neighbors. Earth and Planetary Science Letters, 604, 118009.](https://www.sciencedirect.com/science/article/pii/S0012821X23000225)
+- [Martin de Blas, J., Iaffaldano, G., Tassara, A., & Melnick, D. (2023). Feedback between megathrust earthquake cycle and plate convergence. Scientific Reports, 13(1), 18623.0](https://www.nature.com/articles/s41598-023-45753-5)
+- [Iaffaldano, G., de Blas, J. M., & Udbø, B. Í. D. (2022). Decadal change of the Apulia microplate motion preceding the MW 6.4, 26 November 2019 Durrës (Albania) earthquake. Earth and Planetary Science Letters, 584, 117505.](https://www.sciencedirect.com/science/article/pii/S0012821X22001418)
+- [Martin de Blas, J., Iaffaldano, G., & Calais, E. (2022). Have the 1999 Izmit–Düzce earthquakes influenced the motion and seismicity of the Anatolian microplate?. Geophysical Journal International, 229(3), 1754-1769.](https://academic.oup.com/gji/article/229/3/1754/6512137?login=true)
 
 
 <!-- citing -->
