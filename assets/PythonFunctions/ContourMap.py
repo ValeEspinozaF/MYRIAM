@@ -21,8 +21,9 @@ from MapFeatures import globalFeatures, gridLabels_inside
 # Cmd inputs
 contourLabel = sys.argv[1]
 plateAccronym = sys.argv[2]
-MTX_w2M_Dir = sys.argv[3]
-dM_PDD_Dir = sys.argv[4]
+modelStages = sys.argv[3]
+MTX_w2M_Dir = sys.argv[4]
+dM_PDD_Dir = sys.argv[5]
 
 
 # Load confidence contours
@@ -44,7 +45,7 @@ except pd.errors.EmptyDataError:
 
 
 # Plate contour path
-contourName = "BDR_%s.txt" %plateAccronym
+contourName = "BDR_%s_%s.txt" %(plateAccronym, modelStages)
 contourPath = os.path.join(MTX_w2M_Dir, contourName)
 
 

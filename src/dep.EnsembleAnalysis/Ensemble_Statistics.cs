@@ -98,7 +98,7 @@ namespace EnsembleAnalysis
 
         public static double[] Extract_ConfidenceLevels2D(int[,] H, double[] percentageLevel)
         {
-            // Calculates de tolerance level for a given percentage of 2D-samples that deviate from the mean.
+            // Calculates the tolerance level for a given percentage of 2D-samples that deviate from the mean.
 
             int sumH = Sum(H);
 
@@ -148,7 +148,7 @@ namespace EnsembleAnalysis
 
         private static void eval_tolerance(double count, double tolerance, double cl, out double level, out int swtch)
         {
-            // Function to assing level when tolerance is met
+            // Function to assign level when tolerance is met
             level = 0;
             swtch = 1;
 

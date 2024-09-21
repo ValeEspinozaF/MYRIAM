@@ -48,14 +48,15 @@ def cart2sph(xyz = []):
 
 # Cmd inputs
 plateAccronym = sys.argv[1]
-TMP_Dir = sys.argv[2]
-MTX_w2M_Dir = sys.argv[3]
-dM_PDD_Dir = sys.argv[4]
-runLabel = sys.argv[5]
+modelStages = sys.argv[2]
+TMP_Dir = sys.argv[3]
+MTX_w2M_Dir = sys.argv[4]
+dM_PDD_Dir = sys.argv[5]
+runLabel = sys.argv[6]
 
 
 # Plate contour path
-contourName = "BDR_%s.txt" %plateAccronym
+contourName = "BDR_%s_%s.txt" %(plateAccronym, modelStages)
 contourPath = os.path.join(MTX_w2M_Dir, contourName)
 
 

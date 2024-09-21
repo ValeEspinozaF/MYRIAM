@@ -65,6 +65,8 @@ namespace MYRIAM
             string plateLabel = inputParams.PLT_LABEL;
             string DIR_MTX_dEV2dM = inputParams.DIR_MTX_w2M;
             string modelName = inputParams.MODEL_LABEL;
+            int stageIndex_Old = inputParams.STG_IDX_1;
+            int stageIndex_Young = inputParams.STG_IDX_2;
 
 
             // ============== dEV - dM operators =======================================
@@ -77,7 +79,7 @@ namespace MYRIAM
 
             // ============== Save TXT files ===========================================
             Console_Banners.WriteReports(8);
-            Save_w2M_Outputs(HL, plateLabel, modelName, DIR_MTX_dEV2dM, out string matrixPath);
+            Save_w2M_Outputs(HL, plateLabel, modelName, DIR_MTX_dEV2dM, stageIndex_Old, stageIndex_Young, out string matrixPath);
             inputParams.Add("MATRIX_PATH", matrixPath);
 
         }
@@ -201,20 +203,22 @@ namespace MYRIAM
         }
 
 
-        public void Save_w2M_Outputs(double HL, string plateLabel, string modelName, string dirPath, out string matrixPath)
+        public void Save_w2M_Outputs(
+            double HL, string plateLabel, string modelName, string dirPath, int stg_young, int stg_old, 
+            out string matrixPath)
         {
             // --- Save plate Area TXT file ---
-            string filenameArea = ManageOutputs.Set_Area_FileName(plateLabel, HL);
+            string filenameArea = ManageOutputs.Set_Area_FileName(plateLabel, HL, stg_young, stg_old);
             ManageOutputs.Save_toTXT(plateArea, dirPath, filenameArea);
 
 
             // --- Save plate boundary coordinates TXT file ---
-            string filenameBoundary = ManageOutputs.Set_Boundary_FileName(plateLabel);
+            string filenameBoundary = ManageOutputs.Set_Boundary_FileName(plateLabel, stg_young, stg_old);
             ManageOutputs.Save_toTXT(cntrArray, dirPath, filenameBoundary);
 
 
             // --- Save grid coordinates TXT file ---
-            string filenameInBoundary = ManageOutputs.Set_BoundaryIn_FileName(plateLabel);
+            string filenameInBoundary = ManageOutputs.Set_BoundaryIn_FileName(plateLabel, stg_young, stg_old);
             ManageOutputs.Save_toTXT(gridPoints, dirPath, filenameInBoundary, "F2");
 
 
@@ -223,7 +227,7 @@ namespace MYRIAM
 
 
             // --- Save m2M TXT file ---
-            string FILENAME_w2M = ManageOutputs.Set_Matrix_w2M_FileName(plateLabel, modelName);
+            string FILENAME_w2M = ManageOutputs.Set_Matrix_w2M_FileName(plateLabel, modelName, stg_young, stg_old);
             matrixPath = Path.Combine(dirPath, FILENAME_w2M);
             ManageOutputs.Save_toTXT(MTX_w2M, dirPath, FILENAME_w2M);
         }

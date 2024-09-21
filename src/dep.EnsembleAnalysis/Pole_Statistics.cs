@@ -133,6 +133,10 @@ namespace EnsembleAnalysis
                 yBinMin = Math.Floor(yArray.Min() / gStep) * gStep;
                 yBinMax = Math.Ceiling(yArray.Max() / gStep) * gStep;
 
+                xBinMin = (xBinMin >= -180) ? xBinMin : (xBinMin + gStep);
+                xBinMax = (xBinMax <= 180) ? xBinMax : (xBinMax - gStep);
+                yBinMin = (yBinMin >= -180) ? yBinMin : (yBinMin + gStep);
+                yBinMax = (yBinMax <= 180) ? yBinMax : (yBinMax - gStep);
 
                 // Set number of bins (nBins)
                 nBins = new int[]

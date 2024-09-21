@@ -139,7 +139,7 @@ def plateBoundaries_feature(edgecolor = '0.25', facecolor='none', lw=0.6):
     
     # Input shapefile
     folderPath = 'assets\Shapefiles'
-    inputShp_plates = 'PlateBoundaries_PolyLine' 
+    inputShp_plates = 'PlateBoundaries_PolyLine.shp' 
     inputShp_plates = os.path.join(projFolder, folderPath, inputShp_plates)
 
 
@@ -155,7 +155,7 @@ def coastlines_feature(edgecolor = '#AAAAAA', facecolor='none', lw=0.4):
     
     # Input shapefile
     folderPath = 'assets\Shapefiles'
-    inputShp_coastlines = 'Coastlines_Polygon' 
+    inputShp_coastlines = 'Coastlines_Polygon.shp' 
     inputShp_coastlines = os.path.join(projFolder, folderPath, inputShp_coastlines)
     
     

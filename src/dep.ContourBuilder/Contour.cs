@@ -26,6 +26,10 @@ namespace ContourBuilder
                 {
                     CoordinatesList.Add(Coordinate.FromDegrees(point.Location.X, point.Location.Y));
                 }
+
+                if (isobar.IsClosed)
+                    CoordinatesList.Add(Coordinate.FromDegrees(isobar.Points[0].Location.X, isobar.Points[0].Location.Y));
+
                 CoordinatesList.Add(Coordinate.FromDegrees(double.NaN, double.NaN));
             }
 

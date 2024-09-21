@@ -231,8 +231,10 @@ namespace MYRIAM
 
         public static void Generate_gridFigures(InputParameters inputParams)
         {
-            string args = string.Format("{0} {1} {2}", 
+            string modelStages = $"{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}";
+            string args = string.Format("{0} {1} {2} {3}", 
                 inputParams.MODEL_LABEL, 
+                modelStages,
                 inputParams.PLT_LABEL, 
                 inputParams.DIR_MTX_w2M
                 );
@@ -260,9 +262,11 @@ namespace MYRIAM
         public static void Generate_contourFigure(InputParameters inputParams)
         {
             string contourLabel = Set_ContourCoordinates_Label(inputParams);
-            string args = string.Format("{0} {1} {2} {3}", 
+            string modelStages = $"{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}";
+            string args = string.Format("{0} {1} {2} {3} {4}", 
                 contourLabel,
                 inputParams.PLT_LABEL,
+                modelStages,
                 inputParams.DIR_MTX_w2M,
                 inputParams.DIR_dM_PPD
                 );
@@ -275,8 +279,10 @@ namespace MYRIAM
 
         public static void Generate_rotatedCntr_Figure(InputParameters inputParams)
         {
-            string args = string.Format("{0} {1} {2} {3} {4}",
+            string modelStages = $"{inputParams.STG_IDX_1}_{inputParams.STG_IDX_2}";
+            string args = string.Format("{0} {1} {2} {3} {4} {5}",
                 inputParams.PLT_LABEL,
+                modelStages,
                 inputParams.DIR_TMP,
                 inputParams.DIR_MTX_w2M,
                 inputParams.DIR_dM_PPD,

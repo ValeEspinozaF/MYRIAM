@@ -92,10 +92,11 @@ namespace MYRIAM
         }
 
 
-        public static string Set_Matrix_w2M_FileName(string plateLabel, string modelName)
+        public static string Set_Matrix_w2M_FileName(string plateLabel, string modelName, int stg_young, int stg_old)
         {
             string LBL_w2M = 
                 $"MTX_w2M" +
+                $"_{stg_young}_{stg_old}" +
                 $"_{plateLabel}" +
                 $"_{modelName}.txt";
 
@@ -103,20 +104,20 @@ namespace MYRIAM
         }
 
 
-        public static string Set_Area_FileName(string plateLabel, double HL)
+        public static string Set_Area_FileName(string plateLabel, double HL, int stg_young, int stg_old)
         {
-            return $"AREA_{plateLabel}_HL{(HL/1000).ToString().Replace(",", "p")}km.txt";
+            return $"AREA_{plateLabel}_{stg_young}_{stg_old}_HL{(HL/1000).ToString().Replace(",", "p")}km.txt";
         }
 
-        public static string Set_Boundary_FileName(string plateLabel)
+        public static string Set_Boundary_FileName(string plateLabel, int stg_young, int stg_old)
         {
-            return $"BDR_{plateLabel}.txt";
+            return $"BDR_{plateLabel}_{stg_young}_{stg_old}.txt";
         }
 
 
-        public static string Set_BoundaryIn_FileName(string plateLabel)
+        public static string Set_BoundaryIn_FileName(string plateLabel, int stg_young, int stg_old)
         {
-            return $"BDRin_{plateLabel}.txt";
+            return $"BDRin_{plateLabel}_{stg_young}_{stg_old}.txt";
         }
 
 

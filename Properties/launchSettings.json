@@ -2,7 +2,7 @@
   "profiles": {
     "MYRIAM": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\nbt571\\Documents\\Collab_Folders\\Juan\\240306_MYRIAM_Test_Rotations\\INPUT_FILE_REPORT_SC_1_5_B30P_vs_A30_mua1e19_D100_VALE.txt\""
+      "commandLineArgs": "\"C:\\Users\\nbt571\\Documents\\PhD\\Project_Folder\\2_Pipeline\\2_PlateCircuit_to_TorqueChange\\store\\INPUT_FILE_NZ_2.txt\""
     }
   }
 }

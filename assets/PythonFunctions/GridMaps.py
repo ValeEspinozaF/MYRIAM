@@ -20,8 +20,9 @@ from MapFeatures import setCartographic_AxisLabels
 
 # Cmd inputs
 modelLabel = sys.argv[1]
-boundaryLabel = sys.argv[2]
-repositoryDir = sys.argv[3]
+modelStages = sys.argv[2]
+boundaryLabel = sys.argv[3]
+repositoryDir = sys.argv[4]
 
 
 # Load grids 
@@ -47,7 +48,7 @@ mt = pd.read_csv(mt_path, delimiter=' ', header=None)
 
 
 # Load plate contour
-contourName = "BDR_%s.txt" %boundaryLabel
+contourName = "BDR_%s_%s.txt" %(boundaryLabel, modelStages)
 contourPath = os.path.join(repositoryDir, contourName)
 contourXY = pd.read_csv(contourPath, delimiter=' ', names=["lon", "lat"])
 
@@ -58,7 +59,7 @@ cntr_yExtent = cntr_yMax - cntr_yMin
 
 
 # Load inContour points
-inContourName = "BDRin_%s.txt" %boundaryLabel
+inContourName = "BDRin_%s_%s.txt" %(boundaryLabel, modelStages)
 inContourPath = os.path.join(repositoryDir, inContourName)
 inContourXYz = pd.read_csv(inContourPath, delimiter=' ', names=["lon", "lat", "z"])
 
